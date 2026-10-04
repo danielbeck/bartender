@@ -1,5 +1,20 @@
 {
-    "version": "1.0.0",
+    "version": "1.1.0",
+    "filters": [
+        { "key": "category", "field": "categories", "label": "Category" },
+        { "key": "spirit", "field": "spirits", "label": "Spirits", "taxonomy": "spiritFamilies" },
+        { "key": "ingredient", "field": "nonalcoholicIngredients", "label": "Nonalcoholic Ingredients" },
+        { "key": "flavor", "field": "flavorProfile", "label": "Flavor Notes", "taxonomy": "flavorProfiles" },
+        { "key": "method", "field": "method", "label": "Method", "taxonomy": "methods" },
+        { "key": "glass", "field": "glass", "label": "Glass", "taxonomy": "glasses" },
+        { "key": "strength", "field": "strength", "label": "Strength", "taxonomy": "strengths" },
+        { "key": "difficulty", "field": "difficulty", "label": "Difficulty", "taxonomy": "difficultyLevels" },
+        { "key": "sweetness", "field": "sweetness", "label": "Sweetness", "taxonomy": "sweetnessLevels" },
+        { "key": "sourness", "field": "sourness", "label": "Sourness", "taxonomy": "sournessLevels" },
+        { "key": "bitterness", "field": "bitterness", "label": "Bitterness", "taxonomy": "bitternessLevels" },
+        { "key": "carbonation", "field": "carbonation", "label": "Carbonation", "taxonomy": "carbonationLevels" },
+        { "key": "temperature", "field": "temperature", "label": "Temperature", "taxonomy": "temperatures" }
+    ],
     "cocktailCategories": [
         {
             "id": "classic",
@@ -458,7 +473,7 @@
                 "classic",
                 "highball"
             ],
-            "method": "build",
+            "method": "muddle",
             "glass": "highball",
             "ingredients": [
                 {
@@ -772,7 +787,8 @@
             "temperature": "cold",
             "difficulty": "easy",
             "description": "A polished vodka cocktail combining citrus vodka with orange liqueur, cranberry, and fresh lime. It balances tartness, fruitiness, and a clean spirit base.",
-            "mixingInstructions": "Shake all ingredients with ice until thoroughly chilled. Strain into a chilled cocktail glass and garnish with an orange twist."
+            "mixingInstructions": "Shake all ingredients with ice until thoroughly chilled. Strain into a chilled cocktail glass and garnish with an orange twist.",
+            "variant": 1
         },
         {
             "id": "pina-colada",
@@ -822,6 +838,140 @@
             "difficulty": "easy",
             "description": "A creamy tropical cocktail combining rum, pineapple juice, and coconut cream. Rich, sweet, fruity, and cooling, it is one of the defining tropical blended drinks.",
             "mixingInstructions": "Blend rum, pineapple juice, coconut cream, and ice until smooth. Pour into a chilled glass and garnish with pineapple and/or a cherry."
+        },
+        {
+            "id": "frozen-margarita",
+            "name": "Frozen Margarita",
+            "baseSpirits": ["tequila"],
+            "categories": ["classic", "sour", "tropical"],
+            "method": "blend",
+            "glass": "rocks",
+            "ingredients": [
+                { "name": "tequila", "amount": "50 ml", "ingredientId": "tequila" },
+                { "name": "triple sec", "amount": "20 ml", "ingredientId": "triple-sec" },
+                { "name": "fresh lime juice", "amount": "25 ml", "ingredientId": "lime-juice" },
+                { "name": "agave syrup", "amount": "10 ml", "ingredientId": "agave-syrup" },
+                { "name": "crushed ice", "amount": "1 cup", "ingredientId": "crushed-ice" }
+            ],
+            "garnish": ["lime wheel", "salt rim (optional)"],
+            "flavorProfile": ["agave", "citrusy", "tart", "refreshing"],
+            "strength": "moderate",
+            "sweetness": "medium",
+            "sourness": "high",
+            "bitterness": "none",
+            "carbonation": "none",
+            "temperature": "frozen",
+            "difficulty": "easy",
+            "description": "A blended, icy version of the classic tequila, orange liqueur, and lime cocktail.",
+            "mixingInstructions": "Blend tequila, triple sec, lime juice, agave syrup, and crushed ice until smooth. Serve immediately in a chilled glass, optionally with a salted rim."
+        },
+        {
+            "id": "strawberry-daiquiri",
+            "name": "Strawberry Daiquiri",
+            "baseSpirits": ["rum"],
+            "categories": ["classic", "sour", "tropical"],
+            "method": "blend",
+            "glass": "hurricane",
+            "ingredients": [
+                { "name": "white rum", "amount": "50 ml", "ingredientId": "white-rum" },
+                { "name": "fresh lime juice", "amount": "25 ml", "ingredientId": "lime-juice" },
+                { "name": "simple syrup", "amount": "15 ml", "ingredientId": "simple-syrup" },
+                { "name": "strawberry purée", "amount": "60 ml", "ingredientId": "strawberry-puree" },
+                { "name": "crushed ice", "amount": "1 cup", "ingredientId": "crushed-ice" }
+            ],
+            "garnish": ["strawberry", "lime wheel"],
+            "flavorProfile": ["fruity", "tart", "sweet", "tropical"],
+            "strength": "moderate",
+            "sweetness": "high",
+            "sourness": "medium",
+            "bitterness": "none",
+            "carbonation": "none",
+            "temperature": "frozen",
+            "difficulty": "easy",
+            "description": "A popular frozen Daiquiri variation blending rum, lime, and strawberries into a sweet-tart slush.",
+            "mixingInstructions": "Blend rum, lime juice, simple syrup, strawberry purée, and crushed ice until smooth. Pour into a chilled hurricane glass and garnish with a strawberry and lime."
+        },
+        {
+            "id": "strawberry-margarita",
+            "name": "Strawberry Margarita",
+            "baseSpirits": ["tequila"],
+            "categories": ["classic", "sour", "tropical"],
+            "method": "blend",
+            "glass": "rocks",
+            "ingredients": [
+                { "name": "tequila", "amount": "45 ml", "ingredientId": "tequila" },
+                { "name": "triple sec", "amount": "20 ml", "ingredientId": "triple-sec" },
+                { "name": "fresh lime juice", "amount": "20 ml", "ingredientId": "lime-juice" },
+                { "name": "strawberry purée", "amount": "60 ml", "ingredientId": "strawberry-puree" },
+                { "name": "agave syrup", "amount": "10 ml", "ingredientId": "agave-syrup" },
+                { "name": "crushed ice", "amount": "1 cup", "ingredientId": "crushed-ice" }
+            ],
+            "garnish": ["strawberry", "lime wheel"],
+            "flavorProfile": ["agave", "fruity", "citrusy", "sweet"],
+            "strength": "moderate",
+            "sweetness": "high",
+            "sourness": "medium",
+            "bitterness": "none",
+            "carbonation": "none",
+            "temperature": "frozen",
+            "difficulty": "easy",
+            "description": "A blended fruit variation on the Margarita, pairing tequila and lime with ripe strawberry.",
+            "mixingInstructions": "Blend tequila, triple sec, lime juice, strawberry purée, agave syrup, and crushed ice until smooth. Serve immediately and garnish with strawberry and lime."
+        },
+        {
+            "id": "mango-margarita",
+            "name": "Mango Margarita",
+            "baseSpirits": ["tequila"],
+            "categories": ["classic", "sour", "tropical"],
+            "method": "blend",
+            "glass": "rocks",
+            "ingredients": [
+                { "name": "tequila", "amount": "50 ml", "ingredientId": "tequila" },
+                { "name": "triple sec", "amount": "20 ml", "ingredientId": "triple-sec" },
+                { "name": "fresh lime juice", "amount": "20 ml", "ingredientId": "lime-juice" },
+                { "name": "mango purée", "amount": "60 ml", "ingredientId": "mango-puree" },
+                { "name": "agave syrup", "amount": "10 ml", "ingredientId": "agave-syrup" },
+                { "name": "crushed ice", "amount": "1 cup", "ingredientId": "crushed-ice" }
+            ],
+            "garnish": ["lime wheel"],
+            "flavorProfile": ["agave", "fruity", "tropical", "citrusy"],
+            "strength": "moderate",
+            "sweetness": "high",
+            "sourness": "medium",
+            "bitterness": "none",
+            "carbonation": "none",
+            "temperature": "frozen",
+            "difficulty": "easy",
+            "description": "A tropical frozen Margarita combining tequila, lime, and orange liqueur with sweet mango.",
+            "mixingInstructions": "Blend tequila, triple sec, lime juice, mango purée, agave syrup, and crushed ice until smooth. Serve in a chilled glass and garnish with lime."
+        },
+        {
+            "id": "miami-vice",
+            "name": "Miami Vice",
+            "baseSpirits": ["rum"],
+            "categories": ["tropical", "dessert"],
+            "method": "blend",
+            "glass": "hurricane",
+            "ingredients": [
+                { "name": "white rum", "amount": "50 ml", "ingredientId": "white-rum" },
+                { "name": "coconut cream", "amount": "30 ml", "ingredientId": "coconut-cream" },
+                { "name": "pineapple juice", "amount": "50 ml", "ingredientId": "pineapple-juice" },
+                { "name": "strawberry purée", "amount": "45 ml", "ingredientId": "strawberry-puree" },
+                { "name": "fresh lime juice", "amount": "15 ml", "ingredientId": "lime-juice" },
+                { "name": "simple syrup", "amount": "10 ml", "ingredientId": "simple-syrup" },
+                { "name": "crushed ice", "amount": "1 1/2 cups", "ingredientId": "crushed-ice" }
+            ],
+            "garnish": ["pineapple wedge", "strawberry"],
+            "flavorProfile": ["tropical", "fruity", "creamy", "sweet"],
+            "strength": "moderate",
+            "sweetness": "high",
+            "sourness": "low",
+            "bitterness": "none",
+            "carbonation": "none",
+            "temperature": "frozen",
+            "difficulty": "medium",
+            "description": "A layered tropical frozen drink pairing strawberry Daiquiri flavors with Piña Colada flavors.",
+            "mixingInstructions": "Blend half the rum, lime juice, syrup, strawberry purée, and some crushed ice until smooth. Separately blend the remaining rum with coconut cream, pineapple juice, and crushed ice. Pour both mixtures into a hurricane glass in layers or swirls and garnish with pineapple and strawberry."
         },
         {
             "id": "gimlet",
@@ -1023,7 +1173,7 @@
             "carbonation": "high",
             "temperature": "cold",
             "difficulty": "easy",
-            "description": "A classic tall gin sour lengthened with soda water. Fresh lemon and sugar provide the sweet-tart foundation while carbonation makes the drink light and refreshing.",
+            "description": "A tall gin sour served over ice and lengthened with soda water. Fresh lemon and sugar provide the sweet-tart foundation, with a lemon wheel and cherry as familiar garnishes.",
             "mixingInstructions": "Shake gin, lemon juice, and simple syrup with ice. Strain into a tall glass over fresh ice, top with soda water, and stir gently. Garnish with lemon and cherry."
         },
         {
@@ -1439,7 +1589,7 @@
             "id": "dark-n-stormy",
             "name": "Dark 'N' Stormy",
             "baseSpirits": [
-                "dark rum"
+                "dark-rum"
             ],
             "categories": [
                 "highball",
@@ -1512,6 +1662,12 @@
                     "ingredientId": "simple-syrup"
                 },
                 {
+                    "name": "egg white",
+                    "amount": "1 (optional)",
+                    "ingredientId": "egg-white",
+                    "optional": true
+                },
+                {
                     "name": "soda water",
                     "amount": "80 ml",
                     "ingredientId": "soda-water"
@@ -1524,7 +1680,8 @@
                 "citrusy",
                 "tart",
                 "sweet",
-                "refreshing"
+                "refreshing",
+                "creamy"
             ],
             "strength": "moderate",
             "sweetness": "medium",
@@ -1533,14 +1690,14 @@
             "carbonation": "high",
             "temperature": "cold",
             "difficulty": "medium",
-            "description": "A tall, refreshing gin sour lengthened with soda water. Fresh lemon and sugar provide the sweet-tart base while carbonation gives the drink a light, lively finish.",
-            "mixingInstructions": "Shake gin, lemon juice, and simple syrup with ice. Strain into a chilled highball glass, then top with soda water."
+            "description": "A foamy gin fizz, served without ice and topped with soda water. Egg white is optional and adds a silky head; lemon and sugar give the drink its bright sweet-tart base.",
+            "mixingInstructions": "For a foamy version, dry-shake gin, lemon juice, simple syrup, and egg white without ice, then shake again with ice. Strain into a chilled highball glass without ice, top with soda water, and serve immediately. Omit the egg white for a classic non-foamy Gin Fizz."
         },
         {
             "id": "caipirinha",
             "name": "Caipirinha",
             "baseSpirits": [
-                "cachaça"
+                "cachaca"
             ],
             "categories": [
                 "classic",
@@ -2352,7 +2509,7 @@
             "id": "jungle-bird",
             "name": "Jungle Bird",
             "baseSpirits": [
-                "dark rum"
+                "dark-rum"
             ],
             "categories": [
                 "tropical",
@@ -2616,7 +2773,7 @@
             "mixingInstructions": "Shake vanilla vodka, passion fruit liqueur or purée, lime juice, and vanilla syrup with ice. Strain into a chilled coupe and serve with sparkling wine on the side."
         },
         {
-            "id": "cosmopolitan",
+            "id": "cosmopolitan-variant-2",
             "name": "Cosmopolitan",
             "baseSpirits": [
                 "vodka"
@@ -2666,7 +2823,8 @@
             "temperature": "cold",
             "difficulty": "easy",
             "description": "A variation on the Cosmopolitan that uses a slightly different balance of vodka, orange liqueur, cranberry, and citrus. The result remains bright, tart, fruity, and clean.",
-            "mixingInstructions": "Shake the ingredients vigorously with ice. Strain into a chilled cocktail glass and garnish with an orange twist or lime twist."
+            "mixingInstructions": "Shake the ingredients vigorously with ice. Strain into a chilled cocktail glass and garnish with an orange twist or lime twist.",
+            "variant": 2
         },
         {
             "id": "sex-on-the-beach",
@@ -2955,475 +3113,1810 @@
             "mixingInstructions": "Stir gin, sweet vermouth, and Fernet-Branca with ice until chilled. Strain into a chilled cocktail glass and garnish with an orange twist."
         },
         {
-            "id": "vieux-carre",
-            "name": "Vieux Carré",
-            "baseSpirits": [
-                "rye",
-                "cognac"
-            ],
-            "categories": [
-                "classic",
-                "spirit-forward"
-            ],
-            "method": "stir",
-            "glass": "rocks",
+            "id": "gin-rickey",
+            "name": "Gin Rickey",
+            "baseSpirits": ["gin"],
+            "categories": ["classic", "highball"],
+            "method": "build",
+            "glass": "highball",
             "ingredients": [
-                {
-                    "name": "rye whiskey",
-                    "amount": "30 ml",
-                    "ingredientId": "rye-whiskey"
-                },
-                {
-                    "name": "cognac",
-                    "amount": "30 ml",
-                    "ingredientId": "cognac"
-                },
-                {
-                    "name": "sweet vermouth",
-                    "amount": "30 ml",
-                    "ingredientId": "sweet-vermouth"
-                },
-                {
-                    "name": "Bénédictine",
-                    "amount": "7.5 ml",
-                    "ingredientId": "benedictine"
-                },
-                {
-                    "name": "Angostura bitters",
-                    "amount": "2 dashes",
-                    "ingredientId": "angostura-bitters"
-                },
-                {
-                    "name": "Peychaud's bitters",
-                    "amount": "2 dashes",
-                    "ingredientId": "peychauds-bitters"
-                }
+                { "name": "gin", "amount": "60 ml", "ingredientId": "gin" },
+                { "name": "fresh lime juice", "amount": "15 ml", "ingredientId": "lime-juice" },
+                { "name": "soda water", "amount": "120 ml", "ingredientId": "soda-water" }
             ],
-            "garnish": [
-                "lemon twist"
+            "garnish": ["lime wheel"],
+            "flavorProfile": ["citrusy", "refreshing", "dry"],
+            "strength": "moderate",
+            "sweetness": "low",
+            "sourness": "medium",
+            "bitterness": "none",
+            "carbonation": "high",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A crisp, unsweetened highball of gin, lime, and soda water. Its clean citrus flavor makes it a refreshing, straightforward classic.",
+            "mixingInstructions": "Build gin and lime juice over ice in a highball glass. Top with soda water, stir gently, and garnish with a lime wheel."
+        },
+        {
+            "id": "screwdriver",
+            "name": "Screwdriver",
+            "baseSpirits": ["vodka"],
+            "categories": ["classic", "highball"],
+            "method": "build",
+            "glass": "highball",
+            "ingredients": [
+                { "name": "vodka", "amount": "50 ml", "ingredientId": "vodka" },
+                { "name": "orange juice", "amount": "120 ml", "ingredientId": "orange-juice" }
             ],
-            "flavorProfile": [
-                "boozy",
-                "herbal",
-                "spiced",
-                "complex"
+            "garnish": ["orange slice"],
+            "flavorProfile": ["citrusy", "fruity", "sweet"],
+            "strength": "moderate",
+            "sweetness": "medium",
+            "sourness": "low",
+            "bitterness": "none",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A simple and widely known highball pairing vodka with orange juice. The balance depends on the freshness and sweetness of the juice.",
+            "mixingInstructions": "Build vodka and orange juice over ice in a highball glass. Stir gently and garnish with an orange slice."
+        },
+        {
+            "id": "greyhound",
+            "name": "Greyhound",
+            "baseSpirits": ["vodka"],
+            "categories": ["classic", "highball"],
+            "method": "build",
+            "glass": "highball",
+            "ingredients": [
+                { "name": "vodka", "amount": "50 ml", "ingredientId": "vodka" },
+                { "name": "grapefruit juice", "amount": "120 ml", "ingredientId": "grapefruit-juice" }
             ],
+            "garnish": ["grapefruit wedge"],
+            "flavorProfile": ["citrusy", "tart", "refreshing"],
+            "strength": "moderate",
+            "sweetness": "low",
+            "sourness": "medium",
+            "bitterness": "low",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A bright, tart highball made with vodka and grapefruit juice. Gin is also a common alternative base spirit.",
+            "mixingInstructions": "Build vodka and grapefruit juice over ice in a highball glass. Stir briefly and garnish with a grapefruit wedge."
+        },
+        {
+            "id": "sea-breeze",
+            "name": "Sea Breeze",
+            "baseSpirits": ["vodka"],
+            "categories": ["classic", "highball"],
+            "method": "build",
+            "glass": "highball",
+            "ingredients": [
+                { "name": "vodka", "amount": "45 ml", "ingredientId": "vodka" },
+                { "name": "cranberry juice", "amount": "90 ml", "ingredientId": "cranberry-juice" },
+                { "name": "grapefruit juice", "amount": "45 ml", "ingredientId": "grapefruit-juice" }
+            ],
+            "garnish": ["lime wedge"],
+            "flavorProfile": ["fruity", "citrusy", "tart", "refreshing"],
+            "strength": "light",
+            "sweetness": "medium",
+            "sourness": "medium",
+            "bitterness": "low",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A fruity vodka highball combining cranberry and grapefruit juices for a refreshing balance of tart and citrus flavors.",
+            "mixingInstructions": "Build vodka and juices over ice in a highball glass. Stir gently and garnish with a lime wedge."
+        },
+        {
+            "id": "bay-breeze",
+            "name": "Bay Breeze",
+            "baseSpirits": ["vodka"],
+            "categories": ["highball", "tropical"],
+            "method": "build",
+            "glass": "highball",
+            "ingredients": [
+                { "name": "vodka", "amount": "45 ml", "ingredientId": "vodka" },
+                { "name": "cranberry juice", "amount": "75 ml", "ingredientId": "cranberry-juice" },
+                { "name": "pineapple juice", "amount": "75 ml", "ingredientId": "pineapple-juice" }
+            ],
+            "garnish": ["lime wedge"],
+            "flavorProfile": ["fruity", "tropical", "sweet", "refreshing"],
+            "strength": "light",
+            "sweetness": "medium",
+            "sourness": "low",
+            "bitterness": "none",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A fruit-forward vodka drink pairing cranberry and pineapple juices. It is an easy-drinking, tropical variation on a simple juice highball.",
+            "mixingInstructions": "Build vodka and both juices over ice in a highball glass. Stir gently and garnish with a lime wedge."
+        },
+        {
+            "id": "lemon-drop",
+            "name": "Lemon Drop",
+            "baseSpirits": ["vodka"],
+            "categories": ["classic", "sour"],
+            "method": "shake",
+            "glass": "coupe",
+            "ingredients": [
+                { "name": "vodka", "amount": "45 ml", "ingredientId": "vodka" },
+                { "name": "triple sec", "amount": "20 ml", "ingredientId": "triple-sec" },
+                { "name": "fresh lemon juice", "amount": "25 ml", "ingredientId": "lemon-juice" },
+                { "name": "simple syrup", "amount": "10 ml", "ingredientId": "simple-syrup" }
+            ],
+            "garnish": ["lemon twist", "sugar rim"],
+            "flavorProfile": ["citrusy", "tart", "sweet"],
+            "strength": "strong",
+            "sweetness": "medium",
+            "sourness": "high",
+            "bitterness": "none",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A vodka sour with lemon juice, orange liqueur, and a touch of sugar. A sugared rim is a familiar optional garnish.",
+            "mixingInstructions": "Shake vodka, triple sec, lemon juice, and simple syrup with ice. Strain into a chilled coupe, optionally rimmed with sugar, and garnish with a lemon twist."
+        },
+        {
+            "id": "vodka-tonic",
+            "name": "Vodka Tonic",
+            "baseSpirits": ["vodka"],
+            "categories": ["highball"],
+            "method": "build",
+            "glass": "highball",
+            "ingredients": [
+                { "name": "vodka", "amount": "50 ml", "ingredientId": "vodka" },
+                { "name": "tonic water", "amount": "150 ml", "ingredientId": "tonic-water" }
+            ],
+            "garnish": ["lime wedge"],
+            "flavorProfile": ["citrusy", "bitter", "refreshing"],
+            "strength": "light",
+            "sweetness": "medium",
+            "sourness": "low",
+            "bitterness": "low",
+            "carbonation": "high",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A simple long drink of vodka and tonic water, commonly finished with lime. The tonic adds sweetness, bubbles, and a gentle bitter note.",
+            "mixingInstructions": "Build vodka over ice in a highball glass. Top with tonic water, stir gently, and garnish with a lime wedge."
+        },
+        {
+            "id": "whiskey-highball",
+            "name": "Whiskey Highball",
+            "baseSpirits": ["whiskey"],
+            "categories": ["classic", "highball"],
+            "method": "build",
+            "glass": "highball",
+            "ingredients": [
+                { "name": "whiskey", "amount": "50 ml", "ingredientId": "rye-whiskey", "alternativeIngredientIds": ["bourbon", "scotch-whisky"] },
+                { "name": "soda water", "amount": "150 ml", "ingredientId": "soda-water" }
+            ],
+            "garnish": ["lemon twist"],
+            "flavorProfile": ["boozy", "refreshing", "sparkling"],
+            "strength": "light",
+            "sweetness": "low",
+            "sourness": "none",
+            "bitterness": "none",
+            "carbonation": "high",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A clean, refreshing combination of whiskey and chilled soda water. It is a simple format that lets the character of the chosen whiskey shine.",
+            "mixingInstructions": "Add whiskey to a chilled highball glass filled with ice. Top with soda water, stir gently, and garnish with a lemon twist."
+        },
+        {
+            "id": "tequila-sour",
+            "name": "Tequila Sour",
+            "baseSpirits": ["tequila"],
+            "categories": ["classic", "sour"],
+            "method": "shake",
+            "glass": "coupe",
+            "ingredients": [
+                { "name": "tequila", "amount": "50 ml", "ingredientId": "tequila" },
+                { "name": "fresh lime juice", "amount": "25 ml", "ingredientId": "lime-juice" },
+                { "name": "agave syrup", "amount": "15 ml", "ingredientId": "agave-syrup" }
+            ],
+            "garnish": ["lime wheel"],
+            "flavorProfile": ["agave", "citrusy", "tart", "sweet"],
+            "strength": "strong",
+            "sweetness": "medium",
+            "sourness": "high",
+            "bitterness": "none",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A straightforward agave-based sour balancing tequila with fresh lime juice and agave syrup.",
+            "mixingInstructions": "Shake tequila, lime juice, and agave syrup with ice until chilled. Strain into a coupe and garnish with a lime wheel."
+        },
+        {
+            "id": "dirty-martini",
+            "name": "Dirty Martini",
+            "baseSpirits": ["gin"],
+            "categories": ["classic", "spirit-forward"],
+            "method": "stir",
+            "glass": "martini",
+            "ingredients": [
+                { "name": "gin", "amount": "60 ml", "ingredientId": "gin" },
+                { "name": "dry vermouth", "amount": "10 ml", "ingredientId": "dry-vermouth" },
+                { "name": "olive brine", "amount": "10 ml", "ingredientId": "olive-brine" }
+            ],
+            "garnish": ["green olives"],
+            "flavorProfile": ["boozy", "savory", "dry"],
+            "strength": "strong",
+            "sweetness": "low",
+            "sourness": "none",
+            "bitterness": "low",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A savory variation on the Martini, made with gin, dry vermouth, and olive brine. The amount of brine can be adjusted to taste.",
+            "mixingInstructions": "Stir gin, dry vermouth, and olive brine with ice until very cold. Strain into a chilled martini glass and garnish with olives."
+        },
+        {
+            "id": "rob-roy",
+            "name": "Rob Roy",
+            "baseSpirits": ["scotch"],
+            "categories": ["classic", "spirit-forward"],
+            "method": "stir",
+            "glass": "coupe",
+            "ingredients": [
+                { "name": "Scotch whisky", "amount": "50 ml", "ingredientId": "scotch-whisky" },
+                { "name": "sweet vermouth", "amount": "25 ml", "ingredientId": "sweet-vermouth" },
+                { "name": "aromatic bitters", "amount": "2 dashes", "ingredientId": "aromatic-bitters" }
+            ],
+            "garnish": ["cherry"],
+            "flavorProfile": ["boozy", "herbal", "sweet", "aromatic"],
             "strength": "strong",
             "sweetness": "medium",
             "sourness": "none",
             "bitterness": "low",
             "carbonation": "none",
             "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A Scotch-based relative of the Manhattan, combining whisky and sweet vermouth with aromatic bitters.",
+            "mixingInstructions": "Stir Scotch whisky, sweet vermouth, and bitters with ice until chilled. Strain into a coupe and garnish with a cherry."
+        },
+        {
+            "id": "champagne-cocktail",
+            "name": "Champagne Cocktail",
+            "baseSpirits": ["sparkling-wine"],
+            "categories": ["classic", "sparkling"],
+            "method": "build",
+            "glass": "flute",
+            "ingredients": [
+                { "name": "sugar cube", "amount": "1", "ingredientId": "sugar" },
+                { "name": "aromatic bitters", "amount": "2 dashes", "ingredientId": "aromatic-bitters" },
+                { "name": "sparkling wine", "amount": "120 ml", "ingredientId": "sparkling-wine" }
+            ],
+            "garnish": ["lemon twist"],
+            "flavorProfile": ["sparkling", "aromatic", "dry"],
+            "strength": "moderate",
+            "sweetness": "low",
+            "sourness": "none",
+            "bitterness": "low",
+            "carbonation": "high",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A traditional sparkling-wine cocktail in which a bitters-soaked sugar cube adds subtle sweetness and aroma as it dissolves.",
+            "mixingInstructions": "Place a sugar cube in a flute and saturate it with bitters. Slowly top with chilled sparkling wine and garnish with a lemon twist."
+        },
+        {
+            "id": "brandy-alexander",
+            "name": "Brandy Alexander",
+            "baseSpirits": ["cognac"],
+            "categories": ["classic", "dessert"],
+            "method": "shake",
+            "glass": "coupe",
+            "ingredients": [
+                { "name": "cognac", "amount": "30 ml", "ingredientId": "cognac" },
+                { "name": "crème de cacao", "amount": "30 ml", "ingredientId": "creme-de-cacao" },
+                { "name": "cream", "amount": "30 ml", "ingredientId": "cream" }
+            ],
+            "garnish": ["grated nutmeg"],
+            "flavorProfile": ["creamy", "sweet", "nutty"],
+            "strength": "moderate",
+            "sweetness": "high",
+            "sourness": "none",
+            "bitterness": "none",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A rich, creamy dessert cocktail combining brandy, chocolate liqueur, and cream, traditionally finished with grated nutmeg.",
+            "mixingInstructions": "Shake cognac, crème de cacao, and cream with ice until well chilled. Strain into a coupe and finish with freshly grated nutmeg."
+        },
+        {
+            "id": "hot-toddy",
+            "name": "Hot Toddy",
+            "baseSpirits": ["whiskey"],
+            "categories": ["classic"],
+            "method": "build",
+            "glass": "mug",
+            "ingredients": [
+                { "name": "whiskey", "amount": "45 ml", "ingredientId": "bourbon", "alternativeIngredientIds": ["rye-whiskey", "scotch-whisky"] },
+                { "name": "honey syrup", "amount": "15 ml", "ingredientId": "honey-syrup" },
+                { "name": "fresh lemon juice", "amount": "15 ml", "ingredientId": "lemon-juice" },
+                { "name": "hot water", "amount": "120 ml", "ingredientId": "hot-water" }
+            ],
+            "garnish": ["lemon wheel", "cinnamon stick"],
+            "flavorProfile": ["honey", "citrusy", "spiced"],
+            "strength": "moderate",
+            "sweetness": "medium",
+            "sourness": "low",
+            "bitterness": "none",
+            "carbonation": "none",
+            "temperature": "hot",
+            "difficulty": "easy",
+            "description": "A warming drink of whiskey, honey, lemon, and hot water. It is a flexible traditional recipe, often adjusted to taste.",
+            "mixingInstructions": "Add whiskey, honey syrup, and lemon juice to a heatproof mug. Top with hot water and stir until combined. Garnish with lemon and a cinnamon stick."
+        },
+        {
+            "id": "gin-basil-smash",
+            "name": "Gin Basil Smash",
+            "baseSpirits": ["gin"],
+            "categories": ["sour", "fizz"],
+            "method": "shake",
+            "glass": "rocks",
+            "ingredients": [
+                { "name": "gin", "amount": "60 ml", "ingredientId": "gin" },
+                { "name": "fresh lemon juice", "amount": "25 ml", "ingredientId": "lemon-juice" },
+                { "name": "simple syrup", "amount": "20 ml", "ingredientId": "simple-syrup" },
+                { "name": "fresh basil", "amount": "8 leaves", "ingredientId": "basil" }
+            ],
+            "garnish": ["basil sprig"],
+            "flavorProfile": ["herbal", "citrusy", "refreshing"],
+            "strength": "strong",
+            "sweetness": "medium",
+            "sourness": "high",
+            "bitterness": "none",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "medium",
+            "description": "A fresh, modern gin sour that pairs lemon and simple syrup with muddled basil for a vivid herbal aroma.",
+            "mixingInstructions": "Gently muddle basil with simple syrup in a shaker. Add gin, lemon juice, and ice; shake until chilled. Double-strain over fresh ice and garnish with basil."
+        },
+        {
+            "id": "rum-punch",
+            "name": "Rum Punch",
+            "baseSpirits": ["rum"],
+            "categories": ["tropical", "tiki"],
+            "method": "shake",
+            "glass": "highball",
+            "ingredients": [
+                { "name": "aged rum", "amount": "45 ml", "ingredientId": "aged-rum" },
+                { "name": "fresh lime juice", "amount": "20 ml", "ingredientId": "lime-juice" },
+                { "name": "orange juice", "amount": "45 ml", "ingredientId": "orange-juice" },
+                { "name": "pineapple juice", "amount": "45 ml", "ingredientId": "pineapple-juice" },
+                { "name": "grenadine", "amount": "10 ml", "ingredientId": "grenadine" }
+            ],
+            "garnish": ["orange slice", "cherry"],
+            "flavorProfile": ["tropical", "fruity", "citrusy", "sweet"],
+            "strength": "moderate",
+            "sweetness": "high",
+            "sourness": "medium",
+            "bitterness": "none",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A fruit-forward rum punch balancing rum, citrus, pineapple, orange, and grenadine. Punch recipes vary widely by region and household.",
+            "mixingInstructions": "Shake rum, lime juice, orange juice, pineapple juice, and grenadine with ice. Strain into an ice-filled highball glass and garnish with orange and cherry."
+        },
+        {
+            "id": "martinez",
+            "name": "Martinez",
+            "baseSpirits": ["gin"],
+            "categories": ["classic", "spirit-forward"],
+            "method": "stir",
+            "glass": "coupe",
+            "ingredients": [
+                { "name": "gin", "amount": "45 ml", "ingredientId": "gin" },
+                { "name": "sweet vermouth", "amount": "45 ml", "ingredientId": "sweet-vermouth" },
+                { "name": "maraschino liqueur", "amount": "5 ml", "ingredientId": "maraschino-liqueur" },
+                { "name": "aromatic bitters", "amount": "2 dashes", "ingredientId": "aromatic-bitters" }
+            ],
+            "garnish": ["lemon twist"],
+            "flavorProfile": ["boozy", "herbal", "sweet", "aromatic"],
+            "strength": "strong",
+            "sweetness": "medium",
+            "sourness": "none",
+            "bitterness": "low",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "An early gin-and-vermouth cocktail, lightly sweetened with maraschino liqueur and rounded out with bitters.",
+            "mixingInstructions": "Stir all ingredients with ice until chilled. Strain into a coupe and garnish with a lemon twist."
+        },
+        {
+            "id": "el-presidente",
+            "name": "El Presidente",
+            "baseSpirits": ["rum"],
+            "categories": ["classic", "spirit-forward"],
+            "method": "stir",
+            "glass": "coupe",
+            "ingredients": [
+                { "name": "white rum", "amount": "45 ml", "ingredientId": "white-rum" },
+                { "name": "dry vermouth", "amount": "25 ml", "ingredientId": "dry-vermouth" },
+                { "name": "orange curaçao", "amount": "15 ml", "ingredientId": "orange-curacao" },
+                { "name": "grenadine", "amount": "5 ml", "ingredientId": "grenadine" }
+            ],
+            "garnish": ["orange twist"],
+            "flavorProfile": ["rum-forward", "citrusy", "herbal", "sweet"],
+            "strength": "strong",
+            "sweetness": "medium",
+            "sourness": "none",
+            "bitterness": "low",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A Cuban classic pairing rum with dry vermouth and orange curaçao, given subtle color and sweetness by grenadine.",
+            "mixingInstructions": "Stir all ingredients with ice until chilled. Strain into a chilled coupe and garnish with an orange twist."
+        },
+        {
+            "id": "mary-pickford",
+            "name": "Mary Pickford",
+            "baseSpirits": ["rum"],
+            "categories": ["classic", "tropical"],
+            "method": "shake",
+            "glass": "coupe",
+            "ingredients": [
+                { "name": "white rum", "amount": "45 ml", "ingredientId": "white-rum" },
+                { "name": "pineapple juice", "amount": "45 ml", "ingredientId": "pineapple-juice" },
+                { "name": "maraschino liqueur", "amount": "5 ml", "ingredientId": "maraschino-liqueur" },
+                { "name": "grenadine", "amount": "5 ml", "ingredientId": "grenadine" }
+            ],
+            "garnish": ["cherry"],
+            "flavorProfile": ["fruity", "tropical", "sweet"],
+            "strength": "moderate",
+            "sweetness": "medium",
+            "sourness": "low",
+            "bitterness": "none",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A lightly fruity rum cocktail combining pineapple, maraschino liqueur, and grenadine.",
+            "mixingInstructions": "Shake all ingredients with ice until chilled. Strain into a coupe and garnish with a cherry."
+        },
+        {
+            "id": "planters-punch",
+            "name": "Planter's Punch",
+            "baseSpirits": ["rum"],
+            "categories": ["classic", "tropical", "tiki"],
+            "method": "shake",
+            "glass": "highball",
+            "ingredients": [
+                { "name": "aged rum", "amount": "60 ml", "ingredientId": "aged-rum" },
+                { "name": "fresh lime juice", "amount": "25 ml", "ingredientId": "lime-juice" },
+                { "name": "simple syrup", "amount": "15 ml", "ingredientId": "simple-syrup" },
+                { "name": "aromatic bitters", "amount": "2 dashes", "ingredientId": "aromatic-bitters" },
+                { "name": "soda water", "amount": "60 ml", "ingredientId": "soda-water" }
+            ],
+            "garnish": ["lime wheel"],
+            "flavorProfile": ["rum-forward", "citrusy", "spiced", "refreshing"],
+            "strength": "moderate",
+            "sweetness": "medium",
+            "sourness": "medium",
+            "bitterness": "low",
+            "carbonation": "high",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A traditional rum punch with many regional variations; this refreshing version balances aged rum, lime, sugar, bitters, and soda.",
+            "mixingInstructions": "Shake rum, lime juice, syrup, and bitters with ice. Strain into an ice-filled highball glass, top with soda, and stir gently."
+        },
+        {
+            "id": "singapore-sling",
+            "name": "Singapore Sling",
+            "baseSpirits": ["gin"],
+            "categories": ["classic", "tropical"],
+            "method": "shake",
+            "glass": "highball",
+            "ingredients": [
+                { "name": "gin", "amount": "30 ml", "ingredientId": "gin" },
+                { "name": "cherry liqueur", "amount": "15 ml", "ingredientId": "cherry-liqueur" },
+                { "name": "orange liqueur", "amount": "7.5 ml", "ingredientId": "triple-sec" },
+                { "name": "Bénédictine", "amount": "7.5 ml", "ingredientId": "benedictine" },
+                { "name": "fresh lime juice", "amount": "15 ml", "ingredientId": "lime-juice" },
+                { "name": "pineapple juice", "amount": "90 ml", "ingredientId": "pineapple-juice" },
+                { "name": "grenadine", "amount": "10 ml", "ingredientId": "grenadine" },
+                { "name": "aromatic bitters", "amount": "1 dash", "ingredientId": "aromatic-bitters" },
+                { "name": "soda water", "amount": "30 ml", "ingredientId": "soda-water" }
+            ],
+            "garnish": ["pineapple wedge", "cherry"],
+            "flavorProfile": ["fruity", "tropical", "complex", "sweet"],
+            "strength": "moderate",
+            "sweetness": "high",
+            "sourness": "medium",
+            "bitterness": "low",
+            "carbonation": "high",
+            "temperature": "cold",
             "difficulty": "advanced",
-            "description": "A variation on the Vieux Carré that retains its characteristic combination of whiskey, cognac, vermouth, Bénédictine, and bitters while using a different balance of ingredients. It remains rich, aromatic, and complex.",
-            "mixingInstructions": "Stir the ingredients with ice until thoroughly chilled and diluted. Strain into a chilled cocktail glass or over fresh ice and garnish with a lemon twist."
+            "description": "A complex, fruit-forward gin sling with pineapple, citrus, cherry liqueur, and herbal accents. Recipes vary considerably.",
+            "mixingInstructions": "Shake all ingredients except soda with ice. Strain into an ice-filled highball glass, top with soda, and garnish with pineapple and cherry."
+        },
+        {
+            "id": "bramble",
+            "name": "Bramble",
+            "baseSpirits": ["gin"],
+            "categories": ["sour", "classic"],
+            "method": "shake",
+            "glass": "rocks",
+            "ingredients": [
+                { "name": "gin", "amount": "50 ml", "ingredientId": "gin" },
+                { "name": "fresh lemon juice", "amount": "25 ml", "ingredientId": "lemon-juice" },
+                { "name": "simple syrup", "amount": "15 ml", "ingredientId": "simple-syrup" },
+                { "name": "blackberry liqueur", "amount": "15 ml", "ingredientId": "creme-de-mure" }
+            ],
+            "garnish": ["blackberries", "lemon slice"],
+            "flavorProfile": ["fruity", "citrusy", "tart", "sweet"],
+            "strength": "moderate",
+            "sweetness": "medium",
+            "sourness": "high",
+            "bitterness": "none",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A modern gin sour layered with blackberry liqueur for a deep berry aroma and color.",
+            "mixingInstructions": "Shake gin, lemon juice, and syrup with ice. Strain over crushed ice in a rocks glass, then drizzle blackberry liqueur over the top. Garnish with blackberries and lemon."
+        },
+        {
+            "id": "gold-rush",
+            "name": "Gold Rush",
+            "baseSpirits": ["bourbon"],
+            "categories": ["sour", "classic"],
+            "method": "shake",
+            "glass": "rocks",
+            "ingredients": [
+                { "name": "bourbon", "amount": "60 ml", "ingredientId": "bourbon" },
+                { "name": "fresh lemon juice", "amount": "25 ml", "ingredientId": "lemon-juice" },
+                { "name": "honey syrup", "amount": "20 ml", "ingredientId": "honey-syrup" }
+            ],
+            "garnish": ["lemon twist"],
+            "flavorProfile": ["honey", "citrusy", "tart", "boozy"],
+            "strength": "strong",
+            "sweetness": "medium",
+            "sourness": "high",
+            "bitterness": "none",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A simple bourbon sour sweetened with honey syrup, combining whiskey warmth with bright lemon.",
+            "mixingInstructions": "Shake bourbon, lemon juice, and honey syrup with ice. Strain over fresh ice in a rocks glass and garnish with a lemon twist."
+        },
+        {
+            "id": "brown-derby",
+            "name": "Brown Derby",
+            "baseSpirits": ["bourbon"],
+            "categories": ["classic", "sour"],
+            "method": "shake",
+            "glass": "coupe",
+            "ingredients": [
+                { "name": "bourbon", "amount": "45 ml", "ingredientId": "bourbon" },
+                { "name": "grapefruit juice", "amount": "30 ml", "ingredientId": "grapefruit-juice" },
+                { "name": "honey syrup", "amount": "15 ml", "ingredientId": "honey-syrup" }
+            ],
+            "garnish": ["grapefruit twist"],
+            "flavorProfile": ["citrusy", "honey", "tart"],
+            "strength": "strong",
+            "sweetness": "medium",
+            "sourness": "high",
+            "bitterness": "low",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A bright whiskey sour made with grapefruit juice and honey, balancing bourbon's richness with a lightly bitter citrus edge.",
+            "mixingInstructions": "Shake bourbon, grapefruit juice, and honey syrup with ice. Strain into a chilled coupe and garnish with a grapefruit twist."
+        },
+        {
+            "id": "ward-eight",
+            "name": "Ward Eight",
+            "baseSpirits": ["rye"],
+            "categories": ["classic", "sour"],
+            "method": "shake",
+            "glass": "coupe",
+            "ingredients": [
+                { "name": "rye whiskey", "amount": "50 ml", "ingredientId": "rye-whiskey" },
+                { "name": "fresh lemon juice", "amount": "20 ml", "ingredientId": "lemon-juice" },
+                { "name": "orange juice", "amount": "20 ml", "ingredientId": "orange-juice" },
+                { "name": "grenadine", "amount": "10 ml", "ingredientId": "grenadine" }
+            ],
+            "garnish": ["orange twist"],
+            "flavorProfile": ["citrusy", "fruity", "sweet", "boozy"],
+            "strength": "strong",
+            "sweetness": "medium",
+            "sourness": "medium",
+            "bitterness": "none",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A whiskey sour variation combining rye with lemon, orange, and grenadine for a balanced citrus and pomegranate-like sweetness.",
+            "mixingInstructions": "Shake all ingredients with ice until chilled. Strain into a coupe and garnish with an orange twist."
+        },
+        {
+            "id": "paper-plane",
+            "name": "Paper Plane",
+            "baseSpirits": ["bourbon"],
+            "categories": ["classic", "sour"],
+            "method": "shake",
+            "glass": "coupe",
+            "ingredients": [
+                { "name": "bourbon", "amount": "22.5 ml", "ingredientId": "bourbon" },
+                { "name": "bitter aperitivo", "amount": "22.5 ml", "ingredientId": "aperol" },
+                { "name": "amaro", "amount": "22.5 ml", "ingredientId": "amaro" },
+                { "name": "fresh lemon juice", "amount": "22.5 ml", "ingredientId": "lemon-juice" }
+            ],
+            "garnish": ["lemon twist"],
+            "flavorProfile": ["bitter", "citrusy", "herbal", "complex"],
+            "strength": "strong",
+            "sweetness": "medium",
+            "sourness": "high",
+            "bitterness": "medium",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "An equal-parts modern sour balancing bourbon, bitter aperitivo, amaro, and lemon juice.",
+            "mixingInstructions": "Shake all ingredients with ice until chilled. Strain into a coupe and garnish with a lemon twist."
+        },
+        {
+            "id": "el-diablo",
+            "name": "El Diablo",
+            "baseSpirits": ["tequila"],
+            "categories": ["classic", "highball"],
+            "method": "build",
+            "glass": "highball",
+            "ingredients": [
+                { "name": "tequila", "amount": "45 ml", "ingredientId": "tequila" },
+                { "name": "crème de cassis", "amount": "15 ml", "ingredientId": "creme-de-cassis" },
+                { "name": "fresh lime juice", "amount": "15 ml", "ingredientId": "lime-juice" },
+                { "name": "ginger beer", "amount": "100 ml", "ingredientId": "ginger-beer" }
+            ],
+            "garnish": ["lime wheel"],
+            "flavorProfile": ["agave", "fruity", "ginger", "refreshing"],
+            "strength": "moderate",
+            "sweetness": "medium",
+            "sourness": "low",
+            "bitterness": "none",
+            "carbonation": "high",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A lively tequila highball with blackcurrant liqueur, lime, and spicy ginger beer.",
+            "mixingInstructions": "Build tequila, crème de cassis, and lime juice over ice in a highball glass. Top with ginger beer, stir gently, and garnish with lime."
+        },
+        {
+            "id": "ranch-water",
+            "name": "Ranch Water",
+            "baseSpirits": ["tequila"],
+            "categories": ["highball"],
+            "method": "build",
+            "glass": "highball",
+            "ingredients": [
+                { "name": "tequila", "amount": "45 ml", "ingredientId": "tequila" },
+                { "name": "fresh lime juice", "amount": "20 ml", "ingredientId": "lime-juice" },
+                { "name": "soda water", "amount": "150 ml", "ingredientId": "soda-water" }
+            ],
+            "garnish": ["lime wedge"],
+            "flavorProfile": ["agave", "citrusy", "dry", "refreshing"],
+            "strength": "light",
+            "sweetness": "low",
+            "sourness": "medium",
+            "bitterness": "none",
+            "carbonation": "high",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A refreshing, dry tequila highball with lime and sparkling water.",
+            "mixingInstructions": "Build tequila and lime juice over ice in a highball glass. Top with soda water, stir gently, and garnish with a lime wedge."
+        },
+        {
+            "id": "gin-gin-mule",
+            "name": "Gin-Gin Mule",
+            "baseSpirits": ["gin"],
+            "categories": ["highball", "sour"],
+            "method": "shake",
+            "glass": "highball",
+            "ingredients": [
+                { "name": "gin", "amount": "45 ml", "ingredientId": "gin" },
+                { "name": "fresh lime juice", "amount": "20 ml", "ingredientId": "lime-juice" },
+                { "name": "simple syrup", "amount": "15 ml", "ingredientId": "simple-syrup" },
+                { "name": "mint", "amount": "8 leaves", "ingredientId": "mint" },
+                { "name": "ginger beer", "amount": "90 ml", "ingredientId": "ginger-beer" }
+            ],
+            "garnish": ["mint sprig", "lime wheel"],
+            "flavorProfile": ["minty", "ginger", "citrusy", "refreshing"],
+            "strength": "moderate",
+            "sweetness": "medium",
+            "sourness": "medium",
+            "bitterness": "none",
+            "carbonation": "high",
+            "temperature": "cold",
+            "difficulty": "medium",
+            "description": "A gin-based mule brightened with mint, lime, and ginger beer.",
+            "mixingInstructions": "Gently muddle mint with syrup in a shaker. Add gin, lime juice, and ice; shake briefly. Strain into an ice-filled highball glass, top with ginger beer, and garnish with mint and lime."
+        },
+        {
+            "id": "ramos-gin-fizz",
+            "name": "Ramos Gin Fizz",
+            "baseSpirits": ["gin"],
+            "categories": ["classic", "fizz"],
+            "method": "shake",
+            "glass": "tall",
+            "ingredients": [
+                { "name": "gin", "amount": "45 ml", "ingredientId": "gin" },
+                { "name": "fresh lemon juice", "amount": "15 ml", "ingredientId": "lemon-juice" },
+                { "name": "fresh lime juice", "amount": "15 ml", "ingredientId": "lime-juice" },
+                { "name": "simple syrup", "amount": "25 ml", "ingredientId": "simple-syrup" },
+                { "name": "cream", "amount": "30 ml", "ingredientId": "cream" },
+                { "name": "egg white", "amount": "1", "ingredientId": "egg-white" },
+                { "name": "orange flower water", "amount": "2 drops", "ingredientId": "orange-flower-water" },
+                { "name": "soda water", "amount": "60 ml", "ingredientId": "soda-water" }
+            ],
+            "garnish": [],
+            "flavorProfile": ["creamy", "citrusy", "floral", "refreshing"],
+            "strength": "moderate",
+            "sweetness": "medium",
+            "sourness": "medium",
+            "bitterness": "none",
+            "carbonation": "high",
+            "temperature": "cold",
+            "difficulty": "advanced",
+            "description": "A silky, foamy gin fizz combining citrus, cream, egg white, and a hint of orange flower water, lengthened with soda.",
+            "mixingInstructions": "Shake gin, citrus, syrup, cream, egg white, and orange flower water vigorously with ice. Strain into a chilled tall glass and slowly top with soda water."
+        },
+        {
+            "id": "grasshopper",
+            "name": "Grasshopper",
+            "baseSpirits": [],
+            "categories": ["classic", "dessert"],
+            "method": "shake",
+            "glass": "coupe",
+            "ingredients": [
+                { "name": "crème de menthe", "amount": "30 ml", "ingredientId": "creme-de-menthe" },
+                { "name": "crème de cacao", "amount": "30 ml", "ingredientId": "creme-de-cacao" },
+                { "name": "cream", "amount": "30 ml", "ingredientId": "cream" }
+            ],
+            "garnish": ["grated chocolate"],
+            "flavorProfile": ["creamy", "sweet", "minty"],
+            "strength": "moderate",
+            "sweetness": "high",
+            "sourness": "none",
+            "bitterness": "none",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A sweet, minty dessert cocktail made with mint liqueur, chocolate liqueur, and cream.",
+            "mixingInstructions": "Shake all ingredients with ice until chilled and frothy. Strain into a coupe and garnish with grated chocolate."
+        },
+        {
+            "id": "mudslide",
+            "name": "Mudslide",
+            "baseSpirits": ["vodka"],
+            "categories": ["dessert"],
+            "method": "shake",
+            "glass": "rocks",
+            "ingredients": [
+                { "name": "vodka", "amount": "30 ml", "ingredientId": "vodka" },
+                { "name": "coffee liqueur", "amount": "30 ml", "ingredientId": "coffee-liqueur" },
+                { "name": "cream liqueur", "amount": "30 ml", "ingredientId": "cream-liqueur" },
+                { "name": "cream", "amount": "30 ml", "ingredientId": "cream" }
+            ],
+            "garnish": ["grated chocolate"],
+            "flavorProfile": ["creamy", "coffee", "sweet", "rich"],
+            "strength": "moderate",
+            "sweetness": "high",
+            "sourness": "none",
+            "bitterness": "low",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A creamy dessert drink combining vodka, coffee liqueur, cream liqueur, and cream.",
+            "mixingInstructions": "Shake all ingredients with ice until cold. Strain over fresh ice into a rocks glass and garnish with grated chocolate."
+        },
+        {
+            "id": "hemingway-daiquiri",
+            "name": "Hemingway Daiquiri",
+            "baseSpirits": ["rum"],
+            "categories": ["classic", "sour"],
+            "method": "shake",
+            "glass": "coupe",
+            "ingredients": [
+                { "name": "white rum", "amount": "60 ml", "ingredientId": "white-rum" },
+                { "name": "fresh lime juice", "amount": "20 ml", "ingredientId": "lime-juice" },
+                { "name": "grapefruit juice", "amount": "15 ml", "ingredientId": "grapefruit-juice" },
+                { "name": "maraschino liqueur", "amount": "15 ml", "ingredientId": "maraschino-liqueur" }
+            ],
+            "garnish": ["lime wheel"],
+            "flavorProfile": ["rum-forward", "citrusy", "tart", "dry"],
+            "strength": "strong",
+            "sweetness": "low",
+            "sourness": "high",
+            "bitterness": "low",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A dry, citrus-forward Daiquiri variation with grapefruit and maraschino liqueur alongside rum and lime.",
+            "mixingInstructions": "Shake all ingredients with ice until well chilled. Strain into a coupe and garnish with a lime wheel."
+        },
+        {
+            "id": "between-the-sheets",
+            "name": "Between the Sheets",
+            "baseSpirits": ["brandy", "rum"],
+            "categories": ["classic", "sour"],
+            "method": "shake",
+            "glass": "coupe",
+            "ingredients": [
+                { "name": "cognac", "amount": "30 ml", "ingredientId": "cognac" },
+                { "name": "white rum", "amount": "30 ml", "ingredientId": "white-rum" },
+                { "name": "triple sec", "amount": "30 ml", "ingredientId": "triple-sec" },
+                { "name": "fresh lemon juice", "amount": "20 ml", "ingredientId": "lemon-juice" }
+            ],
+            "garnish": ["lemon twist"],
+            "flavorProfile": ["citrusy", "tart", "boozy"],
+            "strength": "strong",
+            "sweetness": "medium",
+            "sourness": "high",
+            "bitterness": "none",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A spirit-forward Sidecar relative that combines cognac and rum with orange liqueur and lemon.",
+            "mixingInstructions": "Shake all ingredients with ice until chilled. Strain into a coupe and garnish with a lemon twist."
+        },
+        {
+            "id": "godfather",
+            "name": "Godfather",
+            "baseSpirits": ["scotch"],
+            "categories": ["classic", "spirit-forward"],
+            "method": "stir",
+            "glass": "rocks",
+            "ingredients": [
+                { "name": "Scotch whisky", "amount": "45 ml", "ingredientId": "scotch-whisky" },
+                { "name": "amaretto", "amount": "25 ml", "ingredientId": "amaretto" }
+            ],
+            "garnish": ["orange twist"],
+            "flavorProfile": ["boozy", "almond", "sweet", "smoky"],
+            "strength": "strong",
+            "sweetness": "medium",
+            "sourness": "none",
+            "bitterness": "none",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A simple stirred combination of Scotch whisky and almond-flavored amaretto.",
+            "mixingInstructions": "Stir Scotch and amaretto with ice until chilled. Strain over fresh ice in a rocks glass and garnish with an orange twist."
+        },
+        {
+            "id": "godmother",
+            "name": "Godmother",
+            "baseSpirits": ["vodka"],
+            "categories": ["classic", "spirit-forward"],
+            "method": "stir",
+            "glass": "rocks",
+            "ingredients": [
+                { "name": "vodka", "amount": "45 ml", "ingredientId": "vodka" },
+                { "name": "amaretto", "amount": "25 ml", "ingredientId": "amaretto" }
+            ],
+            "garnish": ["orange twist"],
+            "flavorProfile": ["almond", "sweet", "boozy"],
+            "strength": "strong",
+            "sweetness": "medium",
+            "sourness": "none",
+            "bitterness": "none",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A smooth, two-ingredient drink pairing vodka with sweet almond-flavored amaretto.",
+            "mixingInstructions": "Stir vodka and amaretto with ice until chilled. Strain over fresh ice in a rocks glass and garnish with an orange twist."
+        },
+        {
+            "id": "bobby-burns",
+            "name": "Bobby Burns",
+            "baseSpirits": ["scotch"],
+            "categories": ["classic", "spirit-forward"],
+            "method": "stir",
+            "glass": "coupe",
+            "ingredients": [
+                { "name": "Scotch whisky", "amount": "45 ml", "ingredientId": "scotch-whisky" },
+                { "name": "sweet vermouth", "amount": "30 ml", "ingredientId": "sweet-vermouth" },
+                { "name": "Bénédictine", "amount": "10 ml", "ingredientId": "benedictine" },
+                { "name": "aromatic bitters", "amount": "1 dash", "ingredientId": "aromatic-bitters" }
+            ],
+            "garnish": ["lemon twist"],
+            "flavorProfile": ["boozy", "herbal", "spiced", "complex"],
+            "strength": "strong",
+            "sweetness": "medium",
+            "sourness": "none",
+            "bitterness": "low",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "medium",
+            "description": "A Scotch-and-vermouth cocktail enriched with herbal Bénédictine and aromatic bitters.",
+            "mixingInstructions": "Stir all ingredients with ice until chilled. Strain into a coupe and garnish with a lemon twist."
+        },
+        {
+            "id": "blood-and-sand",
+            "name": "Blood and Sand",
+            "baseSpirits": ["scotch"],
+            "categories": ["classic", "sour"],
+            "method": "shake",
+            "glass": "coupe",
+            "ingredients": [
+                { "name": "Scotch whisky", "amount": "22.5 ml", "ingredientId": "scotch-whisky" },
+                { "name": "sweet vermouth", "amount": "22.5 ml", "ingredientId": "sweet-vermouth" },
+                { "name": "cherry liqueur", "amount": "22.5 ml", "ingredientId": "cherry-liqueur" },
+                { "name": "orange juice", "amount": "22.5 ml", "ingredientId": "orange-juice" }
+            ],
+            "garnish": ["orange twist"],
+            "flavorProfile": ["fruity", "citrusy", "smoky", "complex"],
+            "strength": "strong",
+            "sweetness": "medium",
+            "sourness": "low",
+            "bitterness": "low",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A distinctive Scotch cocktail balancing whisky with sweet vermouth, cherry liqueur, and orange juice.",
+            "mixingInstructions": "Shake all ingredients with ice until chilled. Strain into a coupe and garnish with an orange twist."
+        },
+        {
+            "id": "stinger",
+            "name": "Stinger",
+            "baseSpirits": ["brandy"],
+            "categories": ["classic", "spirit-forward"],
+            "method": "stir",
+            "glass": "coupe",
+            "ingredients": [
+                { "name": "cognac", "amount": "50 ml", "ingredientId": "cognac" },
+                { "name": "crème de menthe", "amount": "20 ml", "ingredientId": "creme-de-menthe" }
+            ],
+            "garnish": ["mint leaf"],
+            "flavorProfile": ["minty", "sweet", "boozy"],
+            "strength": "strong",
+            "sweetness": "medium",
+            "sourness": "none",
+            "bitterness": "none",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A classic after-dinner drink pairing cognac with mint liqueur.",
+            "mixingInstructions": "Stir cognac and crème de menthe with ice until cold. Strain into a chilled coupe or serve over crushed ice."
+        },
+        {
+            "id": "brandy-crusta",
+            "name": "Brandy Crusta",
+            "baseSpirits": ["brandy"],
+            "categories": ["classic", "sour"],
+            "method": "shake",
+            "glass": "coupe",
+            "ingredients": [
+                { "name": "cognac", "amount": "50 ml", "ingredientId": "cognac" },
+                { "name": "orange curaçao", "amount": "10 ml", "ingredientId": "orange-curacao" },
+                { "name": "maraschino liqueur", "amount": "5 ml", "ingredientId": "maraschino-liqueur" },
+                { "name": "fresh lemon juice", "amount": "20 ml", "ingredientId": "lemon-juice" },
+                { "name": "simple syrup", "amount": "5 ml", "ingredientId": "simple-syrup" },
+                { "name": "aromatic bitters", "amount": "1 dash", "ingredientId": "aromatic-bitters" }
+            ],
+            "garnish": ["lemon peel", "sugar rim"],
+            "flavorProfile": ["citrusy", "aromatic", "sweet", "boozy"],
+            "strength": "strong",
+            "sweetness": "medium",
+            "sourness": "medium",
+            "bitterness": "low",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "medium",
+            "description": "An old brandy sour with orange and maraschino liqueurs, bitters, and its characteristic sugared rim and large lemon peel.",
+            "mixingInstructions": "Prepare a sugar rim on a small wine glass or coupe. Shake the remaining ingredients with ice and strain into the glass around a wide lemon peel."
+        },
+        {
+            "id": "japanese-cocktail",
+            "name": "Japanese Cocktail",
+            "baseSpirits": ["brandy"],
+            "categories": ["classic", "spirit-forward"],
+            "method": "stir",
+            "glass": "rocks",
+            "ingredients": [
+                { "name": "cognac", "amount": "60 ml", "ingredientId": "cognac" },
+                { "name": "orgeat", "amount": "10 ml", "ingredientId": "orgeat" },
+                { "name": "aromatic bitters", "amount": "2 dashes", "ingredientId": "aromatic-bitters" }
+            ],
+            "garnish": ["lemon twist"],
+            "flavorProfile": ["almond", "aromatic", "boozy", "sweet"],
+            "strength": "strong",
+            "sweetness": "medium",
+            "sourness": "none",
+            "bitterness": "low",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A nineteenth-century brandy cocktail sweetened with almond orgeat and seasoned with bitters.",
+            "mixingInstructions": "Stir cognac, orgeat, and bitters with ice until chilled. Strain over fresh ice in a rocks glass and garnish with a lemon twist."
+        },
+        {
+            "id": "pegu-club",
+            "name": "Pegu Club",
+            "baseSpirits": ["gin"],
+            "categories": ["classic", "sour"],
+            "method": "shake",
+            "glass": "coupe",
+            "ingredients": [
+                { "name": "gin", "amount": "45 ml", "ingredientId": "gin" },
+                { "name": "orange curaçao", "amount": "20 ml", "ingredientId": "orange-curacao" },
+                { "name": "fresh lime juice", "amount": "20 ml", "ingredientId": "lime-juice" },
+                { "name": "aromatic bitters", "amount": "1 dash", "ingredientId": "aromatic-bitters" }
+            ],
+            "garnish": ["lime twist"],
+            "flavorProfile": ["citrusy", "herbal", "aromatic", "tart"],
+            "strength": "strong",
+            "sweetness": "medium",
+            "sourness": "high",
+            "bitterness": "low",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A crisp gin sour with orange curaçao, lime, and bitters.",
+            "mixingInstructions": "Shake all ingredients with ice until chilled. Strain into a coupe and garnish with a lime twist."
+        },
+        {
+            "id": "army-and-navy",
+            "name": "Army and Navy",
+            "baseSpirits": ["gin"],
+            "categories": ["classic", "sour"],
+            "method": "shake",
+            "glass": "coupe",
+            "ingredients": [
+                { "name": "gin", "amount": "60 ml", "ingredientId": "gin" },
+                { "name": "fresh lemon juice", "amount": "25 ml", "ingredientId": "lemon-juice" },
+                { "name": "orgeat", "amount": "20 ml", "ingredientId": "orgeat" },
+                { "name": "aromatic bitters", "amount": "1 dash", "ingredientId": "aromatic-bitters" }
+            ],
+            "garnish": ["lemon twist"],
+            "flavorProfile": ["citrusy", "almond", "tart", "aromatic"],
+            "strength": "strong",
+            "sweetness": "medium",
+            "sourness": "high",
+            "bitterness": "low",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A gin sour softened by almond orgeat and accented with aromatic bitters.",
+            "mixingInstructions": "Shake all ingredients with ice until well chilled. Strain into a coupe and garnish with a lemon twist."
+        },
+        {
+            "id": "corpse-reviver-1",
+            "name": "Corpse Reviver No. 1",
+            "baseSpirits": ["brandy"],
+            "categories": ["classic", "spirit-forward"],
+            "method": "stir",
+            "glass": "coupe",
+            "ingredients": [
+                { "name": "cognac", "amount": "30 ml", "ingredientId": "cognac" },
+                { "name": "apple brandy", "amount": "30 ml", "ingredientId": "apple-brandy" },
+                { "name": "sweet vermouth", "amount": "30 ml", "ingredientId": "sweet-vermouth" }
+            ],
+            "garnish": ["lemon twist"],
+            "flavorProfile": ["boozy", "fruity", "herbal", "complex"],
+            "strength": "strong",
+            "sweetness": "medium",
+            "sourness": "none",
+            "bitterness": "low",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A rich, spirit-forward combination of cognac, apple brandy, and sweet vermouth.",
+            "mixingInstructions": "Stir all ingredients with ice until chilled. Strain into a coupe and garnish with a lemon twist."
+        },
+        {
+            "id": "sloe-gin-fizz",
+            "name": "Sloe Gin Fizz",
+            "baseSpirits": ["gin"],
+            "categories": ["classic", "fizz"],
+            "method": "shake",
+            "glass": "highball",
+            "ingredients": [
+                { "name": "sloe gin", "amount": "45 ml", "ingredientId": "sloe-gin" },
+                { "name": "fresh lemon juice", "amount": "25 ml", "ingredientId": "lemon-juice" },
+                { "name": "simple syrup", "amount": "10 ml", "ingredientId": "simple-syrup" },
+                { "name": "soda water", "amount": "90 ml", "ingredientId": "soda-water" }
+            ],
+            "garnish": ["lemon wheel"],
+            "flavorProfile": ["fruity", "tart", "refreshing", "sparkling"],
+            "strength": "light",
+            "sweetness": "medium",
+            "sourness": "medium",
+            "bitterness": "low",
+            "carbonation": "high",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A refreshing fizz made with sloe gin, lemon, a little sugar, and soda water.",
+            "mixingInstructions": "Shake sloe gin, lemon juice, and syrup with ice. Strain into an ice-filled highball glass, top with soda water, and stir gently."
+        },
+        {
+            "id": "blackthorn",
+            "name": "Blackthorn",
+            "baseSpirits": ["irish-whiskey"],
+            "categories": ["classic", "spirit-forward"],
+            "method": "stir",
+            "glass": "rocks",
+            "ingredients": [
+                { "name": "Irish whiskey", "amount": "50 ml", "ingredientId": "irish-whiskey" },
+                { "name": "sweet vermouth", "amount": "25 ml", "ingredientId": "sweet-vermouth" },
+                { "name": "aromatic bitters", "amount": "2 dashes", "ingredientId": "aromatic-bitters" }
+            ],
+            "garnish": ["lemon twist"],
+            "flavorProfile": ["boozy", "herbal", "aromatic"],
+            "strength": "strong",
+            "sweetness": "medium",
+            "sourness": "none",
+            "bitterness": "low",
+            "carbonation": "none",
+            "temperature": "cold",
+            "difficulty": "easy",
+            "description": "A whiskey-and-vermouth cocktail with aromatic bitters; Blackthorn recipes vary and may use different whiskey styles.",
+            "mixingInstructions": "Stir Irish whiskey, sweet vermouth, and bitters with ice until chilled. Strain over fresh ice or into a coupe and garnish with a lemon twist."
         }
     ],
     "ingredients": [
         {
             "id": "gin",
             "name": "Gin",
-            "category": "spirits"
+            "category": "spirits",
+            "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "gin"
+            ]
         },
         {
             "id": "vodka",
             "name": "Vodka",
-            "category": "spirits"
+            "category": "spirits",
+            "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "vodka"
+            ]
         },
         {
             "id": "tequila",
             "name": "Tequila",
-            "category": "spirits"
+            "category": "spirits",
+            "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "tequila"
+            ]
         },
         {
             "id": "bourbon",
             "name": "Bourbon",
-            "category": "spirits"
+            "category": "spirits",
+            "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "bourbon"
+            ]
         },
         {
             "id": "rye-whiskey",
             "name": "Rye Whiskey",
-            "category": "spirits"
+            "category": "spirits",
+            "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "rye"
+            ]
         },
         {
             "id": "irish-whiskey",
             "name": "Irish Whiskey",
-            "category": "spirits"
+            "category": "spirits",
+            "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "irish-whiskey"
+            ]
         },
         {
             "id": "scotch-whisky",
             "name": "Scotch Whisky",
-            "category": "spirits"
+            "category": "spirits",
+            "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "scotch"
+            ]
         },
         {
             "id": "rum",
             "name": "Rum",
-            "category": "spirits"
+            "category": "spirits",
+            "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "rum"
+            ]
         },
         {
             "id": "cognac",
             "name": "Cognac",
-            "category": "spirits"
+            "category": "spirits",
+            "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "cognac"
+            ]
         },
         {
             "id": "pisco",
             "name": "Pisco",
-            "category": "spirits"
+            "category": "spirits",
+            "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "pisco"
+            ]
         },
         {
             "id": "cachaca",
             "name": "Cachaça",
-            "category": "spirits"
+            "category": "spirits",
+            "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "cachaca"
+            ]
         },
         {
             "id": "cointreau",
             "name": "Cointreau",
-            "category": "liqueurs"
+            "category": "liqueurs",
+            "isAlcoholic": true
         },
         {
             "id": "triple-sec",
             "name": "Triple Sec",
-            "category": "liqueurs"
+            "category": "liqueurs",
+            "isAlcoholic": true
         },
         {
             "id": "orange-curacao",
             "name": "Orange Curaçao",
-            "category": "liqueurs"
+            "category": "liqueurs",
+            "isAlcoholic": true
         },
         {
             "id": "amaretto",
             "name": "Amaretto",
-            "category": "liqueurs"
+            "category": "liqueurs",
+            "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "amaretto"
+            ]
         },
         {
             "id": "coffee-liqueur",
             "name": "Coffee Liqueur",
-            "category": "liqueurs"
+            "category": "liqueurs",
+            "isAlcoholic": true
         },
         {
             "id": "drambuie",
             "name": "Drambuie",
-            "category": "liqueurs"
+            "category": "liqueurs",
+            "isAlcoholic": true
         },
         {
             "id": "benedictine",
             "name": "Bénédictine",
-            "category": "liqueurs"
+            "category": "liqueurs",
+            "isAlcoholic": true
         },
         {
             "id": "fernet-branca",
             "name": "Fernet-Branca",
-            "category": "liqueurs"
+            "category": "liqueurs",
+            "isAlcoholic": true
         },
         {
             "id": "green-chartreuse",
             "name": "Green Chartreuse",
-            "category": "liqueurs"
+            "category": "liqueurs",
+            "isAlcoholic": true
         },
         {
             "id": "creme-de-violette",
             "name": "Crème de Violette",
-            "category": "liqueurs"
+            "category": "liqueurs",
+            "isAlcoholic": true
         },
         {
             "id": "maraschino-liqueur",
             "name": "Maraschino Liqueur",
-            "category": "liqueurs"
+            "category": "liqueurs",
+            "isAlcoholic": true
         },
         {
             "id": "peach-schnapps",
             "name": "Peach Schnapps",
-            "category": "liqueurs"
+            "category": "liqueurs",
+            "isAlcoholic": true
         },
         {
             "id": "passion-fruit-liqueur",
             "name": "Passion Fruit Liqueur",
-            "category": "liqueurs"
+            "category": "liqueurs",
+            "isAlcoholic": true
         },
         {
             "id": "absinthe",
             "name": "Absinthe",
-            "category": "liqueurs"
+            "category": "liqueurs",
+            "isAlcoholic": true
         },
         {
             "id": "falernum",
             "name": "Falernum",
-            "category": "liqueurs"
+            "category": "liqueurs",
+            "isAlcoholic": true
         },
         {
             "id": "dry-vermouth",
             "name": "Dry Vermouth",
-            "category": "fortified-wines"
+            "category": "fortified-wines",
+            "isAlcoholic": true
         },
         {
             "id": "sweet-vermouth",
             "name": "Sweet Vermouth",
-            "category": "fortified-wines"
+            "category": "fortified-wines",
+            "isAlcoholic": true
         },
         {
             "id": "lillet-blanc",
             "name": "Lillet Blanc",
-            "category": "fortified-wines"
+            "category": "fortified-wines",
+            "isAlcoholic": true
         },
         {
             "id": "champagne",
             "name": "Champagne",
-            "category": "wine"
+            "category": "wine",
+            "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "sparkling-wine"
+            ]
         },
         {
             "id": "prosecco",
             "name": "Prosecco",
-            "category": "wine"
+            "category": "wine",
+            "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "sparkling-wine"
+            ]
         },
         {
             "id": "dry-red-wine",
             "name": "Dry Red Wine",
-            "category": "wine"
+            "category": "wine",
+            "isAlcoholic": true
         },
         {
             "id": "angostura-bitters",
             "name": "Angostura Bitters",
-            "category": "bitters"
+            "category": "bitters",
+            "isAlcoholic": true
         },
         {
             "id": "peychauds-bitters",
             "name": "Peychaud's Bitters",
-            "category": "bitters"
+            "category": "bitters",
+            "isAlcoholic": true
         },
         {
             "id": "lemon-juice",
             "name": "Lemon Juice",
-            "category": "juices"
+            "category": "juices",
+            "isAlcoholic": false
         },
         {
             "id": "lime-juice",
             "name": "Lime Juice",
-            "category": "juices"
+            "category": "juices",
+            "isAlcoholic": false
         },
         {
             "id": "grapefruit-juice",
             "name": "Grapefruit Juice",
-            "category": "juices"
+            "category": "juices",
+            "isAlcoholic": false
         },
         {
             "id": "orange-juice",
             "name": "Orange Juice",
-            "category": "juices"
+            "category": "juices",
+            "isAlcoholic": false
         },
         {
             "id": "cranberry-juice",
             "name": "Cranberry Juice",
-            "category": "juices"
+            "category": "juices",
+            "isAlcoholic": false
         },
         {
             "id": "pineapple-juice",
             "name": "Pineapple Juice",
-            "category": "juices"
+            "category": "juices",
+            "isAlcoholic": false
         },
         {
             "id": "tomato-juice",
             "name": "Tomato Juice",
-            "category": "juices"
+            "category": "juices",
+            "isAlcoholic": false
         },
         {
             "id": "passion-fruit-puree",
             "name": "Passion Fruit Purée",
-            "category": "fruit"
+            "category": "fruit",
+            "isAlcoholic": false
         },
         {
             "id": "white-peach-puree",
             "name": "White Peach Purée",
-            "category": "fruit"
+            "category": "fruit",
+            "isAlcoholic": false
         },
         {
             "id": "simple-syrup",
             "name": "Simple Syrup",
-            "category": "sweeteners"
+            "category": "sweeteners",
+            "isAlcoholic": false
         },
         {
             "id": "agave-syrup",
             "name": "Agave Syrup",
-            "category": "sweeteners"
+            "category": "sweeteners",
+            "isAlcoholic": false
         },
         {
             "id": "brown-sugar",
             "name": "Brown Sugar",
-            "category": "sweeteners"
+            "category": "sweeteners",
+            "isAlcoholic": false
         },
         {
             "id": "cinnamon-syrup",
             "name": "Cinnamon Syrup",
-            "category": "sweeteners"
+            "category": "sweeteners",
+            "isAlcoholic": false
         },
         {
             "id": "grenadine",
             "name": "Grenadine",
-            "category": "sweeteners"
+            "category": "sweeteners",
+            "isAlcoholic": false
         },
         {
             "id": "honey-syrup",
             "name": "Honey Syrup",
-            "category": "sweeteners"
+            "category": "sweeteners",
+            "isAlcoholic": false
         },
         {
             "id": "honey-ginger-syrup",
             "name": "Honey-Ginger Syrup",
-            "category": "sweeteners"
+            "category": "sweeteners",
+            "isAlcoholic": false
         },
         {
             "id": "orgeat",
             "name": "Orgeat",
-            "category": "sweeteners"
+            "category": "sweeteners",
+            "isAlcoholic": false
         },
         {
             "id": "raspberry-syrup",
             "name": "Raspberry Syrup",
-            "category": "sweeteners"
+            "category": "sweeteners",
+            "isAlcoholic": false
         },
         {
             "id": "vanilla-syrup",
             "name": "Vanilla Syrup",
-            "category": "sweeteners"
+            "category": "sweeteners",
+            "isAlcoholic": false
         },
         {
             "id": "sugar",
             "name": "Sugar",
-            "category": "sweeteners"
+            "category": "sweeteners",
+            "isAlcoholic": false
         },
         {
             "id": "soda-water",
             "name": "Soda Water",
-            "category": "carbonated-mixers"
+            "category": "carbonated-mixers",
+            "isAlcoholic": false
         },
         {
             "id": "tonic-water",
             "name": "Tonic Water",
-            "category": "carbonated-mixers"
+            "category": "carbonated-mixers",
+            "isAlcoholic": false
         },
         {
             "id": "ginger-beer",
             "name": "Ginger Beer",
-            "category": "carbonated-mixers"
+            "category": "carbonated-mixers",
+            "isAlcoholic": false
         },
         {
             "id": "grapefruit-soda",
             "name": "Grapefruit Soda",
-            "category": "carbonated-mixers"
+            "category": "carbonated-mixers",
+            "isAlcoholic": false
         },
         {
             "id": "cola",
             "name": "Cola",
-            "category": "carbonated-mixers"
+            "category": "carbonated-mixers",
+            "isAlcoholic": false
         },
         {
             "id": "espresso",
             "name": "Espresso",
-            "category": "coffee"
+            "category": "coffee",
+            "isAlcoholic": false
         },
         {
             "id": "hot-coffee",
             "name": "Hot Coffee",
-            "category": "coffee"
+            "category": "coffee",
+            "isAlcoholic": false
         },
         {
             "id": "cream",
             "name": "Cream",
-            "category": "dairy-and-egg"
+            "category": "dairy-and-egg",
+            "isAlcoholic": false
         },
         {
             "id": "coconut-cream",
             "name": "Coconut Cream",
-            "category": "dairy-and-egg"
+            "category": "dairy-and-egg",
+            "isAlcoholic": false
         },
         {
             "id": "egg-white",
             "name": "Egg White",
-            "category": "dairy-and-egg"
+            "category": "dairy-and-egg",
+            "isAlcoholic": false
         },
         {
             "id": "mint",
             "name": "Mint",
-            "category": "herbs-and-botanicals"
+            "category": "herbs-and-botanicals",
+            "isAlcoholic": false
         },
         {
             "id": "worcestershire-sauce",
             "name": "Worcestershire Sauce",
-            "category": "savory-and-seasoning"
+            "category": "savory-and-seasoning",
+            "isAlcoholic": false
         },
         {
             "id": "hot-sauce",
             "name": "Hot Sauce",
-            "category": "savory-and-seasoning"
+            "category": "savory-and-seasoning",
+            "isAlcoholic": false
         },
         {
             "id": "salt-and-pepper",
             "name": "Salt and Pepper",
-            "category": "savory-and-seasoning"
+            "category": "savory-and-seasoning",
+            "isAlcoholic": false
         },
         {
             "id": "aperol",
             "name": "Aperol",
-            "category": "liqueurs"
+            "category": "liqueurs",
+            "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "aperitivo"
+            ]
         },
         {
             "id": "campari",
             "name": "Campari",
-            "category": "liqueurs"
+            "category": "liqueurs",
+            "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "aperitivo"
+            ]
         },
         {
             "id": "islay-scotch",
             "name": "Islay Scotch",
-            "category": "spirits"
+            "category": "spirits",
+            "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "scotch"
+            ]
         },
         {
             "id": "blended-scotch",
             "name": "Blended Scotch",
-            "category": "spirits"
+            "category": "spirits",
+            "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "scotch"
+            ]
         },
         {
             "id": "aged-rum",
             "name": "Aged Rum",
-            "category": "spirits"
+            "category": "spirits",
+            "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "rum"
+            ]
         },
         {
             "id": "dark-rum",
             "name": "Dark Rum",
-            "category": "spirits"
+            "category": "spirits",
+            "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "rum",
+                "dark-rum"
+            ]
         },
         {
             "id": "overproof-rum",
             "name": "Overproof Rum",
-            "category": "spirits"
+            "category": "spirits",
+            "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "rum"
+            ]
         },
         {
             "id": "white-rum",
             "name": "White Rum",
-            "category": "spirits"
+            "category": "spirits",
+            "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "rum"
+            ]
         },
         {
             "id": "citron-vodka",
             "name": "Citron Vodka",
-            "category": "spirits"
+            "category": "spirits",
+            "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "vodka"
+            ]
         },
         {
             "id": "vanilla-vodka",
             "name": "Vanilla Vodka",
-            "category": "spirits"
+            "category": "spirits",
+            "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "vodka"
+            ]
         },
         {
             "id": "reposado-tequila",
             "name": "Reposado Tequila",
-            "category": "spirits"
+            "category": "spirits",
+            "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "tequila"
+            ]
         },
         {
             "id": "sparkling-wine",
             "name": "Sparkling Wine",
-            "category": "wine"
+            "category": "wine",
+            "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "sparkling-wine"
+            ]
         },
         {
             "id": "lime",
             "name": "Lime",
-            "category": "fruit"
+            "category": "fruit",
+            "isAlcoholic": false
+        },
+        {
+            "id": "aromatic-bitters",
+            "name": "Aromatic Bitters",
+            "category": "bitters",
+            "isAlcoholic": true
+        },
+        {
+            "id": "creme-de-cacao",
+            "name": "Crème de Cacao",
+            "category": "liqueurs",
+            "isAlcoholic": true
+        },
+        {
+            "id": "olive-brine",
+            "name": "Olive Brine",
+            "category": "savory-and-seasoning",
+            "isAlcoholic": false
+        },
+        {
+            "id": "hot-water",
+            "name": "Hot Water",
+            "category": "other-mixers",
+            "isAlcoholic": false
+        },
+        {
+            "id": "basil",
+            "name": "Basil",
+            "category": "herbs-and-botanicals",
+            "isAlcoholic": false
+        },
+        {
+            "id": "creme-de-mure",
+            "name": "Crème de Mûre",
+            "category": "liqueurs",
+            "isAlcoholic": true
+        },
+        {
+            "id": "cherry-liqueur",
+            "name": "Cherry Liqueur",
+            "category": "liqueurs",
+            "isAlcoholic": true
+        },
+        {
+            "id": "amaro",
+            "name": "Amaro",
+            "category": "liqueurs",
+            "isAlcoholic": true
+        },
+        {
+            "id": "creme-de-cassis",
+            "name": "Crème de Cassis",
+            "category": "liqueurs",
+            "isAlcoholic": true
+        },
+        {
+            "id": "orange-flower-water",
+            "name": "Orange Flower Water",
+            "category": "other-mixers",
+            "isAlcoholic": false
+        },
+        {
+            "id": "creme-de-menthe",
+            "name": "Crème de Menthe",
+            "category": "liqueurs",
+            "isAlcoholic": true
+        },
+        {
+            "id": "cream-liqueur",
+            "name": "Cream Liqueur",
+            "category": "liqueurs",
+            "isAlcoholic": true
+        },
+        {
+            "id": "apple-brandy",
+            "name": "Apple Brandy",
+            "category": "spirits",
+            "isAlcoholic": true,
+            "spiritFamilyIds": ["brandy"]
+        },
+        {
+            "id": "sloe-gin",
+            "name": "Sloe Gin",
+            "category": "liqueurs",
+            "isAlcoholic": true,
+            "spiritFamilyIds": ["gin"]
+        },
+        {
+            "id": "strawberry-puree",
+            "name": "Strawberry Purée",
+            "category": "fruit",
+            "isAlcoholic": false
+        },
+        {
+            "id": "mango-puree",
+            "name": "Mango Purée",
+            "category": "fruit",
+            "isAlcoholic": false
+        },
+        {
+            "id": "crushed-ice",
+            "name": "Crushed Ice",
+            "category": "other-mixers",
+            "isAlcoholic": false
         }
     ],
     "taxonomy": {
@@ -3903,7 +5396,65 @@
                 "label": "Frozen"
             }
         ],
-        "baseSpirits": [
+        "ingredientCategories": [
+            {
+                "id": "spirits",
+                "label": "Spirits"
+            },
+            {
+                "id": "liqueurs",
+                "label": "Liqueurs"
+            },
+            {
+                "id": "fortified-wines",
+                "label": "Fortified & Aromatized Wines"
+            },
+            {
+                "id": "wine",
+                "label": "Wine & Sparkling Wine"
+            },
+            {
+                "id": "bitters",
+                "label": "Bitters"
+            },
+            {
+                "id": "juices",
+                "label": "Juices"
+            },
+            {
+                "id": "fruit",
+                "label": "Fruit & Purées"
+            },
+            {
+                "id": "sweeteners",
+                "label": "Sweeteners & Syrups"
+            },
+            {
+                "id": "carbonated-mixers",
+                "label": "Carbonated Mixers"
+            },
+            {
+                "id": "coffee",
+                "label": "Coffee"
+            },
+            {
+                "id": "dairy-and-egg",
+                "label": "Dairy & Egg"
+            },
+            {
+                "id": "herbs-and-botanicals",
+                "label": "Herbs & Botanicals"
+            },
+            {
+                "id": "savory-and-seasoning",
+                "label": "Savory & Seasoning"
+            },
+            {
+                "id": "other-mixers",
+                "label": "Other Mixers"
+            }
+        ],
+        "spiritFamilies": [
             {
                 "id": "whiskey",
                 "label": "Whiskey"
@@ -3957,11 +5508,11 @@
                 "label": "Aperitivo"
             },
             {
-                "id": "cachaça",
+                "id": "cachaca",
                 "label": "Cachaça"
             },
             {
-                "id": "dark rum",
+                "id": "dark-rum",
                 "label": "Dark Rum"
             },
             {
@@ -3983,60 +5534,6 @@
             {
                 "id": "wine",
                 "label": "Wine"
-            }
-        ],
-        "ingredientCategories": [
-            {
-                "id": "spirits",
-                "label": "Spirits"
-            },
-            {
-                "id": "liqueurs",
-                "label": "Liqueurs"
-            },
-            {
-                "id": "fortified-wines",
-                "label": "Fortified & Aromatized Wines"
-            },
-            {
-                "id": "wine",
-                "label": "Wine & Sparkling Wine"
-            },
-            {
-                "id": "bitters",
-                "label": "Bitters"
-            },
-            {
-                "id": "juices",
-                "label": "Juices"
-            },
-            {
-                "id": "fruit",
-                "label": "Fruit & Purées"
-            },
-            {
-                "id": "sweeteners",
-                "label": "Sweeteners & Syrups"
-            },
-            {
-                "id": "carbonated-mixers",
-                "label": "Carbonated Mixers"
-            },
-            {
-                "id": "coffee",
-                "label": "Coffee"
-            },
-            {
-                "id": "dairy-and-egg",
-                "label": "Dairy & Egg"
-            },
-            {
-                "id": "herbs-and-botanicals",
-                "label": "Herbs & Botanicals"
-            },
-            {
-                "id": "savory-and-seasoning",
-                "label": "Savory & Seasoning"
             }
         ]
     }

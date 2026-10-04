@@ -1,25 +1,37 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
+import FilterSelect from './FilterSelect'
+import FilterToggle from './FilterToggle'
+import FlavorFilters, { difficultyScales, strengthScales } from './FlavorFilters'
 import {
-  cocktails, cocktailCategories, categoryLabel, filterCocktails,
-  filterDefinitions, filterOptions, librarySearch, metadataLabel, readFilters,
+  cocktails, cocktailCategories, cocktailIdAliases, categoryLabel, filterCocktails,
+  filterDefinitions, filterOptions, librarySearch, metadataLabel, readFilters, visibleSpirits,
 } from '../utils/cocktails'
 import './CocktailLibrary.scss'
 
 const allFilterLabels = {
   category: 'All categories',
-  spirit: 'All base spirits',
-  flavor: 'All flavors',
-  method: 'All methods',
+  spirit: 'All spirits',
+  ingredient: 'Any nonalcoholic ingredients',
   glass: 'All glasses',
-  strength: 'All strengths',
-  difficulty: 'All difficulties',
-  sweetness: 'All sweetness levels',
-  sourness: 'All sourness levels',
-  bitterness: 'All bitterness levels',
-  carbonation: 'All carbonation levels',
-  temperature: 'All temperatures',
 }
+
+const carbonationStates = [
+  { value: 'high', label: 'Yes' },
+  { value: '', label: ' ' },
+  { value: 'none', label: 'No' },
+]
+
+const temperatureStates = [
+  { value: 'frozen', label: 'Frozen' },
+  { value: '', label: ' ' },
+  { value: 'hot', label: 'Hot' },
+]
+
+const filterGroups = [
+  { label: 'Primary filters', keys: ['category', 'spirit', 'strength'] },
+  { label: 'Additional filters', keys: ['glass', 'difficulty', 'carbonation', 'ingredient', 'temperature'] },
+]
 
 function MetadataTags({ title, values, filter, onShowResults }) {
   return <section className="cocktail-tags">
@@ -39,8 +51,24 @@ export default function CocktailLibrary() {
   const [filtersOpen, setFiltersOpen] = useState(() => !window.matchMedia('(max-width: 720px)').matches)
   const filters = readFilters(new URLSearchParams(location.search))
   const filteredCocktails = filterCocktails(filters)
-  const selectedCocktail = cocktails.find((cocktail) => cocktail.libraryId === cocktailId)
-  const activeFilters = filterDefinitions.filter(({ key }) => filters[key]).length
+  const selectedCocktailId = cocktailIdAliases[cocktailId] || cocktailId
+  const selectedCocktail = cocktails.find((cocktail) => cocktail.libraryId === selectedCocktailId)
+  const selectedCategory = cocktailCategories.find((category) => category.id === filters.category)
+  const activeFilters = filterDefinitions.filter(({ key }) => Array.isArray(filters[key]) ? filters[key].length > 0 : filters[key]).length
+  const activeFilterDescriptions = [
+    ...(filters.q.trim() ? [`Search: ${filters.q.trim()}`] : []),
+    ...filterDefinitions.flatMap(({ key, label }) => {
+      const values = Array.isArray(filters[key]) ? filters[key] : filters[key] ? [filters[key]] : []
+      return values.length
+        ? [`${key === 'carbonation' ? 'Carbonated' : label}: ${values.map((value) =>
+          filterOptions[key].find((option) => option.value === value)?.label
+          || (key === 'category' ? categoryLabel(value) : metadataLabel(value))).join(', ')}`]
+        : []
+    }),
+  ]
+  const resetFiltersLabel = activeFilterDescriptions.length
+    ? `Reset filters. Active filters: ${activeFilterDescriptions.join('; ')}`
+    : 'Reset filters. No active filters.'
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -76,7 +104,10 @@ export default function CocktailLibrary() {
         <h2>Ingredients</h2>
         <ul>{selectedCocktail.ingredients.map((ingredient, index) => <li key={`${ingredient.name}-${index}`}>
           <span className="ingredient-amount">{ingredient.amount}</span>
-          <span>{ingredient.name}</span>
+          <Link
+            className="ingredient-search-link"
+            to={`/cocktails${librarySearch({ q: ingredient.name }, location.search)}`}
+          >{ingredient.name}</Link>
         </li>)}</ul>
         <h2>Garnish</h2>
         <p>{selectedCocktail.garnish.length ? selectedCocktail.garnish.join(', ') : 'No garnish'}</p>
@@ -100,14 +131,11 @@ export default function CocktailLibrary() {
           <p>{selectedCocktail.mixingInstructions}</p>
         </section>}
         <MetadataTags title="Categories" values={selectedCocktail.categories} filter="category" onShowResults={showResults} />
-        {selectedCocktail.categories.map((id) => {
-          const category = cocktailCategories.find((entry) => entry.id === id)
-          return category?.description && <p className="cocktail-category-description" key={id}><strong>{category.name}:</strong> {category.description}</p>
-        })}
-        <MetadataTags title="Base spirits" values={selectedCocktail.baseSpirits} filter="spirit" onShowResults={showResults} />
-        <MetadataTags title="Flavor profile" values={selectedCocktail.flavorProfile} filter="flavor" onShowResults={showResults} />
+        <MetadataTags title="Spirits" values={visibleSpirits(selectedCocktail.spirits)} filter="spirit" onShowResults={showResults} />
+        <MetadataTags title="Method" values={[selectedCocktail.method]} filter="method" onShowResults={showResults} />
+        <MetadataTags title="Flavor Notes" values={selectedCocktail.flavorProfile} filter="flavor" onShowResults={showResults} />
         <h2>Characteristics</h2>
-        <dl className="cocktail-facts">{filterDefinitions.filter(({ key }) => !['category', 'spirit', 'flavor'].includes(key)).map(({ key, field, label }) => <div key={key}>
+        <dl className="cocktail-facts">{filterDefinitions.filter(({ key }) => !['category', 'spirit', 'flavor', 'ingredient', 'method'].includes(key)).map(({ key, field, label }) => <div key={key}>
           <dt>{label}</dt><dd><button type="button" onClick={() => showResults(key, selectedCocktail[field])}>{metadataLabel(selectedCocktail[field])}</button></dd>
         </div>)}</dl>
       </div>
@@ -139,28 +167,61 @@ export default function CocktailLibrary() {
           aria-hidden={!filtersOpen}
         >
           <div className="cocktail-filter-panel-content">
-            <div className="cocktail-filters">
-              {filterDefinitions.map(({ key, label }) => <label key={key}>
-                <span className="cocktail-visually-hidden">{label}</span>
-                <select value={filters[key]} onChange={(event) => changeFilter(key, event.target.value)}>
-                  <option value="">{allFilterLabels[key]}</option>
-                  {filters[key] && !filterOptions[key].some((option) => option.value === filters[key]) && <option value={filters[key]}>Unknown: {filters[key]}</option>}
-                  {filterOptions[key].map(({ value, label: optionLabel }) => <option value={value} key={value}>{optionLabel}</option>)}
-                </select>
-              </label>)}
-              <button type="button" className="cocktail-icon-button filter-reset-button" aria-label="Reset filters" title="Reset filters" onClick={resetFilters}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" aria-hidden="true">
-                  <circle cx="12" cy="12" r="9" />
-                  <path d="m9 9 6 6m0-6-6 6" />
-                </svg>
-              </button>
-            </div>
+            {filterGroups.map(({ label: groupLabel, keys }) => <div className="cocktail-filters" role="group" aria-label={groupLabel} key={groupLabel}>
+              {keys.map((key) => key === 'strength'
+                ? <FlavorFilters key={key} label="Strength" scales={strengthScales} filters={filters} onChange={changeFilter} />
+                : key === 'difficulty'
+                  ? <FlavorFilters key={key} label="Difficulty" scales={difficultyScales} filters={filters} onChange={changeFilter} />
+                  : key === 'carbonation'
+                    ? <FilterToggle
+                      key={key}
+                      label="Carbonated"
+                      value={filters[key]}
+                      states={carbonationStates}
+                      onChange={(value) => changeFilter(key, value)}
+                    />
+                    : key === 'temperature'
+                      ? <FilterToggle
+                        key={key}
+                        label="Temperature"
+                        value={filters[key]}
+                        states={temperatureStates}
+                        valueWidth="6ch"
+                        onChange={(value) => changeFilter(key, value)}
+                      />
+                      : <FilterSelect
+                        key={key}
+                        label={filterDefinitions.find((definition) => definition.key === key).label}
+                        value={filters[key]}
+                        multiple={['spirit', 'ingredient'].includes(key)}
+                        options={[
+                          { value: '', label: key === 'spirit' ? 'Any spirits' : allFilterLabels[key] },
+                          ...(Array.isArray(filters[key]) ? filters[key] : [filters[key]])
+                            .filter((value) => value && !filterOptions[key].some((option) => option.value === value))
+                            .map((value) => ({ value, label: `Unknown: ${value}` })),
+                          ...filterOptions[key],
+                        ]}
+                        onChange={(value) => changeFilter(key, value)}
+                      />)}
+              {groupLabel === 'Additional filters' && <div className="filter-reset-summary">
+                <button type="button" className="library-button" aria-label={resetFiltersLabel} title={resetFiltersLabel} onClick={resetFilters}>
+                  Reset filters
+                </button>
+                <p>{activeFilterDescriptions.length
+                  ? `Active filters: ${activeFilterDescriptions.join('; ')}`
+                  : 'No active filters.'}</p>
+              </div>}
+            </div>)}
           </div>
         </div>
         <div className="cocktail-results-toolbar">
           <p role="status">{filteredCocktails.length} {filteredCocktails.length === 1 ? 'cocktail' : 'cocktails'}{activeFilters > 0 ? ` · ${activeFilters} active ${activeFilters === 1 ? 'filter' : 'filters'}` : ''}</p>
         </div>
       </div>
+      {selectedCategory && <header className="cocktail-results-category">
+        <h2>{selectedCategory.name}</h2>
+        <p>{selectedCategory.description}</p>
+      </header>}
       {filteredCocktails.length ? <div className="cocktail-results">{filteredCocktails.map((cocktail) => <Link
         className="cocktail-result"
         key={cocktail.libraryId}
@@ -169,8 +230,7 @@ export default function CocktailLibrary() {
         <h2>{cocktail.name}{cocktail.variant ? ` (Recipe ${cocktail.variant})` : ''}</h2>
         <p className="cocktail-result-meta">{cocktail.baseSpirits.map(metadataLabel).join(' / ')} · {metadataLabel(cocktail.strength)}</p>
         <p>{cocktail.categories.map(categoryLabel).join(' / ')}</p>
-        <p>{metadataLabel(cocktail.method)} · {metadataLabel(cocktail.glass)} · {metadataLabel(cocktail.difficulty)}</p>
-        <p className="cocktail-result-flavors">{cocktail.flavorProfile.map(metadataLabel).join(', ')}</p>
+        <p>{metadataLabel(cocktail.glass)} · {metadataLabel(cocktail.difficulty)}</p>
       </Link>)}</div> : <div className="cocktail-empty">
         <h2>No cocktails match your filters</h2>
         <p>Try a different search or reset the filters to see the full library.</p>

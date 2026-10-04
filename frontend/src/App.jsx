@@ -38,15 +38,13 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Link className="app-brand" to="/cocktails">Bartender</Link>
-        <nav aria-label="Main navigation">
-          <Link to="/cocktails">Cocktail library</Link>
-        </nav>
-        {user && <span style={{ marginRight: 16 }}>Logged in as <b>{user}</b></span>}
         {user ? (
-          <button onClick={handleLogout}>Logout</button>
+          <>
+            <span className="user-status">Logged in as <b>{user}</b></span>
+            <button onClick={handleLogout}>Logout</button>
+          </>
         ) : (
-          <Link to="/auth" style={{ fontWeight: 'bold', color: '#007bff', marginLeft: 16 }}>Go to Auth Page</Link>
+          <Link className="auth-link" to="/auth">Go to Auth Page</Link>
         )}
       </header>
 
