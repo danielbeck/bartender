@@ -1,0 +1,179 @@
+.cocktail-library {
+  color: #263b36;
+  margin: 0 auto;
+  max-width: 1180px;
+  padding: 32px 24px 60px;
+  line-height: 1.6;
+
+  h1 { font-size: clamp(28px, 4vw, 40px); margin: 0 0 12px; }
+  h2 { font-size: 20px; }
+  h1:focus { outline: none; }
+  button, input, select { font: inherit; }
+  button, a, input, select {
+    &:focus-visible { outline: 3px solid #387f69; outline-offset: 3px; }
+  }
+  button { cursor: pointer; }
+}
+
+.library-button {
+  background: #fff;
+  border: 1px solid #b7c9c2;
+  border-radius: 6px;
+  color: #263b36;
+  display: inline-block;
+  padding: 7px 14px;
+  text-decoration: none;
+  line-height: 1.6;
+  cursor: pointer;
+
+  &:hover:not(:disabled) { background: #eaf2ee; }
+  &:disabled { cursor: default; opacity: .5; }
+}
+
+.library-back { color: #286650; display: inline-block; margin-bottom: 16px; }
+.cocktail-library-intro { color: #53665f; margin-bottom: 16px; }
+.cocktail-library-search {
+  background: #f5f5f5;
+  border-bottom: 1px solid #d5dfda;
+  margin-bottom: 12px;
+  padding: 10px 0 12px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.cocktail-search-row { align-items: center; display: flex; gap: 10px; }
+.cocktail-search-row input {
+  background: #fff;
+  border: 1px solid #b7c9c2;
+  border-radius: 6px;
+  flex: 1;
+  min-width: 0;
+  min-height: 38px;
+  padding: 7px 9px;
+  width: 100%;
+}
+.cocktail-icon-button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  display: inline-flex;
+  justify-content: center;
+  padding: 5px;
+}
+.cocktail-library-search .filter-toggle-button {
+  border-radius: 6px;
+  color: #53665f;
+  flex: 0 0 38px;
+  height: 38px;
+  width: 38px;
+
+  &[aria-expanded='true'] { background: #eaf2ee; color: #263b36; }
+  svg { height: 22px; width: 22px; }
+}
+.cocktail-filter-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+  transition: grid-template-rows 220ms ease, opacity 220ms ease, visibility 0s 220ms;
+
+  &.is-open {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+}
+.cocktail-filter-panel-content { min-height: 0; overflow: hidden; }
+.cocktail-visually-hidden {
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+.cocktail-filters {
+  align-items: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+
+  label { flex: 1 1 120px; min-width: 0; }
+  select { background: #fff; border: 1px solid #b7c9c2; border-radius: 6px; color: #263b36; min-height: 38px; padding: 7px 28px 7px 9px; width: 100%; }
+  .filter-reset-button {
+    color: #53665f;
+    flex: 0 0 38px;
+    height: 38px;
+    padding: 7px;
+    width: 38px;
+
+    svg { height: 20px; width: 20px; }
+  }
+}
+.cocktail-results-toolbar { align-items: center; display: flex; justify-content: space-between; gap: 12px; margin-top: 12px; }
+.cocktail-results { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.cocktail-result {
+  background: #fff;
+  border: 1px solid #d5dfda;
+  border-radius: 10px;
+  color: inherit;
+  padding: 20px;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+
+  &:hover { background: #f0f6f3; border-color: #7e9f90; }
+  h2 { margin-bottom: 8px; }
+  p { font-size: 14px; margin-top: 6px; }
+}
+.cocktail-result-meta { color: #286650; font-weight: 600; }
+.cocktail-result-flavors { color: #53665f; }
+.cocktail-empty { padding: 32px 0; text-align: center; p { margin: 8px 0 16px; } }
+.cocktail-preview { align-items: start; display: grid; gap: 40px; grid-template-columns: minmax(260px, 380px) minmax(0, 1fr); margin-top: 24px; }
+.cocktail-recipe {
+  background: #fff;
+  border: 1px solid #d5dfda;
+  border-radius: 10px;
+  padding: 24px;
+
+  h2 { margin-bottom: 12px; }
+  ul { list-style: none; margin-bottom: 24px; }
+  li { display: grid; gap: 12px; grid-template-columns: 85px minmax(0, 1fr); padding: 8px 0; border-bottom: 1px solid #e7ede9; }
+  .ingredient-amount { font-weight: 600; }
+}
+.cocktail-serving { margin: 24px 0; div { display: flex; gap: 16px; justify-content: space-between; padding: 6px 0; } }
+.cocktail-summary { color: #53665f; }
+.cocktail-preview-copy h2 { margin: 24px 0 10px; }
+.cocktail-tags div { display: flex; gap: 8px; flex-wrap: wrap; }
+.cocktail-tags button, .cocktail-facts button {
+  background: #eaf2ee;
+  border: 1px solid #c9dbd1;
+  border-radius: 6px;
+  color: #286650;
+  padding: 4px 10px;
+
+  &:hover { background: #dcebe3; }
+}
+.cocktail-category-description { color: #53665f; font-size: 14px; margin-top: 12px; }
+.cocktail-facts {
+  border-top: 1px solid #d5dfda;
+  display: grid;
+  gap: 0 24px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  div { align-items: center; border-bottom: 1px solid #d5dfda; display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; }
+  dt { color: #53665f; }
+}
+
+@media (max-width: 720px) {
+  .cocktail-library { padding: 24px 16px 40px; }
+  .cocktail-preview { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .cocktail-facts { grid-template-columns: minmax(0, 1fr); }
+  .cocktail-results { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cocktail-filter-panel { transition: none; }
+}

@@ -1,0 +1,5 @@
+During development:
+* Important: Conserve token usage with a high priority.  When asked to perform an implementation task, focus your energy on the implementation rather than testing its results. 
+* For implementation tasks, limit the amount of post-implementation checking and testing you do. Make at most one focused verification pass after editing: check diagnostics or syntax for changed files. Do not run browser checks, run a build, or expand testing unless that pass reveals a specific failure. Fix the failure, then recheck only the affected behavior. Leave comprehensive testing to the user.
+* Important: A dev server is already running, you do not need to rerun the build after changes. Verify backend changes and inform the user if a change has been made that hot reload wouldn't see. 
+* Keep /docs up to date as features are completed. Document only significant features, not cosmetic or self-contained changes of limited importance.
