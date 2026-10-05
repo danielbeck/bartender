@@ -1,6 +1,6 @@
 
 import { useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { fetchAPI } from '../api';
 import './AuthPage.scss';
 
@@ -10,7 +10,8 @@ const modes = [
 ];
 
 export default function AuthPage({ onAuth }) {
-    const [mode, setMode] = useState('login');
+    const [searchParams, setSearchParams] = useSearchParams();
+    const mode = searchParams.get('mode') === 'register' ? 'register' : 'login';
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
@@ -19,7 +20,11 @@ export default function AuthPage({ onAuth }) {
     const navigate = useNavigate();
 
     const changeMode = (nextMode) => {
-        setMode(nextMode);
+        setSearchParams(previous => {
+            const next = new URLSearchParams(previous);
+            next.set('mode', nextMode);
+            return next;
+        }, { replace: true });
         setError(null);
         setPassword('');
     };

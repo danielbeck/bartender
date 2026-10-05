@@ -19,8 +19,12 @@ export const barIngredientGroups = [
   })).filter(({ ingredients }) => ingredients.length),
 }))
 
+export function isIngredientAvailable({ ingredientId, alternativeIngredientIds = [] }, stockedIds) {
+  return [ingredientId, ...alternativeIngredientIds]
+    .some((id) => pantryIngredientIds.has(id) || stockedIds.has(id))
+}
+
 export function canMakeCocktail(cocktail, stockedIds) {
-  return cocktail.ingredients.every(({ ingredientId, alternativeIngredientIds = [], optional }) =>
-    optional || [ingredientId, ...alternativeIngredientIds]
-      .some((id) => pantryIngredientIds.has(id) || stockedIds.has(id)))
+  return cocktail.ingredients.every((ingredient) =>
+    ingredient.optional || isIngredientAvailable(ingredient, stockedIds))
 }

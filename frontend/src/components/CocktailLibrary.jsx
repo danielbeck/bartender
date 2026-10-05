@@ -8,7 +8,7 @@ import { ingredientVolumes } from '../utils/glassFill'
 import FlavorFilters from './FlavorFilters'
 import YourBar from './YourBar'
 import useBarStock from '../utils/useBarStock'
-import { canMakeCocktail } from '../utils/barStock'
+import { canMakeCocktail, isIngredientAvailable } from '../utils/barStock'
 import { millilitersPerShot, recipeParts, recipeShots } from '../utils/recipeMeasurements'
 import {
   cocktails, cocktailIdAliases, categoryLabel, filterCocktails, groupCocktailsByCategory,
@@ -47,6 +47,10 @@ export default function CocktailLibrary({ user }) {
     .filter((cocktail) => !stockOnly || canMakeCocktail(cocktail, stockedIds))
   const selectedCocktailId = cocktailIdAliases[cocktailId] || cocktailId
   const selectedCocktail = cocktails.find((cocktail) => cocktail.libraryId === selectedCocktailId)
+  const missingIngredientIds = new Set(user && bar.ingredientIds && !stockOnly && selectedCocktail
+    ? selectedCocktail.ingredients.filter((ingredient) => !isIngredientAvailable(ingredient, stockedIds))
+      .map(({ ingredientId }) => ingredientId)
+    : [])
   const partsRecipe = selectedCocktail ? recipeParts(selectedCocktail.ingredients) : null
   const displayedAmounts = selectedCocktail
     ? measurementUnit === 'parts' ? partsRecipe.amounts
@@ -99,7 +103,7 @@ export default function CocktailLibrary({ user }) {
   }
 
   return <section className="cocktail-library" aria-labelledby="cocktail-library-title">
-    {user && !cocktailId && <YourBar bar={bar} />}
+    {!cocktailId && <YourBar bar={bar} user={user} />}
     {selectedCocktail && <Link className="library-back" to={listUrl}>Back to the cocktails</Link>}
     <div className={selectedCocktail ? 'cocktail-detail-heading' : undefined}>
       <h1 id="cocktail-library-title" className={selectedCocktail ? 'cocktail-detail-title' : undefined} ref={headingRef} tabIndex={-1}>The {selectedCocktail
@@ -153,8 +157,12 @@ export default function CocktailLibrary({ user }) {
           <Link
             className="ingredient-search-link"
             to={`/cocktails${librarySearch(ingredientFilters(ingredient), location.search)}`}
-          >{ingredient.name}</Link>
+          >{ingredient.name}{missingIngredientIds.has(ingredient.ingredientId) && <>
+            <span aria-hidden="true">*</span>
+            <span className="cocktail-visually-hidden"> (not in stock)</span>
+          </>}</Link>
         </li>)}</ul>
+        {missingIngredientIds.size > 0 && <p>* You'll need to stock these to make this drink.</p>}
         <h2>Garnish</h2>
         <p>{selectedCocktail.garnish.length ? selectedCocktail.garnish.join(', ') : 'No garnish'}</p>
         <dl className="cocktail-serving">
@@ -272,18 +280,18 @@ export default function CocktailLibrary({ user }) {
           <p>{category.description}</p>
         </header>
         <div className="cocktail-results">{category.cocktails.map((cocktail) => <Link
-        className="cocktail-result"
-        key={cocktail.libraryId}
-        to={`/cocktails/${encodeURIComponent(cocktail.libraryId)}${location.search}`}
-      >
-        <div className="cocktail-result-heading">
-          <h3>{cocktail.name}{cocktail.variant ? ` (Recipe ${cocktail.variant})` : ''}</h3>
-          <GlassProfile glass={cocktail.glass} ingredients={cocktail.ingredients} />
-        </div>
-        <p className="cocktail-result-meta">{cocktail.baseSpirits.map(metadataLabel).join(' / ')} · {metadataLabel(cocktail.strength)}</p>
-        <p>{cocktail.categories.map(categoryLabel).join(' / ')}</p>
-        <p>{metadataLabel(cocktail.glass)} · {metadataLabel(cocktail.difficulty)}</p>
-      </Link>)}</div>
+          className="cocktail-result"
+          key={cocktail.libraryId}
+          to={`/cocktails/${encodeURIComponent(cocktail.libraryId)}${location.search}`}
+        >
+          <div className="cocktail-result-heading">
+            <h3>{cocktail.name}{cocktail.variant ? ` (Recipe ${cocktail.variant})` : ''}</h3>
+            <GlassProfile glass={cocktail.glass} ingredients={cocktail.ingredients} />
+          </div>
+          <p className="cocktail-result-meta">{cocktail.baseSpirits.map(metadataLabel).join(' / ')} · {metadataLabel(cocktail.strength)}</p>
+          <p>{cocktail.categories.map(categoryLabel).join(' / ')}</p>
+          <p>{metadataLabel(cocktail.glass)} · {metadataLabel(cocktail.difficulty)}</p>
+        </Link>)}</div>
       </section>) : <div className="cocktail-empty">
         <h2>No cocktails match your filters</h2>
         <p>{stockOnly

@@ -1,30 +1,41 @@
-import { useId } from 'react'
+import { useId, useState } from 'react'
+import { Link } from 'react-router-dom'
 import FilterToggle from './FilterToggle'
 import { barIngredientGroups } from '../utils/barStock'
 
-export default function YourBar({ bar }) {
+export default function YourBar({ bar, user }) {
   const headingId = useId()
+  const [guestStockOnly, setGuestStockOnly] = useState(false)
   const stockedIds = new Set(bar.ingredientIds || [])
-  const ready = Boolean(bar.ingredientIds)
+  const ready = Boolean(user && bar.ingredientIds)
 
   return <section className="your-bar" aria-labelledby={headingId} aria-busy={bar.loading || bar.saving}>
-    <h2 id={headingId}>Your Bar.</h2>
-    {!ready && !bar.error && <p role="status">Loading Your Bar...</p>}
-    {bar.error && <p role="alert">
+    <h2 id={headingId}>The Bar.</h2>
+    {user && !ready && !bar.error && <p role="status">Loading Your Bar...</p>}
+    {user && bar.error && <p role="alert">
       {ready ? 'Your changes were not saved. ' : 'Could not load Your Bar. '}{bar.error}
       {!ready && <> <button type="button" className="library-button" onClick={bar.retry}>Retry</button></>}
     </p>}
     <FilterToggle
       label="Show"
-      value={Boolean(bar.stockOnly)}
+      value={user ? Boolean(bar.stockOnly) : guestStockOnly}
       states={[
         { value: false, label: 'all the drinks' },
         { value: true, label: 'only what I have in stock' },
       ]}
       valueWidth="19ch"
-      disabled={!ready || bar.saving}
-      onChange={(stockOnly) => bar.save({ stockOnly })}
+      disabled={Boolean(user && (!ready || bar.saving))}
+      onChange={(stockOnly) => {
+        if (!user) {
+          setGuestStockOnly(stockOnly)
+          return
+        }
+        bar.save({ stockOnly })
+      }}
     />
+    {!user && guestStockOnly && <p className="your-bar-auth-prompt">
+      <Link to="/auth?mode=login">Log in</Link> or <Link to="/auth?mode=register">create an account</Link> to show only the drinks you can make with what you have in stock right now.
+    </p>}
     {ready && !bar.error && <p className="your-bar-save-status" role="status">{bar.saving ? 'Saving Your Bar...' : ''}</p>}
     {bar.stockOnly && ready && <>
       <p>We'll remember the list of ingredients you tell us you have on hand.  Water, ice, plain sugars, and salt/pepper are assumed available; garnishes and optional ingredients are not required.</p>

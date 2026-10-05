@@ -9,8 +9,14 @@ clearing the current account; successful logout returns to the library.
 Direct profile visits wait for the account check before redirecting guests
 to login.
 
-Logged-in users see Your Bar above the main cocktail library only, not on
-individual recipe pages.
+All users see "The Bar." and its Show toggle above the main cocktail library
+only, not on individual recipe pages. Guests start with "all the drinks";
+switching to stock mode shows "Log in or Create an account to show only the
+drinks you can make with what you have in stock right now." in place of the
+inventory checklist. The two links open the login and registration tabs,
+respectively (`/auth?mode=login` and `/auth?mode=register`). Switching back hides
+the prompt; guest results remain unfiltered by stock. Logged-in users can
+switch modes and manage their saved inventory.
 "Show all the drinks" leaves the existing search unchanged. "Show what I have
 in stock" expands ingredient checkboxes, with Spirits first and Mixers second,
 each grouped by the catalog's ingredient categories and alphabetized within
@@ -28,10 +34,18 @@ selection. An empty inventory therefore normally produces no matches.
 Stock filtering combines with all existing search and URL filters. Reset filters
 does not clear the inventory or disable stock mode.
 
+When browsing all drinks, recipe ingredients unavailable in Your Bar are marked
+with `*`, with a legend and a screen-reader description. A stocked explicit
+alternative counts as available, and assumed pantry basics are not marked.
+Optional ingredients are marked when unavailable but remain optional for stock
+filtering. Markers appear only after inventory has loaded for a logged-in user,
+and are hidden in stock-only mode.
+
 Ingredient IDs and the selected mode are saved in SQLite per authenticated user,
 so they survive logout and work across sessions and devices. The UI waits for
 each save and retains the last saved settings if it fails, displaying an error.
-Load failures offer Retry. Guests have neither stock controls nor stock filtering.
+Load failures offer Retry. Guests have no inventory checklist or stock filtering,
+and do not load or save bar settings.
 The authenticated `GET /bar` and CSRF-protected `PUT /bar` endpoints manage these
 settings. The `user_bar` table is created non-destructively on first use for
 existing deployments, and by database initialization for fresh deployments.

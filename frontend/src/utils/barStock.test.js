@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { barIngredientGroups, canMakeCocktail, pantryIngredientIds } from './barStock.js'
+import { barIngredientGroups, canMakeCocktail, isIngredientAvailable, pantryIngredientIds } from './barStock.js'
 import { cocktails, filterCocktails } from './cocktails.js'
 
 test('stock groups list specific ingredients once, spirits before mixers, without pantry basics', () => {
@@ -40,4 +40,18 @@ test('real recipes combine availability with search without changing the all-dri
   assert.ok(matching.some(({ id }) => id === 'gin-and-tonic'))
   assert.ok(matching.every((cocktail) => canMakeCocktail(cocktail, available)))
   assert.ok(!matching.some(({ id }) => id === 'negroni'))
+})
+
+test('ingredient availability respects exact stock, alternatives, and pantry basics', () => {
+  const stockedIds = new Set(['gin', 'rye-whiskey'])
+  assert.equal(isIngredientAvailable({ ingredientId: 'gin' }, stockedIds), true)
+  assert.equal(isIngredientAvailable({ ingredientId: 'white-rum' }, stockedIds), false)
+  assert.equal(isIngredientAvailable({ ingredientId: 'bourbon', alternativeIngredientIds: ['rye-whiskey'] }, stockedIds), true)
+  for (const ingredientId of pantryIngredientIds) {
+    assert.equal(isIngredientAvailable({ ingredientId }, new Set()), true)
+  }
+  const optional = { ingredientId: 'egg-white', optional: true }
+  assert.equal(isIngredientAvailable(optional, stockedIds), false)
+  assert.equal(isIngredientAvailable(optional, new Set(['egg-white'])), true)
+  assert.equal(canMakeCocktail({ ingredients: [optional] }, stockedIds), true)
 })
