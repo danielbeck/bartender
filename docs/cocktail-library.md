@@ -52,6 +52,11 @@ existing deployments, and by database initialization for fresh deployments.
 
 ## Catalog and search
 
+Changing a search filter, typing in the search box, or resetting filters scrolls
+to the search panel's normal-flow position, exactly where it sticks to the top
+of the viewport. Ingredient and metadata links from recipes still land at
+the "The Cocktails." heading.
+
 `data/cocktails.json` is the source of truth for alcoholic ingredients. Each
 entry in its shared `ingredients` catalog defines an `isAlcoholic` boolean.
 Alcoholic entries may define `spiritFamilyIds` referencing `taxonomy.spiritFamilies`

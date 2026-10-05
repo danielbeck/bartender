@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import FilterSelect from './FilterSelect'
 import FilterToggle from './FilterToggle'
@@ -30,6 +30,8 @@ export default function CocktailLibrary({ user }) {
   const location = useLocation()
   const navigate = useNavigate()
   const headingRef = useRef(null)
+  const searchStartRef = useRef(null)
+  const scrollToSearchRef = useRef(false)
   const filterPanelId = useId()
   const [filtersOpen, setFiltersOpen] = useState(() => !window.matchMedia('(max-width: 720px)').matches)
   const [measurementUnit, setMeasurementUnit] = useState('ml')
@@ -83,14 +85,31 @@ export default function CocktailLibrary({ user }) {
     headingRef.current?.focus({ preventScroll: true })
   }, [cocktailId])
 
+  useLayoutEffect(() => {
+    if (!scrollToSearchRef.current) return
+    scrollToSearchRef.current = false
+    if (searchStartRef.current) {
+      window.scrollTo({
+        top: window.scrollY + searchStartRef.current.getBoundingClientRect().top,
+        behavior: 'instant',
+      })
+    }
+  }, [location.search])
+
+  const updateSearchFilters = (values) => {
+    const search = librarySearch(values, location.search)
+    if (search === location.search) return
+    scrollToSearchRef.current = true
+    navigate({ pathname: '/cocktails', search }, { replace: true })
+  }
   const changeFilter = (key, value) => {
-    navigate({ pathname: '/cocktails', search: librarySearch({ ...filters, [key]: value }, location.search) }, { replace: true })
+    updateSearchFilters({ ...filters, [key]: value })
   }
   const showResults = (key, value) => {
     navigate({ pathname: '/cocktails', search: librarySearch({ [key]: value }, location.search) })
   }
   const resetFilters = () => {
-    navigate({ pathname: '/cocktails', search: librarySearch({}, location.search) }, { replace: true })
+    updateSearchFilters({})
   }
   const listUrl = `/cocktails${location.search}`
 
@@ -204,6 +223,7 @@ export default function CocktailLibrary({ user }) {
       </div>
     </div> : <>
       <p className="cocktail-library-intro">What would you like to drink?</p>
+      <div ref={searchStartRef} aria-hidden="true" />
       <div className="cocktail-library-search">
         <div className="cocktail-search-row">
           <input type="search" value={filters.q} onChange={(event) => changeFilter('q', event.target.value)} placeholder="Search cocktails, ingredients, or flavors" aria-label="Search cocktail library" />
