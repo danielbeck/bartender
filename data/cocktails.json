@@ -4252,6 +4252,7 @@
         {
             "id": "gin",
             "name": "Gin",
+            "color": "#d4e4dc",
             "category": "spirits",
             "isAlcoholic": true,
             "spiritFamilyIds": [
@@ -4261,6 +4262,7 @@
         {
             "id": "vodka",
             "name": "Vodka",
+            "color": "#e0e8ed",
             "category": "spirits",
             "isAlcoholic": true,
             "spiritFamilyIds": [
@@ -4270,6 +4272,7 @@
         {
             "id": "tequila",
             "name": "Tequila",
+            "color": "#e5dfbe",
             "category": "spirits",
             "isAlcoholic": true,
             "spiritFamilyIds": [
@@ -4279,6 +4282,7 @@
         {
             "id": "bourbon",
             "name": "Bourbon",
+            "color": "#bd7836",
             "category": "spirits",
             "isAlcoholic": true,
             "spiritFamilyIds": [
@@ -4288,6 +4292,7 @@
         {
             "id": "rye-whiskey",
             "name": "Rye Whiskey",
+            "color": "#c28a48",
             "category": "spirits",
             "isAlcoholic": true,
             "spiritFamilyIds": [
@@ -4297,6 +4302,7 @@
         {
             "id": "irish-whiskey",
             "name": "Irish Whiskey",
+            "color": "#d4a354",
             "category": "spirits",
             "isAlcoholic": true,
             "spiritFamilyIds": [
@@ -4306,6 +4312,7 @@
         {
             "id": "scotch-whisky",
             "name": "Scotch Whisky",
+            "color": "#c79649",
             "category": "spirits",
             "isAlcoholic": true,
             "spiritFamilyIds": [
@@ -4315,6 +4322,7 @@
         {
             "id": "rum",
             "name": "Rum",
+            "color": "#d6ae69",
             "category": "spirits",
             "isAlcoholic": true,
             "spiritFamilyIds": [
@@ -4324,6 +4332,7 @@
         {
             "id": "cognac",
             "name": "Cognac",
+            "color": "#b7753c",
             "category": "spirits",
             "isAlcoholic": true,
             "spiritFamilyIds": [
@@ -4333,6 +4342,7 @@
         {
             "id": "pisco",
             "name": "Pisco",
+            "color": "#e3e5d7",
             "category": "spirits",
             "isAlcoholic": true,
             "spiritFamilyIds": [
@@ -4342,6 +4352,7 @@
         {
             "id": "cachaca",
             "name": "Cachaça",
+            "color": "#dde3c9",
             "category": "spirits",
             "isAlcoholic": true,
             "spiritFamilyIds": [
@@ -4351,24 +4362,28 @@
         {
             "id": "cointreau",
             "name": "Cointreau",
+            "color": "#eee1c1",
             "category": "liqueurs",
             "isAlcoholic": true
         },
         {
             "id": "triple-sec",
             "name": "Triple Sec",
+            "color": "#eadfc6",
             "category": "liqueurs",
             "isAlcoholic": true
         },
         {
             "id": "orange-curacao",
             "name": "Orange Curaçao",
+            "color": "#d8a24e",
             "category": "liqueurs",
             "isAlcoholic": true
         },
         {
             "id": "amaretto",
             "name": "Amaretto",
+            "color": "#b5773d",
             "category": "liqueurs",
             "isAlcoholic": true,
             "spiritFamilyIds": [
@@ -4378,90 +4393,105 @@
         {
             "id": "coffee-liqueur",
             "name": "Coffee Liqueur",
+            "color": "#614438",
             "category": "liqueurs",
             "isAlcoholic": true
         },
         {
             "id": "drambuie",
             "name": "Drambuie",
+            "color": "#c1903d",
             "category": "liqueurs",
             "isAlcoholic": true
         },
         {
             "id": "benedictine",
             "name": "Bénédictine",
+            "color": "#b68a38",
             "category": "liqueurs",
             "isAlcoholic": true
         },
         {
             "id": "fernet-branca",
             "name": "Fernet-Branca",
+            "color": "#514331",
             "category": "liqueurs",
             "isAlcoholic": true
         },
         {
             "id": "green-chartreuse",
             "name": "Green Chartreuse",
+            "color": "#a6b34d",
             "category": "liqueurs",
             "isAlcoholic": true
         },
         {
             "id": "creme-de-violette",
             "name": "Crème de Violette",
+            "color": "#8970ad",
             "category": "liqueurs",
             "isAlcoholic": true
         },
         {
             "id": "maraschino-liqueur",
             "name": "Maraschino Liqueur",
+            "color": "#e5e1d1",
             "category": "liqueurs",
             "isAlcoholic": true
         },
         {
             "id": "peach-schnapps",
             "name": "Peach Schnapps",
+            "color": "#ede1cb",
             "category": "liqueurs",
             "isAlcoholic": true
         },
         {
             "id": "passion-fruit-liqueur",
             "name": "Passion Fruit Liqueur",
+            "color": "#e4b84b",
             "category": "liqueurs",
             "isAlcoholic": true
         },
         {
             "id": "absinthe",
             "name": "Absinthe",
+            "color": "#b8c884",
             "category": "liqueurs",
             "isAlcoholic": true
         },
         {
             "id": "falernum",
             "name": "Falernum",
+            "color": "#dfd7b0",
             "category": "liqueurs",
             "isAlcoholic": true
         },
         {
             "id": "dry-vermouth",
             "name": "Dry Vermouth",
+            "color": "#dcd7ac",
             "category": "fortified-wines",
             "isAlcoholic": true
         },
         {
             "id": "sweet-vermouth",
             "name": "Sweet Vermouth",
+            "color": "#90533f",
             "category": "fortified-wines",
             "isAlcoholic": true
         },
         {
             "id": "lillet-blanc",
             "name": "Lillet Blanc",
+            "color": "#e2d69d",
             "category": "fortified-wines",
             "isAlcoholic": true
         },
         {
             "id": "champagne",
             "name": "Champagne",
+            "color": "#e9d99e",
             "category": "wine",
             "isAlcoholic": true,
             "spiritFamilyIds": [
@@ -4471,6 +4501,7 @@
         {
             "id": "prosecco",
             "name": "Prosecco",
+            "color": "#ebe0b1",
             "category": "wine",
             "isAlcoholic": true,
             "spiritFamilyIds": [
@@ -4480,228 +4511,266 @@
         {
             "id": "dry-red-wine",
             "name": "Dry Red Wine",
+            "color": "#813d50",
             "category": "wine",
             "isAlcoholic": true
         },
         {
             "id": "angostura-bitters",
             "name": "Angostura Bitters",
+            "color": "#83503c",
             "category": "bitters",
             "isAlcoholic": true
         },
         {
             "id": "peychauds-bitters",
             "name": "Peychaud's Bitters",
+            "color": "#a4414d",
             "category": "bitters",
             "isAlcoholic": true
         },
         {
             "id": "lemon-juice",
             "name": "Lemon Juice",
+            "color": "#ead777",
             "category": "juices",
             "isAlcoholic": false
         },
         {
             "id": "lime-juice",
             "name": "Lime Juice",
+            "color": "#c6d18b",
             "category": "juices",
             "isAlcoholic": false
         },
         {
             "id": "grapefruit-juice",
             "name": "Grapefruit Juice",
+            "color": "#e9b293",
             "category": "juices",
             "isAlcoholic": false
         },
         {
             "id": "orange-juice",
             "name": "Orange Juice",
+            "color": "#eda64e",
             "category": "juices",
             "isAlcoholic": false
         },
         {
             "id": "cranberry-juice",
             "name": "Cranberry Juice",
+            "color": "#b54e64",
             "category": "juices",
             "isAlcoholic": false
         },
         {
             "id": "pineapple-juice",
             "name": "Pineapple Juice",
+            "color": "#e3c76a",
             "category": "juices",
             "isAlcoholic": false
         },
         {
             "id": "tomato-juice",
             "name": "Tomato Juice",
+            "color": "#cc6650",
             "category": "juices",
             "isAlcoholic": false
         },
         {
             "id": "passion-fruit-puree",
             "name": "Passion Fruit Purée",
+            "color": "#e7b444",
             "category": "fruit",
             "isAlcoholic": false
         },
         {
             "id": "white-peach-puree",
             "name": "White Peach Purée",
+            "color": "#efd1ae",
             "category": "fruit",
             "isAlcoholic": false
         },
         {
             "id": "simple-syrup",
             "name": "Simple Syrup",
+            "color": "#e4e0cd",
             "category": "sweeteners",
             "isAlcoholic": false
         },
         {
             "id": "agave-syrup",
             "name": "Agave Syrup",
+            "color": "#d6b775",
             "category": "sweeteners",
             "isAlcoholic": false
         },
         {
             "id": "brown-sugar",
             "name": "Brown Sugar",
+            "color": "#b88a59",
             "category": "sweeteners",
             "isAlcoholic": false
         },
         {
             "id": "cinnamon-syrup",
             "name": "Cinnamon Syrup",
+            "color": "#bd8b60",
             "category": "sweeteners",
             "isAlcoholic": false
         },
         {
             "id": "grenadine",
             "name": "Grenadine",
+            "color": "#c65060",
             "category": "sweeteners",
             "isAlcoholic": false
         },
         {
             "id": "honey-syrup",
             "name": "Honey Syrup",
+            "color": "#d8aa53",
             "category": "sweeteners",
             "isAlcoholic": false
         },
         {
             "id": "honey-ginger-syrup",
             "name": "Honey-Ginger Syrup",
+            "color": "#dcb965",
             "category": "sweeteners",
             "isAlcoholic": false
         },
         {
             "id": "orgeat",
             "name": "Orgeat",
+            "color": "#e6d8b9",
             "category": "sweeteners",
             "isAlcoholic": false
         },
         {
             "id": "raspberry-syrup",
             "name": "Raspberry Syrup",
+            "color": "#bd536c",
             "category": "sweeteners",
             "isAlcoholic": false
         },
         {
             "id": "vanilla-syrup",
             "name": "Vanilla Syrup",
+            "color": "#dbc49a",
             "category": "sweeteners",
             "isAlcoholic": false
         },
         {
             "id": "sugar",
             "name": "Sugar",
+            "color": "#f0ece2",
             "category": "sweeteners",
             "isAlcoholic": false
         },
         {
             "id": "soda-water",
             "name": "Soda Water",
+            "color": "#dceaf0",
             "category": "carbonated-mixers",
             "isAlcoholic": false
         },
         {
             "id": "tonic-water",
             "name": "Tonic Water",
+            "color": "#e0e9e8",
             "category": "carbonated-mixers",
             "isAlcoholic": false
         },
         {
             "id": "ginger-beer",
             "name": "Ginger Beer",
+            "color": "#e3d3a0",
             "category": "carbonated-mixers",
             "isAlcoholic": false
         },
         {
             "id": "grapefruit-soda",
             "name": "Grapefruit Soda",
+            "color": "#edd4b8",
             "category": "carbonated-mixers",
             "isAlcoholic": false
         },
         {
             "id": "cola",
             "name": "Cola",
+            "color": "#654735",
             "category": "carbonated-mixers",
             "isAlcoholic": false
         },
         {
             "id": "espresso",
             "name": "Espresso",
+            "color": "#503a2f",
             "category": "coffee",
             "isAlcoholic": false
         },
         {
             "id": "hot-coffee",
             "name": "Hot Coffee",
+            "color": "#6a4934",
             "category": "coffee",
             "isAlcoholic": false
         },
         {
             "id": "cream",
             "name": "Cream",
+            "color": "#f0e6d5",
             "category": "dairy-and-egg",
             "isAlcoholic": false
         },
         {
             "id": "coconut-cream",
             "name": "Coconut Cream",
+            "color": "#ede9d8",
             "category": "dairy-and-egg",
             "isAlcoholic": false
         },
         {
             "id": "egg-white",
             "name": "Egg White",
+            "color": "#ede8ce",
             "category": "dairy-and-egg",
             "isAlcoholic": false
         },
         {
             "id": "mint",
             "name": "Mint",
+            "color": "#6c9d60",
             "category": "herbs-and-botanicals",
             "isAlcoholic": false
         },
         {
             "id": "worcestershire-sauce",
             "name": "Worcestershire Sauce",
+            "color": "#624c39",
             "category": "savory-and-seasoning",
             "isAlcoholic": false
         },
         {
             "id": "hot-sauce",
             "name": "Hot Sauce",
+            "color": "#c66a43",
             "category": "savory-and-seasoning",
             "isAlcoholic": false
         },
         {
             "id": "salt-and-pepper",
             "name": "Salt and Pepper",
+            "color": "#b8b4a9",
             "category": "savory-and-seasoning",
             "isAlcoholic": false
         },
         {
             "id": "aperol",
             "name": "Aperol",
+            "color": "#e88743",
             "category": "liqueurs",
             "isAlcoholic": true,
             "spiritFamilyIds": [
@@ -4711,6 +4780,7 @@
         {
             "id": "campari",
             "name": "Campari",
+            "color": "#c44f52",
             "category": "liqueurs",
             "isAlcoholic": true,
             "spiritFamilyIds": [
@@ -4720,6 +4790,7 @@
         {
             "id": "islay-scotch",
             "name": "Islay Scotch",
+            "color": "#c3a063",
             "category": "spirits",
             "isAlcoholic": true,
             "spiritFamilyIds": [
@@ -4729,6 +4800,7 @@
         {
             "id": "blended-scotch",
             "name": "Blended Scotch",
+            "color": "#cea058",
             "category": "spirits",
             "isAlcoholic": true,
             "spiritFamilyIds": [
@@ -4738,6 +4810,7 @@
         {
             "id": "aged-rum",
             "name": "Aged Rum",
+            "color": "#bd8d48",
             "category": "spirits",
             "isAlcoholic": true,
             "spiritFamilyIds": [
@@ -4747,6 +4820,7 @@
         {
             "id": "dark-rum",
             "name": "Dark Rum",
+            "color": "#875934",
             "category": "spirits",
             "isAlcoholic": true,
             "spiritFamilyIds": [
@@ -4757,6 +4831,7 @@
         {
             "id": "overproof-rum",
             "name": "Overproof Rum",
+            "color": "#dddcc5",
             "category": "spirits",
             "isAlcoholic": true,
             "spiritFamilyIds": [
@@ -4766,6 +4841,7 @@
         {
             "id": "white-rum",
             "name": "White Rum",
+            "color": "#e0e5dc",
             "category": "spirits",
             "isAlcoholic": true,
             "spiritFamilyIds": [
@@ -4775,6 +4851,7 @@
         {
             "id": "citron-vodka",
             "name": "Citron Vodka",
+            "color": "#e7e8cf",
             "category": "spirits",
             "isAlcoholic": true,
             "spiritFamilyIds": [
@@ -4784,6 +4861,7 @@
         {
             "id": "vanilla-vodka",
             "name": "Vanilla Vodka",
+            "color": "#e9dfc8",
             "category": "spirits",
             "isAlcoholic": true,
             "spiritFamilyIds": [
@@ -4793,6 +4871,7 @@
         {
             "id": "reposado-tequila",
             "name": "Reposado Tequila",
+            "color": "#d6b977",
             "category": "spirits",
             "isAlcoholic": true,
             "spiritFamilyIds": [
@@ -4802,6 +4881,7 @@
         {
             "id": "sparkling-wine",
             "name": "Sparkling Wine",
+            "color": "#e5d6a4",
             "category": "wine",
             "isAlcoholic": true,
             "spiritFamilyIds": [
@@ -4811,84 +4891,98 @@
         {
             "id": "lime",
             "name": "Lime",
+            "color": "#90ae58",
             "category": "fruit",
             "isAlcoholic": false
         },
         {
             "id": "aromatic-bitters",
             "name": "Aromatic Bitters",
+            "color": "#89523b",
             "category": "bitters",
             "isAlcoholic": true
         },
         {
             "id": "creme-de-cacao",
             "name": "Crème de Cacao",
+            "color": "#997051",
             "category": "liqueurs",
             "isAlcoholic": true
         },
         {
             "id": "olive-brine",
             "name": "Olive Brine",
+            "color": "#cad0a9",
             "category": "savory-and-seasoning",
             "isAlcoholic": false
         },
         {
             "id": "hot-water",
             "name": "Hot Water",
+            "color": "#e1eaed",
             "category": "other-mixers",
             "isAlcoholic": false
         },
         {
             "id": "basil",
             "name": "Basil",
+            "color": "#598b57",
             "category": "herbs-and-botanicals",
             "isAlcoholic": false
         },
         {
             "id": "creme-de-mure",
             "name": "Crème de Mûre",
+            "color": "#72516b",
             "category": "liqueurs",
             "isAlcoholic": true
         },
         {
             "id": "cherry-liqueur",
             "name": "Cherry Liqueur",
+            "color": "#a94c55",
             "category": "liqueurs",
             "isAlcoholic": true
         },
         {
             "id": "amaro",
             "name": "Amaro",
+            "color": "#966742",
             "category": "liqueurs",
             "isAlcoholic": true
         },
         {
             "id": "creme-de-cassis",
             "name": "Crème de Cassis",
+            "color": "#69445e",
             "category": "liqueurs",
             "isAlcoholic": true
         },
         {
             "id": "orange-flower-water",
             "name": "Orange Flower Water",
+            "color": "#eee6d1",
             "category": "other-mixers",
             "isAlcoholic": false
         },
         {
             "id": "creme-de-menthe",
             "name": "Crème de Menthe",
+            "color": "#5da576",
             "category": "liqueurs",
             "isAlcoholic": true
         },
         {
             "id": "cream-liqueur",
             "name": "Cream Liqueur",
+            "color": "#ceb497",
             "category": "liqueurs",
             "isAlcoholic": true
         },
         {
             "id": "apple-brandy",
             "name": "Apple Brandy",
+            "color": "#c99d54",
             "category": "spirits",
             "isAlcoholic": true,
             "spiritFamilyIds": ["brandy"]
@@ -4896,6 +4990,7 @@
         {
             "id": "sloe-gin",
             "name": "Sloe Gin",
+            "color": "#94465e",
             "category": "liqueurs",
             "isAlcoholic": true,
             "spiritFamilyIds": ["gin"]
@@ -4903,18 +4998,21 @@
         {
             "id": "strawberry-puree",
             "name": "Strawberry Purée",
+            "color": "#d06a70",
             "category": "fruit",
             "isAlcoholic": false
         },
         {
             "id": "mango-puree",
             "name": "Mango Purée",
+            "color": "#e8b14c",
             "category": "fruit",
             "isAlcoholic": false
         },
         {
             "id": "crushed-ice",
             "name": "Crushed Ice",
+            "color": "#e3eff2",
             "category": "other-mixers",
             "isAlcoholic": false
         }

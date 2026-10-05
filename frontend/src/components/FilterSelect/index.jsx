@@ -125,6 +125,7 @@ export default function FilterSelect({ label, value, options, onChange, renderPr
                                 tabIndex={-1}
                                 onClick={() => selectOption(option.value)}
                                 onKeyDown={(event) => handleOptionKeyDown(event, index)}
+                                onFocus={() => setHoveredValue(option.value)}
                                 onMouseEnter={() => setHoveredValue(option.value)}
                                 onMouseLeave={() => setHoveredValue(undefined)}
                             >

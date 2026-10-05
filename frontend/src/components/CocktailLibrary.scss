@@ -5,7 +5,12 @@
   padding: 32px 24px 60px;
   line-height: 1.6;
 
-  h1 { font-size: clamp(28px, 4vw, 40px); margin: 0 0 12px; }
+  h1 {
+    font-size: clamp(44px, 7vw, 76px);
+    line-height: 1.1;
+    margin: 0 0 12px;
+    overflow-wrap: anywhere;
+  }
   h2 { font-size: 20px; }
   h1:focus { outline: none; }
   button, input, select { font: inherit; }
@@ -214,16 +219,83 @@
   p { font-size: 14px; margin-top: 6px; }
 }
 .cocktail-result-meta { color: #286650; font-weight: 600; }
+.glass-profile { color: #286650; display: block; flex-shrink: 0; }
+.glass-selector-illustration {
+  align-items: center;
+  color: #53665f;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+.cocktail-result-heading {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+
+  h2 { min-width: 0; }
+  .glass-profile { height: 72px; width: 48px; }
+}
+.cocktail-detail-heading {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+
+  h1 { flex: 1; min-width: 0; }
+  .glass-profile { height: clamp(72px, 10vw, 120px); width: clamp(48px, 6.67vw, 80px); }
+}
 .cocktail-result-flavors { color: #53665f; }
 .cocktail-empty { padding: 32px 0; text-align: center; p { margin: 8px 0 16px; } }
 .cocktail-preview { align-items: start; display: grid; gap: 40px; grid-template-columns: minmax(260px, 380px) minmax(0, 1fr); margin-top: 24px; }
+.cocktail-preview-column {
+  display: grid;
+  min-width: 0;
+
+  > div { grid-area: 1 / 1; }
+  &.is-illustrating .cocktail-preview-copy[hidden] { display: block; visibility: hidden; pointer-events: none; }
+}
+.cocktail-large-glass {
+  align-self: start;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px 0;
+
+  .glass-profile { width: min(100%, 280px); height: auto; }
+  p { color: #53665f; margin: 0; text-align: center; overflow-wrap: anywhere; }
+}
+.recipe-measurements {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  justify-content: space-between;
+  margin-bottom: 12px;
+
+  h2 { margin: 0; }
+}
+.recipe-part-size { color: #53665f; font-size: 14px; margin-bottom: 12px; }
+.recipe-unit-toggle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+
+  button { padding: 4px 8px; }
+  button[aria-pressed='true'] { background: #eaf2ee; border-color: #387f69; }
+}
 .cocktail-recipe {
   background: #fff;
   border: 1px solid #d5dfda;
   border-radius: 10px;
   padding: 24px;
+  &:focus-visible { outline: 3px solid #387f69; outline-offset: 3px; }
 
   h2 { margin-bottom: 12px; }
+  .recipe-measurements h2 { margin: 0; }
   ul { list-style: none; margin-bottom: 24px; }
   li { display: grid; gap: 12px; grid-template-columns: 85px minmax(0, 1fr); padding: 8px 0; border-bottom: 1px solid #e7ede9; }
   .ingredient-amount { font-weight: 600; }
@@ -238,6 +310,11 @@
 .cocktail-serving { margin: 24px 0; div { display: flex; gap: 16px; justify-content: space-between; padding: 6px 0; } }
 .cocktail-summary { color: #53665f; }
 .cocktail-preview-copy h2 { margin: 24px 0 10px; }
+.cocktail-description,
+.cocktail-instructions p {
+  font-size: clamp(22px, 2.5vw, 28px);
+  line-height: 1.6;
+}
 .cocktail-tags div { display: flex; gap: 8px; flex-wrap: wrap; }
 .cocktail-tags button, .cocktail-facts button {
   background: #eaf2ee;

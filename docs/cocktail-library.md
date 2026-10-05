@@ -25,6 +25,50 @@ Special handling of mutually exclusive alternatives is intentionally deferred.
 Optional ingredients appear in recipe details but do not count as required
 ingredients for spirit or nonalcoholic ingredient filters.
 
+Recipe details offer ml/parts/shots measurement buttons, defaulting to ml.
+Parts compare shared measures in 2.5 ml increments, preferring fewer fractional
+amounts, then halves over quarters, then lower rounding error and smaller ratios.
+Candidates allow up to 10% error per ingredient; when none satisfy that limit,
+the calculator prioritizes the lowest maximum relative error instead.
+Amounts use quarter-part increments, with a minimum of 0.25 part for positive
+volumes and a maximum of 4.75 parts. For example, 45/15/15/25/30 ml becomes
+3/1/1/1.75/2 parts with only the syrup rounded.
+The UI shows the ml equivalent of one part and marks recipes
+whose proportions have been rounded as approximate.
+Shots use 45 ml per shot, rounded to the nearest eighth and displayed as
+simplified mixed fractions (for example, 60 ml becomes 1 3/8 shots).
+Positive quantities never round down to zero; the minimum is 1/8 shot.
+Counts, dashes, cups, and other non-ml measurements remain unchanged.
+This is a display conversion only; source recipes are not modified.
+
+Each cocktail card and recipe detail shows an SVG side profile of its glass,
+covering all entries in `taxonomy.glasses`. Glass profiles are shared through
+the `GlassProfile` component and `glassProfiles` mapping. They are decorative
+because the glass name remains visible as text.
+On recipe details, the illustration sits beside the drink title rather than
+inside the serving metadata table.
+The glass selector also previews each profile when its option is hovered or
+focused, with the selected glass illustrated when the selector first opens.
+The illustration is available on both narrow and wide screens.
+
+Card and detail glasses show explanatory ingredient color bands, in recipe order
+from bottom to top. Band areas are proportional to original ml volumes, including
+the taper of each glass's interior polygon. They do not depict physical layering,
+glass capacity, or the finished drink's actual color. Non-ml measurements are
+excluded from the bands without guessing volumes. The ingredient list serves
+as the interactive key; there is no separate color legend.
+Measurement toggles do not change the bands.
+Every shared ingredient defines a six-digit hex `color` in `data/cocktails.json`.
+Illustrations read these colors directly, with no generated
+fallback palette. Colors are stylized approximations: clear spirits use pale
+tints, whiskey uses amber, dairy uses ivory, and fruit and herbal liqueurs use
+recognizable hues. Products that come in multiple colors use a representative
+version (green crème de menthe, brown crème de cacao, and amber orange curaçao).
+Hovering the recipe card or focusing it or its controls temporarily replaces the
+right-hand copy with a large filled glass. Hovering an ingredient or focusing its
+search link highlights its band; non-ml ingredients instead show an explanatory
+caption. Leaving the card and moving focus outside restores the original copy.
+
 Nonalcoholic Ingredients lists catalog entries with `isAlcoholic: false`
 that occur in recipes, grouped by ingredient category and alphabetized.
 It supports multiple selections and matches recipes containing every selected

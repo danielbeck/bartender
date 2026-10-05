@@ -113,8 +113,17 @@
     width: 1.5em;
 }
 
+.withPreview {
+    grid-template-columns: minmax(0, 1fr) 100px;
+}
+
 .preview {
-    display: none;
+    align-items: flex-start;
+    display: flex;
+    justify-content: center;
+    min-width: 0;
+    overflow: hidden;
+    padding: 14px 8px;
 }
 
 @media (min-width: 900px) {
