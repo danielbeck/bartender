@@ -1,20 +1,152 @@
 {
     "version": "1.1.0",
     "filters": [
-        { "key": "category", "field": "categories", "label": "Category" },
-        { "key": "spirit", "field": "spirits", "label": "Spirits", "taxonomy": "spiritFamilies" },
-        { "key": "ingredient", "field": "nonalcoholicIngredients", "label": "Nonalcoholic Ingredients" },
-        { "key": "flavor", "field": "flavorProfile", "label": "Flavor Notes", "taxonomy": "flavorProfiles" },
-        { "key": "method", "field": "method", "label": "Method", "taxonomy": "methods" },
-        { "key": "glass", "field": "glass", "label": "Glass", "taxonomy": "glasses" },
-        { "key": "strength", "field": "strength", "label": "Strength", "taxonomy": "strengths" },
-        { "key": "difficulty", "field": "difficulty", "label": "Difficulty", "taxonomy": "difficultyLevels" },
-        { "key": "sweetness", "field": "sweetness", "label": "Sweetness", "taxonomy": "sweetnessLevels" },
-        { "key": "sourness", "field": "sourness", "label": "Sourness", "taxonomy": "sournessLevels" },
-        { "key": "bitterness", "field": "bitterness", "label": "Bitterness", "taxonomy": "bitternessLevels" },
-        { "key": "carbonation", "field": "carbonation", "label": "Carbonation", "taxonomy": "carbonationLevels" },
-        { "key": "temperature", "field": "temperature", "label": "Temperature", "taxonomy": "temperatures" }
+        {
+            "key": "category",
+            "field": "categories",
+            "label": "Category",
+            "multiple": false,
+            "control": "select",
+            "group": "primary",
+            "order": 1,
+            "emptyLabel": "All categories"
+        },
+        {
+            "key": "spirit",
+            "field": "spirits",
+            "label": "Spirits",
+            "taxonomy": "spiritFamilies",
+            "multiple": true,
+            "control": "select",
+            "group": "primary",
+            "order": 2,
+            "emptyLabel": "Any spirits"
+        },
+        {
+            "key": "ingredient",
+            "field": "nonalcoholicIngredients",
+            "label": "Mixers",
+            "multiple": true,
+            "control": "select",
+            "group": "additional",
+            "order": 4,
+            "emptyLabel": "Any Mixers"
+        },
+        {
+            "key": "flavor",
+            "field": "flavorProfile",
+            "label": "Flavor Notes",
+            "taxonomy": "flavorProfiles",
+            "multiple": true,
+            "control": "hidden"
+        },
+        {
+            "key": "method",
+            "field": "method",
+            "label": "Method",
+            "taxonomy": "methods",
+            "multiple": false,
+            "control": "hidden"
+        },
+        {
+            "key": "glass",
+            "field": "glass",
+            "label": "Glass",
+            "taxonomy": "glasses",
+            "multiple": false,
+            "control": "select",
+            "group": "additional",
+            "order": 1,
+            "emptyLabel": "Any glass",
+            "illustration": "glass"
+        },
+        {
+            "key": "strength",
+            "field": "strength",
+            "label": "Strength",
+            "taxonomy": "strengths",
+            "multiple": false,
+            "control": "slider",
+            "group": "primary",
+            "order": 3
+        },
+        {
+            "key": "difficulty",
+            "field": "difficulty",
+            "label": "Difficulty",
+            "taxonomy": "difficultyLevels",
+            "multiple": false,
+            "control": "hidden"
+        },
+        {
+            "key": "sweetness",
+            "field": "sweetness",
+            "label": "Sweetness",
+            "taxonomy": "sweetnessLevels",
+            "multiple": false,
+            "control": "slider",
+            "sliderGroup": "flavors"
+        },
+        {
+            "key": "sourness",
+            "field": "sourness",
+            "label": "Sourness",
+            "taxonomy": "sournessLevels",
+            "multiple": false,
+            "control": "slider",
+            "sliderGroup": "flavors"
+        },
+        {
+            "key": "bitterness",
+            "field": "bitterness",
+            "label": "Bitterness",
+            "taxonomy": "bitternessLevels",
+            "multiple": false,
+            "control": "slider",
+            "sliderGroup": "flavors"
+        },
+        {
+            "key": "carbonation",
+            "field": "carbonation",
+            "label": "Carbonation",
+            "taxonomy": "carbonationLevels",
+            "multiple": false,
+            "control": "toggle",
+            "controlLabel": "Carbonated",
+            "group": "additional",
+            "order": 3,
+            "states": [
+                { "value": "high", "label": "Yes" },
+                { "value": "", "label": " " },
+                { "value": "none", "label": "No" }
+            ]
+        },
+        {
+            "key": "temperature",
+            "field": "temperature",
+            "label": "Temperature",
+            "taxonomy": "temperatures",
+            "multiple": false,
+            "control": "toggle",
+            "group": "additional",
+            "order": 5,
+            "states": [
+                { "value": "frozen", "label": "Frozen" },
+                { "value": "", "label": " " },
+                { "value": "hot", "label": "Hot" }
+            ]
+        }
     ],
+    "sliderGroups": [
+        { "key": "flavors", "label": "Flavors", "group": "additional", "order": 2 }
+    ],
+    "filterGroups": [
+        { "id": "primary", "label": "Primary filters" },
+        { "id": "additional", "label": "Additional filters", "showReset": true }
+    ],
+    "cocktailIdAliases": {
+        "vieux-carre-variant-2": "vieux-carre"
+    },
     "cocktailCategories": [
         {
             "id": "classic",
@@ -842,19 +974,53 @@
         {
             "id": "frozen-margarita",
             "name": "Frozen Margarita",
-            "baseSpirits": ["tequila"],
-            "categories": ["classic", "sour", "tropical"],
+            "baseSpirits": [
+                "tequila"
+            ],
+            "categories": [
+                "classic",
+                "sour",
+                "tropical"
+            ],
             "method": "blend",
             "glass": "rocks",
             "ingredients": [
-                { "name": "tequila", "amount": "50 ml", "ingredientId": "tequila" },
-                { "name": "triple sec", "amount": "20 ml", "ingredientId": "triple-sec" },
-                { "name": "fresh lime juice", "amount": "25 ml", "ingredientId": "lime-juice" },
-                { "name": "agave syrup", "amount": "10 ml", "ingredientId": "agave-syrup" },
-                { "name": "crushed ice", "amount": "1 cup", "ingredientId": "crushed-ice" }
+                {
+                    "name": "tequila",
+                    "amount": "50 ml",
+                    "ingredientId": "tequila"
+                },
+                {
+                    "name": "triple sec",
+                    "amount": "20 ml",
+                    "ingredientId": "triple-sec"
+                },
+                {
+                    "name": "fresh lime juice",
+                    "amount": "25 ml",
+                    "ingredientId": "lime-juice"
+                },
+                {
+                    "name": "agave syrup",
+                    "amount": "10 ml",
+                    "ingredientId": "agave-syrup"
+                },
+                {
+                    "name": "crushed ice",
+                    "amount": "1 cup",
+                    "ingredientId": "crushed-ice"
+                }
             ],
-            "garnish": ["lime wheel", "salt rim (optional)"],
-            "flavorProfile": ["agave", "citrusy", "tart", "refreshing"],
+            "garnish": [
+                "lime wheel",
+                "salt rim (optional)"
+            ],
+            "flavorProfile": [
+                "agave",
+                "citrusy",
+                "tart",
+                "refreshing"
+            ],
             "strength": "moderate",
             "sweetness": "medium",
             "sourness": "high",
@@ -868,19 +1034,53 @@
         {
             "id": "strawberry-daiquiri",
             "name": "Strawberry Daiquiri",
-            "baseSpirits": ["rum"],
-            "categories": ["classic", "sour", "tropical"],
+            "baseSpirits": [
+                "rum"
+            ],
+            "categories": [
+                "classic",
+                "sour",
+                "tropical"
+            ],
             "method": "blend",
             "glass": "hurricane",
             "ingredients": [
-                { "name": "white rum", "amount": "50 ml", "ingredientId": "white-rum" },
-                { "name": "fresh lime juice", "amount": "25 ml", "ingredientId": "lime-juice" },
-                { "name": "simple syrup", "amount": "15 ml", "ingredientId": "simple-syrup" },
-                { "name": "strawberry purée", "amount": "60 ml", "ingredientId": "strawberry-puree" },
-                { "name": "crushed ice", "amount": "1 cup", "ingredientId": "crushed-ice" }
+                {
+                    "name": "white rum",
+                    "amount": "50 ml",
+                    "ingredientId": "white-rum"
+                },
+                {
+                    "name": "fresh lime juice",
+                    "amount": "25 ml",
+                    "ingredientId": "lime-juice"
+                },
+                {
+                    "name": "simple syrup",
+                    "amount": "15 ml",
+                    "ingredientId": "simple-syrup"
+                },
+                {
+                    "name": "strawberry purée",
+                    "amount": "60 ml",
+                    "ingredientId": "strawberry-puree"
+                },
+                {
+                    "name": "crushed ice",
+                    "amount": "1 cup",
+                    "ingredientId": "crushed-ice"
+                }
             ],
-            "garnish": ["strawberry", "lime wheel"],
-            "flavorProfile": ["fruity", "tart", "sweet", "tropical"],
+            "garnish": [
+                "strawberry",
+                "lime wheel"
+            ],
+            "flavorProfile": [
+                "fruity",
+                "tart",
+                "sweet",
+                "tropical"
+            ],
             "strength": "moderate",
             "sweetness": "high",
             "sourness": "medium",
@@ -894,20 +1094,58 @@
         {
             "id": "strawberry-margarita",
             "name": "Strawberry Margarita",
-            "baseSpirits": ["tequila"],
-            "categories": ["classic", "sour", "tropical"],
+            "baseSpirits": [
+                "tequila"
+            ],
+            "categories": [
+                "classic",
+                "sour",
+                "tropical"
+            ],
             "method": "blend",
             "glass": "rocks",
             "ingredients": [
-                { "name": "tequila", "amount": "45 ml", "ingredientId": "tequila" },
-                { "name": "triple sec", "amount": "20 ml", "ingredientId": "triple-sec" },
-                { "name": "fresh lime juice", "amount": "20 ml", "ingredientId": "lime-juice" },
-                { "name": "strawberry purée", "amount": "60 ml", "ingredientId": "strawberry-puree" },
-                { "name": "agave syrup", "amount": "10 ml", "ingredientId": "agave-syrup" },
-                { "name": "crushed ice", "amount": "1 cup", "ingredientId": "crushed-ice" }
+                {
+                    "name": "tequila",
+                    "amount": "45 ml",
+                    "ingredientId": "tequila"
+                },
+                {
+                    "name": "triple sec",
+                    "amount": "20 ml",
+                    "ingredientId": "triple-sec"
+                },
+                {
+                    "name": "fresh lime juice",
+                    "amount": "20 ml",
+                    "ingredientId": "lime-juice"
+                },
+                {
+                    "name": "strawberry purée",
+                    "amount": "60 ml",
+                    "ingredientId": "strawberry-puree"
+                },
+                {
+                    "name": "agave syrup",
+                    "amount": "10 ml",
+                    "ingredientId": "agave-syrup"
+                },
+                {
+                    "name": "crushed ice",
+                    "amount": "1 cup",
+                    "ingredientId": "crushed-ice"
+                }
             ],
-            "garnish": ["strawberry", "lime wheel"],
-            "flavorProfile": ["agave", "fruity", "citrusy", "sweet"],
+            "garnish": [
+                "strawberry",
+                "lime wheel"
+            ],
+            "flavorProfile": [
+                "agave",
+                "fruity",
+                "citrusy",
+                "sweet"
+            ],
             "strength": "moderate",
             "sweetness": "high",
             "sourness": "medium",
@@ -921,20 +1159,57 @@
         {
             "id": "mango-margarita",
             "name": "Mango Margarita",
-            "baseSpirits": ["tequila"],
-            "categories": ["classic", "sour", "tropical"],
+            "baseSpirits": [
+                "tequila"
+            ],
+            "categories": [
+                "classic",
+                "sour",
+                "tropical"
+            ],
             "method": "blend",
             "glass": "rocks",
             "ingredients": [
-                { "name": "tequila", "amount": "50 ml", "ingredientId": "tequila" },
-                { "name": "triple sec", "amount": "20 ml", "ingredientId": "triple-sec" },
-                { "name": "fresh lime juice", "amount": "20 ml", "ingredientId": "lime-juice" },
-                { "name": "mango purée", "amount": "60 ml", "ingredientId": "mango-puree" },
-                { "name": "agave syrup", "amount": "10 ml", "ingredientId": "agave-syrup" },
-                { "name": "crushed ice", "amount": "1 cup", "ingredientId": "crushed-ice" }
+                {
+                    "name": "tequila",
+                    "amount": "50 ml",
+                    "ingredientId": "tequila"
+                },
+                {
+                    "name": "triple sec",
+                    "amount": "20 ml",
+                    "ingredientId": "triple-sec"
+                },
+                {
+                    "name": "fresh lime juice",
+                    "amount": "20 ml",
+                    "ingredientId": "lime-juice"
+                },
+                {
+                    "name": "mango purée",
+                    "amount": "60 ml",
+                    "ingredientId": "mango-puree"
+                },
+                {
+                    "name": "agave syrup",
+                    "amount": "10 ml",
+                    "ingredientId": "agave-syrup"
+                },
+                {
+                    "name": "crushed ice",
+                    "amount": "1 cup",
+                    "ingredientId": "crushed-ice"
+                }
             ],
-            "garnish": ["lime wheel"],
-            "flavorProfile": ["agave", "fruity", "tropical", "citrusy"],
+            "garnish": [
+                "lime wheel"
+            ],
+            "flavorProfile": [
+                "agave",
+                "fruity",
+                "tropical",
+                "citrusy"
+            ],
             "strength": "moderate",
             "sweetness": "high",
             "sourness": "medium",
@@ -948,21 +1223,62 @@
         {
             "id": "miami-vice",
             "name": "Miami Vice",
-            "baseSpirits": ["rum"],
-            "categories": ["tropical", "dessert"],
+            "baseSpirits": [
+                "rum"
+            ],
+            "categories": [
+                "tropical",
+                "dessert"
+            ],
             "method": "blend",
             "glass": "hurricane",
             "ingredients": [
-                { "name": "white rum", "amount": "50 ml", "ingredientId": "white-rum" },
-                { "name": "coconut cream", "amount": "30 ml", "ingredientId": "coconut-cream" },
-                { "name": "pineapple juice", "amount": "50 ml", "ingredientId": "pineapple-juice" },
-                { "name": "strawberry purée", "amount": "45 ml", "ingredientId": "strawberry-puree" },
-                { "name": "fresh lime juice", "amount": "15 ml", "ingredientId": "lime-juice" },
-                { "name": "simple syrup", "amount": "10 ml", "ingredientId": "simple-syrup" },
-                { "name": "crushed ice", "amount": "1 1/2 cups", "ingredientId": "crushed-ice" }
+                {
+                    "name": "white rum",
+                    "amount": "50 ml",
+                    "ingredientId": "white-rum"
+                },
+                {
+                    "name": "coconut cream",
+                    "amount": "30 ml",
+                    "ingredientId": "coconut-cream"
+                },
+                {
+                    "name": "pineapple juice",
+                    "amount": "50 ml",
+                    "ingredientId": "pineapple-juice"
+                },
+                {
+                    "name": "strawberry purée",
+                    "amount": "45 ml",
+                    "ingredientId": "strawberry-puree"
+                },
+                {
+                    "name": "fresh lime juice",
+                    "amount": "15 ml",
+                    "ingredientId": "lime-juice"
+                },
+                {
+                    "name": "simple syrup",
+                    "amount": "10 ml",
+                    "ingredientId": "simple-syrup"
+                },
+                {
+                    "name": "crushed ice",
+                    "amount": "1 1/2 cups",
+                    "ingredientId": "crushed-ice"
+                }
             ],
-            "garnish": ["pineapple wedge", "strawberry"],
-            "flavorProfile": ["tropical", "fruity", "creamy", "sweet"],
+            "garnish": [
+                "pineapple wedge",
+                "strawberry"
+            ],
+            "flavorProfile": [
+                "tropical",
+                "fruity",
+                "creamy",
+                "sweet"
+            ],
             "strength": "moderate",
             "sweetness": "high",
             "sourness": "low",
@@ -3115,17 +3431,40 @@
         {
             "id": "gin-rickey",
             "name": "Gin Rickey",
-            "baseSpirits": ["gin"],
-            "categories": ["classic", "highball"],
+            "baseSpirits": [
+                "gin"
+            ],
+            "categories": [
+                "classic",
+                "highball"
+            ],
             "method": "build",
             "glass": "highball",
             "ingredients": [
-                { "name": "gin", "amount": "60 ml", "ingredientId": "gin" },
-                { "name": "fresh lime juice", "amount": "15 ml", "ingredientId": "lime-juice" },
-                { "name": "soda water", "amount": "120 ml", "ingredientId": "soda-water" }
+                {
+                    "name": "gin",
+                    "amount": "60 ml",
+                    "ingredientId": "gin"
+                },
+                {
+                    "name": "fresh lime juice",
+                    "amount": "15 ml",
+                    "ingredientId": "lime-juice"
+                },
+                {
+                    "name": "soda water",
+                    "amount": "120 ml",
+                    "ingredientId": "soda-water"
+                }
             ],
-            "garnish": ["lime wheel"],
-            "flavorProfile": ["citrusy", "refreshing", "dry"],
+            "garnish": [
+                "lime wheel"
+            ],
+            "flavorProfile": [
+                "citrusy",
+                "refreshing",
+                "dry"
+            ],
             "strength": "moderate",
             "sweetness": "low",
             "sourness": "medium",
@@ -3139,16 +3478,35 @@
         {
             "id": "screwdriver",
             "name": "Screwdriver",
-            "baseSpirits": ["vodka"],
-            "categories": ["classic", "highball"],
+            "baseSpirits": [
+                "vodka"
+            ],
+            "categories": [
+                "classic",
+                "highball"
+            ],
             "method": "build",
             "glass": "highball",
             "ingredients": [
-                { "name": "vodka", "amount": "50 ml", "ingredientId": "vodka" },
-                { "name": "orange juice", "amount": "120 ml", "ingredientId": "orange-juice" }
+                {
+                    "name": "vodka",
+                    "amount": "50 ml",
+                    "ingredientId": "vodka"
+                },
+                {
+                    "name": "orange juice",
+                    "amount": "120 ml",
+                    "ingredientId": "orange-juice"
+                }
             ],
-            "garnish": ["orange slice"],
-            "flavorProfile": ["citrusy", "fruity", "sweet"],
+            "garnish": [
+                "orange slice"
+            ],
+            "flavorProfile": [
+                "citrusy",
+                "fruity",
+                "sweet"
+            ],
             "strength": "moderate",
             "sweetness": "medium",
             "sourness": "low",
@@ -3162,16 +3520,35 @@
         {
             "id": "greyhound",
             "name": "Greyhound",
-            "baseSpirits": ["vodka"],
-            "categories": ["classic", "highball"],
+            "baseSpirits": [
+                "vodka"
+            ],
+            "categories": [
+                "classic",
+                "highball"
+            ],
             "method": "build",
             "glass": "highball",
             "ingredients": [
-                { "name": "vodka", "amount": "50 ml", "ingredientId": "vodka" },
-                { "name": "grapefruit juice", "amount": "120 ml", "ingredientId": "grapefruit-juice" }
+                {
+                    "name": "vodka",
+                    "amount": "50 ml",
+                    "ingredientId": "vodka"
+                },
+                {
+                    "name": "grapefruit juice",
+                    "amount": "120 ml",
+                    "ingredientId": "grapefruit-juice"
+                }
             ],
-            "garnish": ["grapefruit wedge"],
-            "flavorProfile": ["citrusy", "tart", "refreshing"],
+            "garnish": [
+                "grapefruit wedge"
+            ],
+            "flavorProfile": [
+                "citrusy",
+                "tart",
+                "refreshing"
+            ],
             "strength": "moderate",
             "sweetness": "low",
             "sourness": "medium",
@@ -3185,17 +3562,41 @@
         {
             "id": "sea-breeze",
             "name": "Sea Breeze",
-            "baseSpirits": ["vodka"],
-            "categories": ["classic", "highball"],
+            "baseSpirits": [
+                "vodka"
+            ],
+            "categories": [
+                "classic",
+                "highball"
+            ],
             "method": "build",
             "glass": "highball",
             "ingredients": [
-                { "name": "vodka", "amount": "45 ml", "ingredientId": "vodka" },
-                { "name": "cranberry juice", "amount": "90 ml", "ingredientId": "cranberry-juice" },
-                { "name": "grapefruit juice", "amount": "45 ml", "ingredientId": "grapefruit-juice" }
+                {
+                    "name": "vodka",
+                    "amount": "45 ml",
+                    "ingredientId": "vodka"
+                },
+                {
+                    "name": "cranberry juice",
+                    "amount": "90 ml",
+                    "ingredientId": "cranberry-juice"
+                },
+                {
+                    "name": "grapefruit juice",
+                    "amount": "45 ml",
+                    "ingredientId": "grapefruit-juice"
+                }
             ],
-            "garnish": ["lime wedge"],
-            "flavorProfile": ["fruity", "citrusy", "tart", "refreshing"],
+            "garnish": [
+                "lime wedge"
+            ],
+            "flavorProfile": [
+                "fruity",
+                "citrusy",
+                "tart",
+                "refreshing"
+            ],
             "strength": "light",
             "sweetness": "medium",
             "sourness": "medium",
@@ -3209,17 +3610,41 @@
         {
             "id": "bay-breeze",
             "name": "Bay Breeze",
-            "baseSpirits": ["vodka"],
-            "categories": ["highball", "tropical"],
+            "baseSpirits": [
+                "vodka"
+            ],
+            "categories": [
+                "highball",
+                "tropical"
+            ],
             "method": "build",
             "glass": "highball",
             "ingredients": [
-                { "name": "vodka", "amount": "45 ml", "ingredientId": "vodka" },
-                { "name": "cranberry juice", "amount": "75 ml", "ingredientId": "cranberry-juice" },
-                { "name": "pineapple juice", "amount": "75 ml", "ingredientId": "pineapple-juice" }
+                {
+                    "name": "vodka",
+                    "amount": "45 ml",
+                    "ingredientId": "vodka"
+                },
+                {
+                    "name": "cranberry juice",
+                    "amount": "75 ml",
+                    "ingredientId": "cranberry-juice"
+                },
+                {
+                    "name": "pineapple juice",
+                    "amount": "75 ml",
+                    "ingredientId": "pineapple-juice"
+                }
             ],
-            "garnish": ["lime wedge"],
-            "flavorProfile": ["fruity", "tropical", "sweet", "refreshing"],
+            "garnish": [
+                "lime wedge"
+            ],
+            "flavorProfile": [
+                "fruity",
+                "tropical",
+                "sweet",
+                "refreshing"
+            ],
             "strength": "light",
             "sweetness": "medium",
             "sourness": "low",
@@ -3233,18 +3658,46 @@
         {
             "id": "lemon-drop",
             "name": "Lemon Drop",
-            "baseSpirits": ["vodka"],
-            "categories": ["classic", "sour"],
+            "baseSpirits": [
+                "vodka"
+            ],
+            "categories": [
+                "classic",
+                "sour"
+            ],
             "method": "shake",
             "glass": "coupe",
             "ingredients": [
-                { "name": "vodka", "amount": "45 ml", "ingredientId": "vodka" },
-                { "name": "triple sec", "amount": "20 ml", "ingredientId": "triple-sec" },
-                { "name": "fresh lemon juice", "amount": "25 ml", "ingredientId": "lemon-juice" },
-                { "name": "simple syrup", "amount": "10 ml", "ingredientId": "simple-syrup" }
+                {
+                    "name": "vodka",
+                    "amount": "45 ml",
+                    "ingredientId": "vodka"
+                },
+                {
+                    "name": "triple sec",
+                    "amount": "20 ml",
+                    "ingredientId": "triple-sec"
+                },
+                {
+                    "name": "fresh lemon juice",
+                    "amount": "25 ml",
+                    "ingredientId": "lemon-juice"
+                },
+                {
+                    "name": "simple syrup",
+                    "amount": "10 ml",
+                    "ingredientId": "simple-syrup"
+                }
             ],
-            "garnish": ["lemon twist", "sugar rim"],
-            "flavorProfile": ["citrusy", "tart", "sweet"],
+            "garnish": [
+                "lemon twist",
+                "sugar rim"
+            ],
+            "flavorProfile": [
+                "citrusy",
+                "tart",
+                "sweet"
+            ],
             "strength": "strong",
             "sweetness": "medium",
             "sourness": "high",
@@ -3258,16 +3711,34 @@
         {
             "id": "vodka-tonic",
             "name": "Vodka Tonic",
-            "baseSpirits": ["vodka"],
-            "categories": ["highball"],
+            "baseSpirits": [
+                "vodka"
+            ],
+            "categories": [
+                "highball"
+            ],
             "method": "build",
             "glass": "highball",
             "ingredients": [
-                { "name": "vodka", "amount": "50 ml", "ingredientId": "vodka" },
-                { "name": "tonic water", "amount": "150 ml", "ingredientId": "tonic-water" }
+                {
+                    "name": "vodka",
+                    "amount": "50 ml",
+                    "ingredientId": "vodka"
+                },
+                {
+                    "name": "tonic water",
+                    "amount": "150 ml",
+                    "ingredientId": "tonic-water"
+                }
             ],
-            "garnish": ["lime wedge"],
-            "flavorProfile": ["citrusy", "bitter", "refreshing"],
+            "garnish": [
+                "lime wedge"
+            ],
+            "flavorProfile": [
+                "citrusy",
+                "bitter",
+                "refreshing"
+            ],
             "strength": "light",
             "sweetness": "medium",
             "sourness": "low",
@@ -3281,16 +3752,39 @@
         {
             "id": "whiskey-highball",
             "name": "Whiskey Highball",
-            "baseSpirits": ["whiskey"],
-            "categories": ["classic", "highball"],
+            "baseSpirits": [
+                "whiskey"
+            ],
+            "categories": [
+                "classic",
+                "highball"
+            ],
             "method": "build",
             "glass": "highball",
             "ingredients": [
-                { "name": "whiskey", "amount": "50 ml", "ingredientId": "rye-whiskey", "alternativeIngredientIds": ["bourbon", "scotch-whisky"] },
-                { "name": "soda water", "amount": "150 ml", "ingredientId": "soda-water" }
+                {
+                    "name": "whiskey",
+                    "amount": "50 ml",
+                    "ingredientId": "rye-whiskey",
+                    "alternativeIngredientIds": [
+                        "bourbon",
+                        "scotch-whisky"
+                    ]
+                },
+                {
+                    "name": "soda water",
+                    "amount": "150 ml",
+                    "ingredientId": "soda-water"
+                }
             ],
-            "garnish": ["lemon twist"],
-            "flavorProfile": ["boozy", "refreshing", "sparkling"],
+            "garnish": [
+                "lemon twist"
+            ],
+            "flavorProfile": [
+                "boozy",
+                "refreshing",
+                "sparkling"
+            ],
             "strength": "light",
             "sweetness": "low",
             "sourness": "none",
@@ -3304,17 +3798,41 @@
         {
             "id": "tequila-sour",
             "name": "Tequila Sour",
-            "baseSpirits": ["tequila"],
-            "categories": ["classic", "sour"],
+            "baseSpirits": [
+                "tequila"
+            ],
+            "categories": [
+                "classic",
+                "sour"
+            ],
             "method": "shake",
             "glass": "coupe",
             "ingredients": [
-                { "name": "tequila", "amount": "50 ml", "ingredientId": "tequila" },
-                { "name": "fresh lime juice", "amount": "25 ml", "ingredientId": "lime-juice" },
-                { "name": "agave syrup", "amount": "15 ml", "ingredientId": "agave-syrup" }
+                {
+                    "name": "tequila",
+                    "amount": "50 ml",
+                    "ingredientId": "tequila"
+                },
+                {
+                    "name": "fresh lime juice",
+                    "amount": "25 ml",
+                    "ingredientId": "lime-juice"
+                },
+                {
+                    "name": "agave syrup",
+                    "amount": "15 ml",
+                    "ingredientId": "agave-syrup"
+                }
             ],
-            "garnish": ["lime wheel"],
-            "flavorProfile": ["agave", "citrusy", "tart", "sweet"],
+            "garnish": [
+                "lime wheel"
+            ],
+            "flavorProfile": [
+                "agave",
+                "citrusy",
+                "tart",
+                "sweet"
+            ],
             "strength": "strong",
             "sweetness": "medium",
             "sourness": "high",
@@ -3328,17 +3846,40 @@
         {
             "id": "dirty-martini",
             "name": "Dirty Martini",
-            "baseSpirits": ["gin"],
-            "categories": ["classic", "spirit-forward"],
+            "baseSpirits": [
+                "gin"
+            ],
+            "categories": [
+                "classic",
+                "spirit-forward"
+            ],
             "method": "stir",
             "glass": "martini",
             "ingredients": [
-                { "name": "gin", "amount": "60 ml", "ingredientId": "gin" },
-                { "name": "dry vermouth", "amount": "10 ml", "ingredientId": "dry-vermouth" },
-                { "name": "olive brine", "amount": "10 ml", "ingredientId": "olive-brine" }
+                {
+                    "name": "gin",
+                    "amount": "60 ml",
+                    "ingredientId": "gin"
+                },
+                {
+                    "name": "dry vermouth",
+                    "amount": "10 ml",
+                    "ingredientId": "dry-vermouth"
+                },
+                {
+                    "name": "olive brine",
+                    "amount": "10 ml",
+                    "ingredientId": "olive-brine"
+                }
             ],
-            "garnish": ["green olives"],
-            "flavorProfile": ["boozy", "savory", "dry"],
+            "garnish": [
+                "green olives"
+            ],
+            "flavorProfile": [
+                "boozy",
+                "savory",
+                "dry"
+            ],
             "strength": "strong",
             "sweetness": "low",
             "sourness": "none",
@@ -3352,17 +3893,41 @@
         {
             "id": "rob-roy",
             "name": "Rob Roy",
-            "baseSpirits": ["scotch"],
-            "categories": ["classic", "spirit-forward"],
+            "baseSpirits": [
+                "scotch"
+            ],
+            "categories": [
+                "classic",
+                "spirit-forward"
+            ],
             "method": "stir",
             "glass": "coupe",
             "ingredients": [
-                { "name": "Scotch whisky", "amount": "50 ml", "ingredientId": "scotch-whisky" },
-                { "name": "sweet vermouth", "amount": "25 ml", "ingredientId": "sweet-vermouth" },
-                { "name": "aromatic bitters", "amount": "2 dashes", "ingredientId": "aromatic-bitters" }
+                {
+                    "name": "Scotch whisky",
+                    "amount": "50 ml",
+                    "ingredientId": "scotch-whisky"
+                },
+                {
+                    "name": "sweet vermouth",
+                    "amount": "25 ml",
+                    "ingredientId": "sweet-vermouth"
+                },
+                {
+                    "name": "aromatic bitters",
+                    "amount": "2 dashes",
+                    "ingredientId": "aromatic-bitters"
+                }
             ],
-            "garnish": ["cherry"],
-            "flavorProfile": ["boozy", "herbal", "sweet", "aromatic"],
+            "garnish": [
+                "cherry"
+            ],
+            "flavorProfile": [
+                "boozy",
+                "herbal",
+                "sweet",
+                "aromatic"
+            ],
             "strength": "strong",
             "sweetness": "medium",
             "sourness": "none",
@@ -3376,17 +3941,40 @@
         {
             "id": "champagne-cocktail",
             "name": "Champagne Cocktail",
-            "baseSpirits": ["sparkling-wine"],
-            "categories": ["classic", "sparkling"],
+            "baseSpirits": [
+                "sparkling-wine"
+            ],
+            "categories": [
+                "classic",
+                "sparkling"
+            ],
             "method": "build",
             "glass": "flute",
             "ingredients": [
-                { "name": "sugar cube", "amount": "1", "ingredientId": "sugar" },
-                { "name": "aromatic bitters", "amount": "2 dashes", "ingredientId": "aromatic-bitters" },
-                { "name": "sparkling wine", "amount": "120 ml", "ingredientId": "sparkling-wine" }
+                {
+                    "name": "sugar cube",
+                    "amount": "1",
+                    "ingredientId": "sugar"
+                },
+                {
+                    "name": "aromatic bitters",
+                    "amount": "2 dashes",
+                    "ingredientId": "aromatic-bitters"
+                },
+                {
+                    "name": "sparkling wine",
+                    "amount": "120 ml",
+                    "ingredientId": "sparkling-wine"
+                }
             ],
-            "garnish": ["lemon twist"],
-            "flavorProfile": ["sparkling", "aromatic", "dry"],
+            "garnish": [
+                "lemon twist"
+            ],
+            "flavorProfile": [
+                "sparkling",
+                "aromatic",
+                "dry"
+            ],
             "strength": "moderate",
             "sweetness": "low",
             "sourness": "none",
@@ -3400,17 +3988,40 @@
         {
             "id": "brandy-alexander",
             "name": "Brandy Alexander",
-            "baseSpirits": ["cognac"],
-            "categories": ["classic", "dessert"],
+            "baseSpirits": [
+                "cognac"
+            ],
+            "categories": [
+                "classic",
+                "dessert"
+            ],
             "method": "shake",
             "glass": "coupe",
             "ingredients": [
-                { "name": "cognac", "amount": "30 ml", "ingredientId": "cognac" },
-                { "name": "crème de cacao", "amount": "30 ml", "ingredientId": "creme-de-cacao" },
-                { "name": "cream", "amount": "30 ml", "ingredientId": "cream" }
+                {
+                    "name": "cognac",
+                    "amount": "30 ml",
+                    "ingredientId": "cognac"
+                },
+                {
+                    "name": "crème de cacao",
+                    "amount": "30 ml",
+                    "ingredientId": "creme-de-cacao"
+                },
+                {
+                    "name": "cream",
+                    "amount": "30 ml",
+                    "ingredientId": "cream"
+                }
             ],
-            "garnish": ["grated nutmeg"],
-            "flavorProfile": ["creamy", "sweet", "nutty"],
+            "garnish": [
+                "grated nutmeg"
+            ],
+            "flavorProfile": [
+                "creamy",
+                "sweet",
+                "nutty"
+            ],
             "strength": "moderate",
             "sweetness": "high",
             "sourness": "none",
@@ -3424,18 +4035,49 @@
         {
             "id": "hot-toddy",
             "name": "Hot Toddy",
-            "baseSpirits": ["whiskey"],
-            "categories": ["classic"],
+            "baseSpirits": [
+                "whiskey"
+            ],
+            "categories": [
+                "classic"
+            ],
             "method": "build",
             "glass": "mug",
             "ingredients": [
-                { "name": "whiskey", "amount": "45 ml", "ingredientId": "bourbon", "alternativeIngredientIds": ["rye-whiskey", "scotch-whisky"] },
-                { "name": "honey syrup", "amount": "15 ml", "ingredientId": "honey-syrup" },
-                { "name": "fresh lemon juice", "amount": "15 ml", "ingredientId": "lemon-juice" },
-                { "name": "hot water", "amount": "120 ml", "ingredientId": "hot-water" }
+                {
+                    "name": "whiskey",
+                    "amount": "45 ml",
+                    "ingredientId": "bourbon",
+                    "alternativeIngredientIds": [
+                        "rye-whiskey",
+                        "scotch-whisky"
+                    ]
+                },
+                {
+                    "name": "honey syrup",
+                    "amount": "15 ml",
+                    "ingredientId": "honey-syrup"
+                },
+                {
+                    "name": "fresh lemon juice",
+                    "amount": "15 ml",
+                    "ingredientId": "lemon-juice"
+                },
+                {
+                    "name": "hot water",
+                    "amount": "120 ml",
+                    "ingredientId": "hot-water"
+                }
             ],
-            "garnish": ["lemon wheel", "cinnamon stick"],
-            "flavorProfile": ["honey", "citrusy", "spiced"],
+            "garnish": [
+                "lemon wheel",
+                "cinnamon stick"
+            ],
+            "flavorProfile": [
+                "honey",
+                "citrusy",
+                "spiced"
+            ],
             "strength": "moderate",
             "sweetness": "medium",
             "sourness": "low",
@@ -3449,18 +4091,45 @@
         {
             "id": "gin-basil-smash",
             "name": "Gin Basil Smash",
-            "baseSpirits": ["gin"],
-            "categories": ["sour", "fizz"],
+            "baseSpirits": [
+                "gin"
+            ],
+            "categories": [
+                "sour",
+                "fizz"
+            ],
             "method": "shake",
             "glass": "rocks",
             "ingredients": [
-                { "name": "gin", "amount": "60 ml", "ingredientId": "gin" },
-                { "name": "fresh lemon juice", "amount": "25 ml", "ingredientId": "lemon-juice" },
-                { "name": "simple syrup", "amount": "20 ml", "ingredientId": "simple-syrup" },
-                { "name": "fresh basil", "amount": "8 leaves", "ingredientId": "basil" }
+                {
+                    "name": "gin",
+                    "amount": "60 ml",
+                    "ingredientId": "gin"
+                },
+                {
+                    "name": "fresh lemon juice",
+                    "amount": "25 ml",
+                    "ingredientId": "lemon-juice"
+                },
+                {
+                    "name": "simple syrup",
+                    "amount": "20 ml",
+                    "ingredientId": "simple-syrup"
+                },
+                {
+                    "name": "fresh basil",
+                    "amount": "8 leaves",
+                    "ingredientId": "basil"
+                }
             ],
-            "garnish": ["basil sprig"],
-            "flavorProfile": ["herbal", "citrusy", "refreshing"],
+            "garnish": [
+                "basil sprig"
+            ],
+            "flavorProfile": [
+                "herbal",
+                "citrusy",
+                "refreshing"
+            ],
             "strength": "strong",
             "sweetness": "medium",
             "sourness": "high",
@@ -3474,19 +4143,52 @@
         {
             "id": "rum-punch",
             "name": "Rum Punch",
-            "baseSpirits": ["rum"],
-            "categories": ["tropical", "tiki"],
+            "baseSpirits": [
+                "rum"
+            ],
+            "categories": [
+                "tropical",
+                "tiki"
+            ],
             "method": "shake",
             "glass": "highball",
             "ingredients": [
-                { "name": "aged rum", "amount": "45 ml", "ingredientId": "aged-rum" },
-                { "name": "fresh lime juice", "amount": "20 ml", "ingredientId": "lime-juice" },
-                { "name": "orange juice", "amount": "45 ml", "ingredientId": "orange-juice" },
-                { "name": "pineapple juice", "amount": "45 ml", "ingredientId": "pineapple-juice" },
-                { "name": "grenadine", "amount": "10 ml", "ingredientId": "grenadine" }
+                {
+                    "name": "aged rum",
+                    "amount": "45 ml",
+                    "ingredientId": "aged-rum"
+                },
+                {
+                    "name": "fresh lime juice",
+                    "amount": "20 ml",
+                    "ingredientId": "lime-juice"
+                },
+                {
+                    "name": "orange juice",
+                    "amount": "45 ml",
+                    "ingredientId": "orange-juice"
+                },
+                {
+                    "name": "pineapple juice",
+                    "amount": "45 ml",
+                    "ingredientId": "pineapple-juice"
+                },
+                {
+                    "name": "grenadine",
+                    "amount": "10 ml",
+                    "ingredientId": "grenadine"
+                }
             ],
-            "garnish": ["orange slice", "cherry"],
-            "flavorProfile": ["tropical", "fruity", "citrusy", "sweet"],
+            "garnish": [
+                "orange slice",
+                "cherry"
+            ],
+            "flavorProfile": [
+                "tropical",
+                "fruity",
+                "citrusy",
+                "sweet"
+            ],
             "strength": "moderate",
             "sweetness": "high",
             "sourness": "medium",
@@ -3500,18 +4202,46 @@
         {
             "id": "martinez",
             "name": "Martinez",
-            "baseSpirits": ["gin"],
-            "categories": ["classic", "spirit-forward"],
+            "baseSpirits": [
+                "gin"
+            ],
+            "categories": [
+                "classic",
+                "spirit-forward"
+            ],
             "method": "stir",
             "glass": "coupe",
             "ingredients": [
-                { "name": "gin", "amount": "45 ml", "ingredientId": "gin" },
-                { "name": "sweet vermouth", "amount": "45 ml", "ingredientId": "sweet-vermouth" },
-                { "name": "maraschino liqueur", "amount": "5 ml", "ingredientId": "maraschino-liqueur" },
-                { "name": "aromatic bitters", "amount": "2 dashes", "ingredientId": "aromatic-bitters" }
+                {
+                    "name": "gin",
+                    "amount": "45 ml",
+                    "ingredientId": "gin"
+                },
+                {
+                    "name": "sweet vermouth",
+                    "amount": "45 ml",
+                    "ingredientId": "sweet-vermouth"
+                },
+                {
+                    "name": "maraschino liqueur",
+                    "amount": "5 ml",
+                    "ingredientId": "maraschino-liqueur"
+                },
+                {
+                    "name": "aromatic bitters",
+                    "amount": "2 dashes",
+                    "ingredientId": "aromatic-bitters"
+                }
             ],
-            "garnish": ["lemon twist"],
-            "flavorProfile": ["boozy", "herbal", "sweet", "aromatic"],
+            "garnish": [
+                "lemon twist"
+            ],
+            "flavorProfile": [
+                "boozy",
+                "herbal",
+                "sweet",
+                "aromatic"
+            ],
             "strength": "strong",
             "sweetness": "medium",
             "sourness": "none",
@@ -3525,18 +4255,46 @@
         {
             "id": "el-presidente",
             "name": "El Presidente",
-            "baseSpirits": ["rum"],
-            "categories": ["classic", "spirit-forward"],
+            "baseSpirits": [
+                "rum"
+            ],
+            "categories": [
+                "classic",
+                "spirit-forward"
+            ],
             "method": "stir",
             "glass": "coupe",
             "ingredients": [
-                { "name": "white rum", "amount": "45 ml", "ingredientId": "white-rum" },
-                { "name": "dry vermouth", "amount": "25 ml", "ingredientId": "dry-vermouth" },
-                { "name": "orange curaçao", "amount": "15 ml", "ingredientId": "orange-curacao" },
-                { "name": "grenadine", "amount": "5 ml", "ingredientId": "grenadine" }
+                {
+                    "name": "white rum",
+                    "amount": "45 ml",
+                    "ingredientId": "white-rum"
+                },
+                {
+                    "name": "dry vermouth",
+                    "amount": "25 ml",
+                    "ingredientId": "dry-vermouth"
+                },
+                {
+                    "name": "orange curaçao",
+                    "amount": "15 ml",
+                    "ingredientId": "orange-curacao"
+                },
+                {
+                    "name": "grenadine",
+                    "amount": "5 ml",
+                    "ingredientId": "grenadine"
+                }
             ],
-            "garnish": ["orange twist"],
-            "flavorProfile": ["rum-forward", "citrusy", "herbal", "sweet"],
+            "garnish": [
+                "orange twist"
+            ],
+            "flavorProfile": [
+                "rum-forward",
+                "citrusy",
+                "herbal",
+                "sweet"
+            ],
             "strength": "strong",
             "sweetness": "medium",
             "sourness": "none",
@@ -3550,18 +4308,45 @@
         {
             "id": "mary-pickford",
             "name": "Mary Pickford",
-            "baseSpirits": ["rum"],
-            "categories": ["classic", "tropical"],
+            "baseSpirits": [
+                "rum"
+            ],
+            "categories": [
+                "classic",
+                "tropical"
+            ],
             "method": "shake",
             "glass": "coupe",
             "ingredients": [
-                { "name": "white rum", "amount": "45 ml", "ingredientId": "white-rum" },
-                { "name": "pineapple juice", "amount": "45 ml", "ingredientId": "pineapple-juice" },
-                { "name": "maraschino liqueur", "amount": "5 ml", "ingredientId": "maraschino-liqueur" },
-                { "name": "grenadine", "amount": "5 ml", "ingredientId": "grenadine" }
+                {
+                    "name": "white rum",
+                    "amount": "45 ml",
+                    "ingredientId": "white-rum"
+                },
+                {
+                    "name": "pineapple juice",
+                    "amount": "45 ml",
+                    "ingredientId": "pineapple-juice"
+                },
+                {
+                    "name": "maraschino liqueur",
+                    "amount": "5 ml",
+                    "ingredientId": "maraschino-liqueur"
+                },
+                {
+                    "name": "grenadine",
+                    "amount": "5 ml",
+                    "ingredientId": "grenadine"
+                }
             ],
-            "garnish": ["cherry"],
-            "flavorProfile": ["fruity", "tropical", "sweet"],
+            "garnish": [
+                "cherry"
+            ],
+            "flavorProfile": [
+                "fruity",
+                "tropical",
+                "sweet"
+            ],
             "strength": "moderate",
             "sweetness": "medium",
             "sourness": "low",
@@ -3575,19 +4360,52 @@
         {
             "id": "planters-punch",
             "name": "Planter's Punch",
-            "baseSpirits": ["rum"],
-            "categories": ["classic", "tropical", "tiki"],
+            "baseSpirits": [
+                "rum"
+            ],
+            "categories": [
+                "classic",
+                "tropical",
+                "tiki"
+            ],
             "method": "shake",
             "glass": "highball",
             "ingredients": [
-                { "name": "aged rum", "amount": "60 ml", "ingredientId": "aged-rum" },
-                { "name": "fresh lime juice", "amount": "25 ml", "ingredientId": "lime-juice" },
-                { "name": "simple syrup", "amount": "15 ml", "ingredientId": "simple-syrup" },
-                { "name": "aromatic bitters", "amount": "2 dashes", "ingredientId": "aromatic-bitters" },
-                { "name": "soda water", "amount": "60 ml", "ingredientId": "soda-water" }
+                {
+                    "name": "aged rum",
+                    "amount": "60 ml",
+                    "ingredientId": "aged-rum"
+                },
+                {
+                    "name": "fresh lime juice",
+                    "amount": "25 ml",
+                    "ingredientId": "lime-juice"
+                },
+                {
+                    "name": "simple syrup",
+                    "amount": "15 ml",
+                    "ingredientId": "simple-syrup"
+                },
+                {
+                    "name": "aromatic bitters",
+                    "amount": "2 dashes",
+                    "ingredientId": "aromatic-bitters"
+                },
+                {
+                    "name": "soda water",
+                    "amount": "60 ml",
+                    "ingredientId": "soda-water"
+                }
             ],
-            "garnish": ["lime wheel"],
-            "flavorProfile": ["rum-forward", "citrusy", "spiced", "refreshing"],
+            "garnish": [
+                "lime wheel"
+            ],
+            "flavorProfile": [
+                "rum-forward",
+                "citrusy",
+                "spiced",
+                "refreshing"
+            ],
             "strength": "moderate",
             "sweetness": "medium",
             "sourness": "medium",
@@ -3601,23 +4419,72 @@
         {
             "id": "singapore-sling",
             "name": "Singapore Sling",
-            "baseSpirits": ["gin"],
-            "categories": ["classic", "tropical"],
+            "baseSpirits": [
+                "gin"
+            ],
+            "categories": [
+                "classic",
+                "tropical"
+            ],
             "method": "shake",
             "glass": "highball",
             "ingredients": [
-                { "name": "gin", "amount": "30 ml", "ingredientId": "gin" },
-                { "name": "cherry liqueur", "amount": "15 ml", "ingredientId": "cherry-liqueur" },
-                { "name": "orange liqueur", "amount": "7.5 ml", "ingredientId": "triple-sec" },
-                { "name": "Bénédictine", "amount": "7.5 ml", "ingredientId": "benedictine" },
-                { "name": "fresh lime juice", "amount": "15 ml", "ingredientId": "lime-juice" },
-                { "name": "pineapple juice", "amount": "90 ml", "ingredientId": "pineapple-juice" },
-                { "name": "grenadine", "amount": "10 ml", "ingredientId": "grenadine" },
-                { "name": "aromatic bitters", "amount": "1 dash", "ingredientId": "aromatic-bitters" },
-                { "name": "soda water", "amount": "30 ml", "ingredientId": "soda-water" }
+                {
+                    "name": "gin",
+                    "amount": "30 ml",
+                    "ingredientId": "gin"
+                },
+                {
+                    "name": "cherry liqueur",
+                    "amount": "15 ml",
+                    "ingredientId": "cherry-liqueur"
+                },
+                {
+                    "name": "orange liqueur",
+                    "amount": "7.5 ml",
+                    "ingredientId": "triple-sec"
+                },
+                {
+                    "name": "Bénédictine",
+                    "amount": "7.5 ml",
+                    "ingredientId": "benedictine"
+                },
+                {
+                    "name": "fresh lime juice",
+                    "amount": "15 ml",
+                    "ingredientId": "lime-juice"
+                },
+                {
+                    "name": "pineapple juice",
+                    "amount": "90 ml",
+                    "ingredientId": "pineapple-juice"
+                },
+                {
+                    "name": "grenadine",
+                    "amount": "10 ml",
+                    "ingredientId": "grenadine"
+                },
+                {
+                    "name": "aromatic bitters",
+                    "amount": "1 dash",
+                    "ingredientId": "aromatic-bitters"
+                },
+                {
+                    "name": "soda water",
+                    "amount": "30 ml",
+                    "ingredientId": "soda-water"
+                }
             ],
-            "garnish": ["pineapple wedge", "cherry"],
-            "flavorProfile": ["fruity", "tropical", "complex", "sweet"],
+            "garnish": [
+                "pineapple wedge",
+                "cherry"
+            ],
+            "flavorProfile": [
+                "fruity",
+                "tropical",
+                "complex",
+                "sweet"
+            ],
             "strength": "moderate",
             "sweetness": "high",
             "sourness": "medium",
@@ -3631,18 +4498,47 @@
         {
             "id": "bramble",
             "name": "Bramble",
-            "baseSpirits": ["gin"],
-            "categories": ["sour", "classic"],
+            "baseSpirits": [
+                "gin"
+            ],
+            "categories": [
+                "sour",
+                "classic"
+            ],
             "method": "shake",
             "glass": "rocks",
             "ingredients": [
-                { "name": "gin", "amount": "50 ml", "ingredientId": "gin" },
-                { "name": "fresh lemon juice", "amount": "25 ml", "ingredientId": "lemon-juice" },
-                { "name": "simple syrup", "amount": "15 ml", "ingredientId": "simple-syrup" },
-                { "name": "blackberry liqueur", "amount": "15 ml", "ingredientId": "creme-de-mure" }
+                {
+                    "name": "gin",
+                    "amount": "50 ml",
+                    "ingredientId": "gin"
+                },
+                {
+                    "name": "fresh lemon juice",
+                    "amount": "25 ml",
+                    "ingredientId": "lemon-juice"
+                },
+                {
+                    "name": "simple syrup",
+                    "amount": "15 ml",
+                    "ingredientId": "simple-syrup"
+                },
+                {
+                    "name": "blackberry liqueur",
+                    "amount": "15 ml",
+                    "ingredientId": "creme-de-mure"
+                }
             ],
-            "garnish": ["blackberries", "lemon slice"],
-            "flavorProfile": ["fruity", "citrusy", "tart", "sweet"],
+            "garnish": [
+                "blackberries",
+                "lemon slice"
+            ],
+            "flavorProfile": [
+                "fruity",
+                "citrusy",
+                "tart",
+                "sweet"
+            ],
             "strength": "moderate",
             "sweetness": "medium",
             "sourness": "high",
@@ -3656,17 +4552,41 @@
         {
             "id": "gold-rush",
             "name": "Gold Rush",
-            "baseSpirits": ["bourbon"],
-            "categories": ["sour", "classic"],
+            "baseSpirits": [
+                "bourbon"
+            ],
+            "categories": [
+                "sour",
+                "classic"
+            ],
             "method": "shake",
             "glass": "rocks",
             "ingredients": [
-                { "name": "bourbon", "amount": "60 ml", "ingredientId": "bourbon" },
-                { "name": "fresh lemon juice", "amount": "25 ml", "ingredientId": "lemon-juice" },
-                { "name": "honey syrup", "amount": "20 ml", "ingredientId": "honey-syrup" }
+                {
+                    "name": "bourbon",
+                    "amount": "60 ml",
+                    "ingredientId": "bourbon"
+                },
+                {
+                    "name": "fresh lemon juice",
+                    "amount": "25 ml",
+                    "ingredientId": "lemon-juice"
+                },
+                {
+                    "name": "honey syrup",
+                    "amount": "20 ml",
+                    "ingredientId": "honey-syrup"
+                }
             ],
-            "garnish": ["lemon twist"],
-            "flavorProfile": ["honey", "citrusy", "tart", "boozy"],
+            "garnish": [
+                "lemon twist"
+            ],
+            "flavorProfile": [
+                "honey",
+                "citrusy",
+                "tart",
+                "boozy"
+            ],
             "strength": "strong",
             "sweetness": "medium",
             "sourness": "high",
@@ -3680,17 +4600,40 @@
         {
             "id": "brown-derby",
             "name": "Brown Derby",
-            "baseSpirits": ["bourbon"],
-            "categories": ["classic", "sour"],
+            "baseSpirits": [
+                "bourbon"
+            ],
+            "categories": [
+                "classic",
+                "sour"
+            ],
             "method": "shake",
             "glass": "coupe",
             "ingredients": [
-                { "name": "bourbon", "amount": "45 ml", "ingredientId": "bourbon" },
-                { "name": "grapefruit juice", "amount": "30 ml", "ingredientId": "grapefruit-juice" },
-                { "name": "honey syrup", "amount": "15 ml", "ingredientId": "honey-syrup" }
+                {
+                    "name": "bourbon",
+                    "amount": "45 ml",
+                    "ingredientId": "bourbon"
+                },
+                {
+                    "name": "grapefruit juice",
+                    "amount": "30 ml",
+                    "ingredientId": "grapefruit-juice"
+                },
+                {
+                    "name": "honey syrup",
+                    "amount": "15 ml",
+                    "ingredientId": "honey-syrup"
+                }
             ],
-            "garnish": ["grapefruit twist"],
-            "flavorProfile": ["citrusy", "honey", "tart"],
+            "garnish": [
+                "grapefruit twist"
+            ],
+            "flavorProfile": [
+                "citrusy",
+                "honey",
+                "tart"
+            ],
             "strength": "strong",
             "sweetness": "medium",
             "sourness": "high",
@@ -3704,18 +4647,46 @@
         {
             "id": "ward-eight",
             "name": "Ward Eight",
-            "baseSpirits": ["rye"],
-            "categories": ["classic", "sour"],
+            "baseSpirits": [
+                "rye"
+            ],
+            "categories": [
+                "classic",
+                "sour"
+            ],
             "method": "shake",
             "glass": "coupe",
             "ingredients": [
-                { "name": "rye whiskey", "amount": "50 ml", "ingredientId": "rye-whiskey" },
-                { "name": "fresh lemon juice", "amount": "20 ml", "ingredientId": "lemon-juice" },
-                { "name": "orange juice", "amount": "20 ml", "ingredientId": "orange-juice" },
-                { "name": "grenadine", "amount": "10 ml", "ingredientId": "grenadine" }
+                {
+                    "name": "rye whiskey",
+                    "amount": "50 ml",
+                    "ingredientId": "rye-whiskey"
+                },
+                {
+                    "name": "fresh lemon juice",
+                    "amount": "20 ml",
+                    "ingredientId": "lemon-juice"
+                },
+                {
+                    "name": "orange juice",
+                    "amount": "20 ml",
+                    "ingredientId": "orange-juice"
+                },
+                {
+                    "name": "grenadine",
+                    "amount": "10 ml",
+                    "ingredientId": "grenadine"
+                }
             ],
-            "garnish": ["orange twist"],
-            "flavorProfile": ["citrusy", "fruity", "sweet", "boozy"],
+            "garnish": [
+                "orange twist"
+            ],
+            "flavorProfile": [
+                "citrusy",
+                "fruity",
+                "sweet",
+                "boozy"
+            ],
             "strength": "strong",
             "sweetness": "medium",
             "sourness": "medium",
@@ -3729,18 +4700,46 @@
         {
             "id": "paper-plane",
             "name": "Paper Plane",
-            "baseSpirits": ["bourbon"],
-            "categories": ["classic", "sour"],
+            "baseSpirits": [
+                "bourbon"
+            ],
+            "categories": [
+                "classic",
+                "sour"
+            ],
             "method": "shake",
             "glass": "coupe",
             "ingredients": [
-                { "name": "bourbon", "amount": "22.5 ml", "ingredientId": "bourbon" },
-                { "name": "bitter aperitivo", "amount": "22.5 ml", "ingredientId": "aperol" },
-                { "name": "amaro", "amount": "22.5 ml", "ingredientId": "amaro" },
-                { "name": "fresh lemon juice", "amount": "22.5 ml", "ingredientId": "lemon-juice" }
+                {
+                    "name": "bourbon",
+                    "amount": "22.5 ml",
+                    "ingredientId": "bourbon"
+                },
+                {
+                    "name": "bitter aperitivo",
+                    "amount": "22.5 ml",
+                    "ingredientId": "aperol"
+                },
+                {
+                    "name": "amaro",
+                    "amount": "22.5 ml",
+                    "ingredientId": "amaro"
+                },
+                {
+                    "name": "fresh lemon juice",
+                    "amount": "22.5 ml",
+                    "ingredientId": "lemon-juice"
+                }
             ],
-            "garnish": ["lemon twist"],
-            "flavorProfile": ["bitter", "citrusy", "herbal", "complex"],
+            "garnish": [
+                "lemon twist"
+            ],
+            "flavorProfile": [
+                "bitter",
+                "citrusy",
+                "herbal",
+                "complex"
+            ],
             "strength": "strong",
             "sweetness": "medium",
             "sourness": "high",
@@ -3754,18 +4753,46 @@
         {
             "id": "el-diablo",
             "name": "El Diablo",
-            "baseSpirits": ["tequila"],
-            "categories": ["classic", "highball"],
+            "baseSpirits": [
+                "tequila"
+            ],
+            "categories": [
+                "classic",
+                "highball"
+            ],
             "method": "build",
             "glass": "highball",
             "ingredients": [
-                { "name": "tequila", "amount": "45 ml", "ingredientId": "tequila" },
-                { "name": "crème de cassis", "amount": "15 ml", "ingredientId": "creme-de-cassis" },
-                { "name": "fresh lime juice", "amount": "15 ml", "ingredientId": "lime-juice" },
-                { "name": "ginger beer", "amount": "100 ml", "ingredientId": "ginger-beer" }
+                {
+                    "name": "tequila",
+                    "amount": "45 ml",
+                    "ingredientId": "tequila"
+                },
+                {
+                    "name": "crème de cassis",
+                    "amount": "15 ml",
+                    "ingredientId": "creme-de-cassis"
+                },
+                {
+                    "name": "fresh lime juice",
+                    "amount": "15 ml",
+                    "ingredientId": "lime-juice"
+                },
+                {
+                    "name": "ginger beer",
+                    "amount": "100 ml",
+                    "ingredientId": "ginger-beer"
+                }
             ],
-            "garnish": ["lime wheel"],
-            "flavorProfile": ["agave", "fruity", "ginger", "refreshing"],
+            "garnish": [
+                "lime wheel"
+            ],
+            "flavorProfile": [
+                "agave",
+                "fruity",
+                "ginger",
+                "refreshing"
+            ],
             "strength": "moderate",
             "sweetness": "medium",
             "sourness": "low",
@@ -3779,17 +4806,40 @@
         {
             "id": "ranch-water",
             "name": "Ranch Water",
-            "baseSpirits": ["tequila"],
-            "categories": ["highball"],
+            "baseSpirits": [
+                "tequila"
+            ],
+            "categories": [
+                "highball"
+            ],
             "method": "build",
             "glass": "highball",
             "ingredients": [
-                { "name": "tequila", "amount": "45 ml", "ingredientId": "tequila" },
-                { "name": "fresh lime juice", "amount": "20 ml", "ingredientId": "lime-juice" },
-                { "name": "soda water", "amount": "150 ml", "ingredientId": "soda-water" }
+                {
+                    "name": "tequila",
+                    "amount": "45 ml",
+                    "ingredientId": "tequila"
+                },
+                {
+                    "name": "fresh lime juice",
+                    "amount": "20 ml",
+                    "ingredientId": "lime-juice"
+                },
+                {
+                    "name": "soda water",
+                    "amount": "150 ml",
+                    "ingredientId": "soda-water"
+                }
             ],
-            "garnish": ["lime wedge"],
-            "flavorProfile": ["agave", "citrusy", "dry", "refreshing"],
+            "garnish": [
+                "lime wedge"
+            ],
+            "flavorProfile": [
+                "agave",
+                "citrusy",
+                "dry",
+                "refreshing"
+            ],
             "strength": "light",
             "sweetness": "low",
             "sourness": "medium",
@@ -3803,19 +4853,52 @@
         {
             "id": "gin-gin-mule",
             "name": "Gin-Gin Mule",
-            "baseSpirits": ["gin"],
-            "categories": ["highball", "sour"],
+            "baseSpirits": [
+                "gin"
+            ],
+            "categories": [
+                "highball",
+                "sour"
+            ],
             "method": "shake",
             "glass": "highball",
             "ingredients": [
-                { "name": "gin", "amount": "45 ml", "ingredientId": "gin" },
-                { "name": "fresh lime juice", "amount": "20 ml", "ingredientId": "lime-juice" },
-                { "name": "simple syrup", "amount": "15 ml", "ingredientId": "simple-syrup" },
-                { "name": "mint", "amount": "8 leaves", "ingredientId": "mint" },
-                { "name": "ginger beer", "amount": "90 ml", "ingredientId": "ginger-beer" }
+                {
+                    "name": "gin",
+                    "amount": "45 ml",
+                    "ingredientId": "gin"
+                },
+                {
+                    "name": "fresh lime juice",
+                    "amount": "20 ml",
+                    "ingredientId": "lime-juice"
+                },
+                {
+                    "name": "simple syrup",
+                    "amount": "15 ml",
+                    "ingredientId": "simple-syrup"
+                },
+                {
+                    "name": "mint",
+                    "amount": "8 leaves",
+                    "ingredientId": "mint"
+                },
+                {
+                    "name": "ginger beer",
+                    "amount": "90 ml",
+                    "ingredientId": "ginger-beer"
+                }
             ],
-            "garnish": ["mint sprig", "lime wheel"],
-            "flavorProfile": ["minty", "ginger", "citrusy", "refreshing"],
+            "garnish": [
+                "mint sprig",
+                "lime wheel"
+            ],
+            "flavorProfile": [
+                "minty",
+                "ginger",
+                "citrusy",
+                "refreshing"
+            ],
             "strength": "moderate",
             "sweetness": "medium",
             "sourness": "medium",
@@ -3829,22 +4912,64 @@
         {
             "id": "ramos-gin-fizz",
             "name": "Ramos Gin Fizz",
-            "baseSpirits": ["gin"],
-            "categories": ["classic", "fizz"],
+            "baseSpirits": [
+                "gin"
+            ],
+            "categories": [
+                "classic",
+                "fizz"
+            ],
             "method": "shake",
             "glass": "tall",
             "ingredients": [
-                { "name": "gin", "amount": "45 ml", "ingredientId": "gin" },
-                { "name": "fresh lemon juice", "amount": "15 ml", "ingredientId": "lemon-juice" },
-                { "name": "fresh lime juice", "amount": "15 ml", "ingredientId": "lime-juice" },
-                { "name": "simple syrup", "amount": "25 ml", "ingredientId": "simple-syrup" },
-                { "name": "cream", "amount": "30 ml", "ingredientId": "cream" },
-                { "name": "egg white", "amount": "1", "ingredientId": "egg-white" },
-                { "name": "orange flower water", "amount": "2 drops", "ingredientId": "orange-flower-water" },
-                { "name": "soda water", "amount": "60 ml", "ingredientId": "soda-water" }
+                {
+                    "name": "gin",
+                    "amount": "45 ml",
+                    "ingredientId": "gin"
+                },
+                {
+                    "name": "fresh lemon juice",
+                    "amount": "15 ml",
+                    "ingredientId": "lemon-juice"
+                },
+                {
+                    "name": "fresh lime juice",
+                    "amount": "15 ml",
+                    "ingredientId": "lime-juice"
+                },
+                {
+                    "name": "simple syrup",
+                    "amount": "25 ml",
+                    "ingredientId": "simple-syrup"
+                },
+                {
+                    "name": "cream",
+                    "amount": "30 ml",
+                    "ingredientId": "cream"
+                },
+                {
+                    "name": "egg white",
+                    "amount": "1",
+                    "ingredientId": "egg-white"
+                },
+                {
+                    "name": "orange flower water",
+                    "amount": "2 drops",
+                    "ingredientId": "orange-flower-water"
+                },
+                {
+                    "name": "soda water",
+                    "amount": "60 ml",
+                    "ingredientId": "soda-water"
+                }
             ],
             "garnish": [],
-            "flavorProfile": ["creamy", "citrusy", "floral", "refreshing"],
+            "flavorProfile": [
+                "creamy",
+                "citrusy",
+                "floral",
+                "refreshing"
+            ],
             "strength": "moderate",
             "sweetness": "medium",
             "sourness": "medium",
@@ -3859,16 +4984,37 @@
             "id": "grasshopper",
             "name": "Grasshopper",
             "baseSpirits": [],
-            "categories": ["classic", "dessert"],
+            "categories": [
+                "classic",
+                "dessert"
+            ],
             "method": "shake",
             "glass": "coupe",
             "ingredients": [
-                { "name": "crème de menthe", "amount": "30 ml", "ingredientId": "creme-de-menthe" },
-                { "name": "crème de cacao", "amount": "30 ml", "ingredientId": "creme-de-cacao" },
-                { "name": "cream", "amount": "30 ml", "ingredientId": "cream" }
+                {
+                    "name": "crème de menthe",
+                    "amount": "30 ml",
+                    "ingredientId": "creme-de-menthe"
+                },
+                {
+                    "name": "crème de cacao",
+                    "amount": "30 ml",
+                    "ingredientId": "creme-de-cacao"
+                },
+                {
+                    "name": "cream",
+                    "amount": "30 ml",
+                    "ingredientId": "cream"
+                }
             ],
-            "garnish": ["grated chocolate"],
-            "flavorProfile": ["creamy", "sweet", "minty"],
+            "garnish": [
+                "grated chocolate"
+            ],
+            "flavorProfile": [
+                "creamy",
+                "sweet",
+                "minty"
+            ],
             "strength": "moderate",
             "sweetness": "high",
             "sourness": "none",
@@ -3882,18 +5028,45 @@
         {
             "id": "mudslide",
             "name": "Mudslide",
-            "baseSpirits": ["vodka"],
-            "categories": ["dessert"],
+            "baseSpirits": [
+                "vodka"
+            ],
+            "categories": [
+                "dessert"
+            ],
             "method": "shake",
             "glass": "rocks",
             "ingredients": [
-                { "name": "vodka", "amount": "30 ml", "ingredientId": "vodka" },
-                { "name": "coffee liqueur", "amount": "30 ml", "ingredientId": "coffee-liqueur" },
-                { "name": "cream liqueur", "amount": "30 ml", "ingredientId": "cream-liqueur" },
-                { "name": "cream", "amount": "30 ml", "ingredientId": "cream" }
+                {
+                    "name": "vodka",
+                    "amount": "30 ml",
+                    "ingredientId": "vodka"
+                },
+                {
+                    "name": "coffee liqueur",
+                    "amount": "30 ml",
+                    "ingredientId": "coffee-liqueur"
+                },
+                {
+                    "name": "cream liqueur",
+                    "amount": "30 ml",
+                    "ingredientId": "cream-liqueur"
+                },
+                {
+                    "name": "cream",
+                    "amount": "30 ml",
+                    "ingredientId": "cream"
+                }
             ],
-            "garnish": ["grated chocolate"],
-            "flavorProfile": ["creamy", "coffee", "sweet", "rich"],
+            "garnish": [
+                "grated chocolate"
+            ],
+            "flavorProfile": [
+                "creamy",
+                "coffee",
+                "sweet",
+                "rich"
+            ],
             "strength": "moderate",
             "sweetness": "high",
             "sourness": "none",
@@ -3907,18 +5080,46 @@
         {
             "id": "hemingway-daiquiri",
             "name": "Hemingway Daiquiri",
-            "baseSpirits": ["rum"],
-            "categories": ["classic", "sour"],
+            "baseSpirits": [
+                "rum"
+            ],
+            "categories": [
+                "classic",
+                "sour"
+            ],
             "method": "shake",
             "glass": "coupe",
             "ingredients": [
-                { "name": "white rum", "amount": "60 ml", "ingredientId": "white-rum" },
-                { "name": "fresh lime juice", "amount": "20 ml", "ingredientId": "lime-juice" },
-                { "name": "grapefruit juice", "amount": "15 ml", "ingredientId": "grapefruit-juice" },
-                { "name": "maraschino liqueur", "amount": "15 ml", "ingredientId": "maraschino-liqueur" }
+                {
+                    "name": "white rum",
+                    "amount": "60 ml",
+                    "ingredientId": "white-rum"
+                },
+                {
+                    "name": "fresh lime juice",
+                    "amount": "20 ml",
+                    "ingredientId": "lime-juice"
+                },
+                {
+                    "name": "grapefruit juice",
+                    "amount": "15 ml",
+                    "ingredientId": "grapefruit-juice"
+                },
+                {
+                    "name": "maraschino liqueur",
+                    "amount": "15 ml",
+                    "ingredientId": "maraschino-liqueur"
+                }
             ],
-            "garnish": ["lime wheel"],
-            "flavorProfile": ["rum-forward", "citrusy", "tart", "dry"],
+            "garnish": [
+                "lime wheel"
+            ],
+            "flavorProfile": [
+                "rum-forward",
+                "citrusy",
+                "tart",
+                "dry"
+            ],
             "strength": "strong",
             "sweetness": "low",
             "sourness": "high",
@@ -3932,18 +5133,46 @@
         {
             "id": "between-the-sheets",
             "name": "Between the Sheets",
-            "baseSpirits": ["brandy", "rum"],
-            "categories": ["classic", "sour"],
+            "baseSpirits": [
+                "brandy",
+                "rum"
+            ],
+            "categories": [
+                "classic",
+                "sour"
+            ],
             "method": "shake",
             "glass": "coupe",
             "ingredients": [
-                { "name": "cognac", "amount": "30 ml", "ingredientId": "cognac" },
-                { "name": "white rum", "amount": "30 ml", "ingredientId": "white-rum" },
-                { "name": "triple sec", "amount": "30 ml", "ingredientId": "triple-sec" },
-                { "name": "fresh lemon juice", "amount": "20 ml", "ingredientId": "lemon-juice" }
+                {
+                    "name": "cognac",
+                    "amount": "30 ml",
+                    "ingredientId": "cognac"
+                },
+                {
+                    "name": "white rum",
+                    "amount": "30 ml",
+                    "ingredientId": "white-rum"
+                },
+                {
+                    "name": "triple sec",
+                    "amount": "30 ml",
+                    "ingredientId": "triple-sec"
+                },
+                {
+                    "name": "fresh lemon juice",
+                    "amount": "20 ml",
+                    "ingredientId": "lemon-juice"
+                }
             ],
-            "garnish": ["lemon twist"],
-            "flavorProfile": ["citrusy", "tart", "boozy"],
+            "garnish": [
+                "lemon twist"
+            ],
+            "flavorProfile": [
+                "citrusy",
+                "tart",
+                "boozy"
+            ],
             "strength": "strong",
             "sweetness": "medium",
             "sourness": "high",
@@ -3957,16 +5186,36 @@
         {
             "id": "godfather",
             "name": "Godfather",
-            "baseSpirits": ["scotch"],
-            "categories": ["classic", "spirit-forward"],
+            "baseSpirits": [
+                "scotch"
+            ],
+            "categories": [
+                "classic",
+                "spirit-forward"
+            ],
             "method": "stir",
             "glass": "rocks",
             "ingredients": [
-                { "name": "Scotch whisky", "amount": "45 ml", "ingredientId": "scotch-whisky" },
-                { "name": "amaretto", "amount": "25 ml", "ingredientId": "amaretto" }
+                {
+                    "name": "Scotch whisky",
+                    "amount": "45 ml",
+                    "ingredientId": "scotch-whisky"
+                },
+                {
+                    "name": "amaretto",
+                    "amount": "25 ml",
+                    "ingredientId": "amaretto"
+                }
             ],
-            "garnish": ["orange twist"],
-            "flavorProfile": ["boozy", "almond", "sweet", "smoky"],
+            "garnish": [
+                "orange twist"
+            ],
+            "flavorProfile": [
+                "boozy",
+                "almond",
+                "sweet",
+                "smoky"
+            ],
             "strength": "strong",
             "sweetness": "medium",
             "sourness": "none",
@@ -3980,16 +5229,35 @@
         {
             "id": "godmother",
             "name": "Godmother",
-            "baseSpirits": ["vodka"],
-            "categories": ["classic", "spirit-forward"],
+            "baseSpirits": [
+                "vodka"
+            ],
+            "categories": [
+                "classic",
+                "spirit-forward"
+            ],
             "method": "stir",
             "glass": "rocks",
             "ingredients": [
-                { "name": "vodka", "amount": "45 ml", "ingredientId": "vodka" },
-                { "name": "amaretto", "amount": "25 ml", "ingredientId": "amaretto" }
+                {
+                    "name": "vodka",
+                    "amount": "45 ml",
+                    "ingredientId": "vodka"
+                },
+                {
+                    "name": "amaretto",
+                    "amount": "25 ml",
+                    "ingredientId": "amaretto"
+                }
             ],
-            "garnish": ["orange twist"],
-            "flavorProfile": ["almond", "sweet", "boozy"],
+            "garnish": [
+                "orange twist"
+            ],
+            "flavorProfile": [
+                "almond",
+                "sweet",
+                "boozy"
+            ],
             "strength": "strong",
             "sweetness": "medium",
             "sourness": "none",
@@ -4003,18 +5271,46 @@
         {
             "id": "bobby-burns",
             "name": "Bobby Burns",
-            "baseSpirits": ["scotch"],
-            "categories": ["classic", "spirit-forward"],
+            "baseSpirits": [
+                "scotch"
+            ],
+            "categories": [
+                "classic",
+                "spirit-forward"
+            ],
             "method": "stir",
             "glass": "coupe",
             "ingredients": [
-                { "name": "Scotch whisky", "amount": "45 ml", "ingredientId": "scotch-whisky" },
-                { "name": "sweet vermouth", "amount": "30 ml", "ingredientId": "sweet-vermouth" },
-                { "name": "Bénédictine", "amount": "10 ml", "ingredientId": "benedictine" },
-                { "name": "aromatic bitters", "amount": "1 dash", "ingredientId": "aromatic-bitters" }
+                {
+                    "name": "Scotch whisky",
+                    "amount": "45 ml",
+                    "ingredientId": "scotch-whisky"
+                },
+                {
+                    "name": "sweet vermouth",
+                    "amount": "30 ml",
+                    "ingredientId": "sweet-vermouth"
+                },
+                {
+                    "name": "Bénédictine",
+                    "amount": "10 ml",
+                    "ingredientId": "benedictine"
+                },
+                {
+                    "name": "aromatic bitters",
+                    "amount": "1 dash",
+                    "ingredientId": "aromatic-bitters"
+                }
             ],
-            "garnish": ["lemon twist"],
-            "flavorProfile": ["boozy", "herbal", "spiced", "complex"],
+            "garnish": [
+                "lemon twist"
+            ],
+            "flavorProfile": [
+                "boozy",
+                "herbal",
+                "spiced",
+                "complex"
+            ],
             "strength": "strong",
             "sweetness": "medium",
             "sourness": "none",
@@ -4028,18 +5324,46 @@
         {
             "id": "blood-and-sand",
             "name": "Blood and Sand",
-            "baseSpirits": ["scotch"],
-            "categories": ["classic", "sour"],
+            "baseSpirits": [
+                "scotch"
+            ],
+            "categories": [
+                "classic",
+                "sour"
+            ],
             "method": "shake",
             "glass": "coupe",
             "ingredients": [
-                { "name": "Scotch whisky", "amount": "22.5 ml", "ingredientId": "scotch-whisky" },
-                { "name": "sweet vermouth", "amount": "22.5 ml", "ingredientId": "sweet-vermouth" },
-                { "name": "cherry liqueur", "amount": "22.5 ml", "ingredientId": "cherry-liqueur" },
-                { "name": "orange juice", "amount": "22.5 ml", "ingredientId": "orange-juice" }
+                {
+                    "name": "Scotch whisky",
+                    "amount": "22.5 ml",
+                    "ingredientId": "scotch-whisky"
+                },
+                {
+                    "name": "sweet vermouth",
+                    "amount": "22.5 ml",
+                    "ingredientId": "sweet-vermouth"
+                },
+                {
+                    "name": "cherry liqueur",
+                    "amount": "22.5 ml",
+                    "ingredientId": "cherry-liqueur"
+                },
+                {
+                    "name": "orange juice",
+                    "amount": "22.5 ml",
+                    "ingredientId": "orange-juice"
+                }
             ],
-            "garnish": ["orange twist"],
-            "flavorProfile": ["fruity", "citrusy", "smoky", "complex"],
+            "garnish": [
+                "orange twist"
+            ],
+            "flavorProfile": [
+                "fruity",
+                "citrusy",
+                "smoky",
+                "complex"
+            ],
             "strength": "strong",
             "sweetness": "medium",
             "sourness": "low",
@@ -4053,16 +5377,35 @@
         {
             "id": "stinger",
             "name": "Stinger",
-            "baseSpirits": ["brandy"],
-            "categories": ["classic", "spirit-forward"],
+            "baseSpirits": [
+                "brandy"
+            ],
+            "categories": [
+                "classic",
+                "spirit-forward"
+            ],
             "method": "stir",
             "glass": "coupe",
             "ingredients": [
-                { "name": "cognac", "amount": "50 ml", "ingredientId": "cognac" },
-                { "name": "crème de menthe", "amount": "20 ml", "ingredientId": "creme-de-menthe" }
+                {
+                    "name": "cognac",
+                    "amount": "50 ml",
+                    "ingredientId": "cognac"
+                },
+                {
+                    "name": "crème de menthe",
+                    "amount": "20 ml",
+                    "ingredientId": "creme-de-menthe"
+                }
             ],
-            "garnish": ["mint leaf"],
-            "flavorProfile": ["minty", "sweet", "boozy"],
+            "garnish": [
+                "mint leaf"
+            ],
+            "flavorProfile": [
+                "minty",
+                "sweet",
+                "boozy"
+            ],
             "strength": "strong",
             "sweetness": "medium",
             "sourness": "none",
@@ -4076,20 +5419,57 @@
         {
             "id": "brandy-crusta",
             "name": "Brandy Crusta",
-            "baseSpirits": ["brandy"],
-            "categories": ["classic", "sour"],
+            "baseSpirits": [
+                "brandy"
+            ],
+            "categories": [
+                "classic",
+                "sour"
+            ],
             "method": "shake",
             "glass": "coupe",
             "ingredients": [
-                { "name": "cognac", "amount": "50 ml", "ingredientId": "cognac" },
-                { "name": "orange curaçao", "amount": "10 ml", "ingredientId": "orange-curacao" },
-                { "name": "maraschino liqueur", "amount": "5 ml", "ingredientId": "maraschino-liqueur" },
-                { "name": "fresh lemon juice", "amount": "20 ml", "ingredientId": "lemon-juice" },
-                { "name": "simple syrup", "amount": "5 ml", "ingredientId": "simple-syrup" },
-                { "name": "aromatic bitters", "amount": "1 dash", "ingredientId": "aromatic-bitters" }
+                {
+                    "name": "cognac",
+                    "amount": "50 ml",
+                    "ingredientId": "cognac"
+                },
+                {
+                    "name": "orange curaçao",
+                    "amount": "10 ml",
+                    "ingredientId": "orange-curacao"
+                },
+                {
+                    "name": "maraschino liqueur",
+                    "amount": "5 ml",
+                    "ingredientId": "maraschino-liqueur"
+                },
+                {
+                    "name": "fresh lemon juice",
+                    "amount": "20 ml",
+                    "ingredientId": "lemon-juice"
+                },
+                {
+                    "name": "simple syrup",
+                    "amount": "5 ml",
+                    "ingredientId": "simple-syrup"
+                },
+                {
+                    "name": "aromatic bitters",
+                    "amount": "1 dash",
+                    "ingredientId": "aromatic-bitters"
+                }
             ],
-            "garnish": ["lemon peel", "sugar rim"],
-            "flavorProfile": ["citrusy", "aromatic", "sweet", "boozy"],
+            "garnish": [
+                "lemon peel",
+                "sugar rim"
+            ],
+            "flavorProfile": [
+                "citrusy",
+                "aromatic",
+                "sweet",
+                "boozy"
+            ],
             "strength": "strong",
             "sweetness": "medium",
             "sourness": "medium",
@@ -4103,17 +5483,41 @@
         {
             "id": "japanese-cocktail",
             "name": "Japanese Cocktail",
-            "baseSpirits": ["brandy"],
-            "categories": ["classic", "spirit-forward"],
+            "baseSpirits": [
+                "brandy"
+            ],
+            "categories": [
+                "classic",
+                "spirit-forward"
+            ],
             "method": "stir",
             "glass": "rocks",
             "ingredients": [
-                { "name": "cognac", "amount": "60 ml", "ingredientId": "cognac" },
-                { "name": "orgeat", "amount": "10 ml", "ingredientId": "orgeat" },
-                { "name": "aromatic bitters", "amount": "2 dashes", "ingredientId": "aromatic-bitters" }
+                {
+                    "name": "cognac",
+                    "amount": "60 ml",
+                    "ingredientId": "cognac"
+                },
+                {
+                    "name": "orgeat",
+                    "amount": "10 ml",
+                    "ingredientId": "orgeat"
+                },
+                {
+                    "name": "aromatic bitters",
+                    "amount": "2 dashes",
+                    "ingredientId": "aromatic-bitters"
+                }
             ],
-            "garnish": ["lemon twist"],
-            "flavorProfile": ["almond", "aromatic", "boozy", "sweet"],
+            "garnish": [
+                "lemon twist"
+            ],
+            "flavorProfile": [
+                "almond",
+                "aromatic",
+                "boozy",
+                "sweet"
+            ],
             "strength": "strong",
             "sweetness": "medium",
             "sourness": "none",
@@ -4127,18 +5531,46 @@
         {
             "id": "pegu-club",
             "name": "Pegu Club",
-            "baseSpirits": ["gin"],
-            "categories": ["classic", "sour"],
+            "baseSpirits": [
+                "gin"
+            ],
+            "categories": [
+                "classic",
+                "sour"
+            ],
             "method": "shake",
             "glass": "coupe",
             "ingredients": [
-                { "name": "gin", "amount": "45 ml", "ingredientId": "gin" },
-                { "name": "orange curaçao", "amount": "20 ml", "ingredientId": "orange-curacao" },
-                { "name": "fresh lime juice", "amount": "20 ml", "ingredientId": "lime-juice" },
-                { "name": "aromatic bitters", "amount": "1 dash", "ingredientId": "aromatic-bitters" }
+                {
+                    "name": "gin",
+                    "amount": "45 ml",
+                    "ingredientId": "gin"
+                },
+                {
+                    "name": "orange curaçao",
+                    "amount": "20 ml",
+                    "ingredientId": "orange-curacao"
+                },
+                {
+                    "name": "fresh lime juice",
+                    "amount": "20 ml",
+                    "ingredientId": "lime-juice"
+                },
+                {
+                    "name": "aromatic bitters",
+                    "amount": "1 dash",
+                    "ingredientId": "aromatic-bitters"
+                }
             ],
-            "garnish": ["lime twist"],
-            "flavorProfile": ["citrusy", "herbal", "aromatic", "tart"],
+            "garnish": [
+                "lime twist"
+            ],
+            "flavorProfile": [
+                "citrusy",
+                "herbal",
+                "aromatic",
+                "tart"
+            ],
             "strength": "strong",
             "sweetness": "medium",
             "sourness": "high",
@@ -4152,18 +5584,46 @@
         {
             "id": "army-and-navy",
             "name": "Army and Navy",
-            "baseSpirits": ["gin"],
-            "categories": ["classic", "sour"],
+            "baseSpirits": [
+                "gin"
+            ],
+            "categories": [
+                "classic",
+                "sour"
+            ],
             "method": "shake",
             "glass": "coupe",
             "ingredients": [
-                { "name": "gin", "amount": "60 ml", "ingredientId": "gin" },
-                { "name": "fresh lemon juice", "amount": "25 ml", "ingredientId": "lemon-juice" },
-                { "name": "orgeat", "amount": "20 ml", "ingredientId": "orgeat" },
-                { "name": "aromatic bitters", "amount": "1 dash", "ingredientId": "aromatic-bitters" }
+                {
+                    "name": "gin",
+                    "amount": "60 ml",
+                    "ingredientId": "gin"
+                },
+                {
+                    "name": "fresh lemon juice",
+                    "amount": "25 ml",
+                    "ingredientId": "lemon-juice"
+                },
+                {
+                    "name": "orgeat",
+                    "amount": "20 ml",
+                    "ingredientId": "orgeat"
+                },
+                {
+                    "name": "aromatic bitters",
+                    "amount": "1 dash",
+                    "ingredientId": "aromatic-bitters"
+                }
             ],
-            "garnish": ["lemon twist"],
-            "flavorProfile": ["citrusy", "almond", "tart", "aromatic"],
+            "garnish": [
+                "lemon twist"
+            ],
+            "flavorProfile": [
+                "citrusy",
+                "almond",
+                "tart",
+                "aromatic"
+            ],
             "strength": "strong",
             "sweetness": "medium",
             "sourness": "high",
@@ -4177,17 +5637,41 @@
         {
             "id": "corpse-reviver-1",
             "name": "Corpse Reviver No. 1",
-            "baseSpirits": ["brandy"],
-            "categories": ["classic", "spirit-forward"],
+            "baseSpirits": [
+                "brandy"
+            ],
+            "categories": [
+                "classic",
+                "spirit-forward"
+            ],
             "method": "stir",
             "glass": "coupe",
             "ingredients": [
-                { "name": "cognac", "amount": "30 ml", "ingredientId": "cognac" },
-                { "name": "apple brandy", "amount": "30 ml", "ingredientId": "apple-brandy" },
-                { "name": "sweet vermouth", "amount": "30 ml", "ingredientId": "sweet-vermouth" }
+                {
+                    "name": "cognac",
+                    "amount": "30 ml",
+                    "ingredientId": "cognac"
+                },
+                {
+                    "name": "apple brandy",
+                    "amount": "30 ml",
+                    "ingredientId": "apple-brandy"
+                },
+                {
+                    "name": "sweet vermouth",
+                    "amount": "30 ml",
+                    "ingredientId": "sweet-vermouth"
+                }
             ],
-            "garnish": ["lemon twist"],
-            "flavorProfile": ["boozy", "fruity", "herbal", "complex"],
+            "garnish": [
+                "lemon twist"
+            ],
+            "flavorProfile": [
+                "boozy",
+                "fruity",
+                "herbal",
+                "complex"
+            ],
             "strength": "strong",
             "sweetness": "medium",
             "sourness": "none",
@@ -4201,18 +5685,46 @@
         {
             "id": "sloe-gin-fizz",
             "name": "Sloe Gin Fizz",
-            "baseSpirits": ["gin"],
-            "categories": ["classic", "fizz"],
+            "baseSpirits": [
+                "gin"
+            ],
+            "categories": [
+                "classic",
+                "fizz"
+            ],
             "method": "shake",
             "glass": "highball",
             "ingredients": [
-                { "name": "sloe gin", "amount": "45 ml", "ingredientId": "sloe-gin" },
-                { "name": "fresh lemon juice", "amount": "25 ml", "ingredientId": "lemon-juice" },
-                { "name": "simple syrup", "amount": "10 ml", "ingredientId": "simple-syrup" },
-                { "name": "soda water", "amount": "90 ml", "ingredientId": "soda-water" }
+                {
+                    "name": "sloe gin",
+                    "amount": "45 ml",
+                    "ingredientId": "sloe-gin"
+                },
+                {
+                    "name": "fresh lemon juice",
+                    "amount": "25 ml",
+                    "ingredientId": "lemon-juice"
+                },
+                {
+                    "name": "simple syrup",
+                    "amount": "10 ml",
+                    "ingredientId": "simple-syrup"
+                },
+                {
+                    "name": "soda water",
+                    "amount": "90 ml",
+                    "ingredientId": "soda-water"
+                }
             ],
-            "garnish": ["lemon wheel"],
-            "flavorProfile": ["fruity", "tart", "refreshing", "sparkling"],
+            "garnish": [
+                "lemon wheel"
+            ],
+            "flavorProfile": [
+                "fruity",
+                "tart",
+                "refreshing",
+                "sparkling"
+            ],
             "strength": "light",
             "sweetness": "medium",
             "sourness": "medium",
@@ -4226,17 +5738,40 @@
         {
             "id": "blackthorn",
             "name": "Blackthorn",
-            "baseSpirits": ["irish-whiskey"],
-            "categories": ["classic", "spirit-forward"],
+            "baseSpirits": [
+                "irish-whiskey"
+            ],
+            "categories": [
+                "classic",
+                "spirit-forward"
+            ],
             "method": "stir",
             "glass": "rocks",
             "ingredients": [
-                { "name": "Irish whiskey", "amount": "50 ml", "ingredientId": "irish-whiskey" },
-                { "name": "sweet vermouth", "amount": "25 ml", "ingredientId": "sweet-vermouth" },
-                { "name": "aromatic bitters", "amount": "2 dashes", "ingredientId": "aromatic-bitters" }
+                {
+                    "name": "Irish whiskey",
+                    "amount": "50 ml",
+                    "ingredientId": "irish-whiskey"
+                },
+                {
+                    "name": "sweet vermouth",
+                    "amount": "25 ml",
+                    "ingredientId": "sweet-vermouth"
+                },
+                {
+                    "name": "aromatic bitters",
+                    "amount": "2 dashes",
+                    "ingredientId": "aromatic-bitters"
+                }
             ],
-            "garnish": ["lemon twist"],
-            "flavorProfile": ["boozy", "herbal", "aromatic"],
+            "garnish": [
+                "lemon twist"
+            ],
+            "flavorProfile": [
+                "boozy",
+                "herbal",
+                "aromatic"
+            ],
             "strength": "strong",
             "sweetness": "medium",
             "sourness": "none",
@@ -4985,7 +6520,9 @@
             "color": "#c99d54",
             "category": "spirits",
             "isAlcoholic": true,
-            "spiritFamilyIds": ["brandy"]
+            "spiritFamilyIds": [
+                "brandy"
+            ]
         },
         {
             "id": "sloe-gin",
@@ -4993,7 +6530,9 @@
             "color": "#94465e",
             "category": "liqueurs",
             "isAlcoholic": true,
-            "spiritFamilyIds": ["gin"]
+            "spiritFamilyIds": [
+                "gin"
+            ]
         },
         {
             "id": "strawberry-puree",

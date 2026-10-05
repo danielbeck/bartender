@@ -5,37 +5,13 @@ import FilterToggle from './FilterToggle'
 import GlassProfile from './GlassProfile'
 import { glassProfiles } from '../utils/glassProfiles'
 import { ingredientVolumes } from '../utils/glassFill'
-import FlavorFilters, { difficultyScales, strengthScales } from './FlavorFilters'
+import FlavorFilters from './FlavorFilters'
 import { millilitersPerShot, recipeParts, recipeShots } from '../utils/recipeMeasurements'
 import {
   cocktails, cocktailCategories, cocktailIdAliases, categoryLabel, filterCocktails,
-  filterDefinitions, filterOptions, librarySearch, metadataLabel, readFilters, visibleSpirits,
+  filterDefinitions, filterGroups, filterOptions, filterScale, librarySearch, metadataLabel, readFilters, visibleSpirits,
 } from '../utils/cocktails'
 import './CocktailLibrary.scss'
-
-const allFilterLabels = {
-  category: 'All categories',
-  spirit: 'All spirits',
-  ingredient: 'Any nonalcoholic ingredients',
-  glass: 'All glasses',
-}
-
-const carbonationStates = [
-  { value: 'high', label: 'Yes' },
-  { value: '', label: ' ' },
-  { value: 'none', label: 'No' },
-]
-
-const temperatureStates = [
-  { value: 'frozen', label: 'Frozen' },
-  { value: '', label: ' ' },
-  { value: 'hot', label: 'Hot' },
-]
-
-const filterGroups = [
-  { label: 'Primary filters', keys: ['category', 'spirit', 'strength'] },
-  { label: 'Additional filters', keys: ['glass', 'difficulty', 'carbonation', 'ingredient', 'temperature'] },
-]
 
 function MetadataTags({ title, values, filter, onShowResults }) {
   return <section className="cocktail-tags">
@@ -74,10 +50,10 @@ export default function CocktailLibrary() {
   const activeFilters = filterDefinitions.filter(({ key }) => Array.isArray(filters[key]) ? filters[key].length > 0 : filters[key]).length
   const activeFilterDescriptions = [
     ...(filters.q.trim() ? [`Search: ${filters.q.trim()}`] : []),
-    ...filterDefinitions.flatMap(({ key, label }) => {
+    ...filterDefinitions.flatMap(({ key, label, controlLabel }) => {
       const values = Array.isArray(filters[key]) ? filters[key] : filters[key] ? [filters[key]] : []
       return values.length
-        ? [`${key === 'carbonation' ? 'Carbonated' : label}: ${values.map((value) =>
+        ? [`${controlLabel || label}: ${values.map((value) =>
           filterOptions[key].find((option) => option.value === value)?.label
           || (key === 'category' ? categoryLabel(value) : metadataLabel(value))).join(', ')}`]
         : []
@@ -116,10 +92,10 @@ export default function CocktailLibrary() {
   }
 
   return <section className="cocktail-library" aria-labelledby="cocktail-library-title">
-    {selectedCocktail && <Link className="library-back" to={listUrl}>Back to cocktail library</Link>}
+    {selectedCocktail && <Link className="library-back" to={listUrl}>Back to the cocktails</Link>}
     <div className={selectedCocktail ? 'cocktail-detail-heading' : undefined}>
-      <h1 id="cocktail-library-title" className={selectedCocktail ? 'cocktail-detail-title' : undefined} ref={headingRef} tabIndex={-1}>{selectedCocktail
-        ? `${selectedCocktail.name}${selectedCocktail.variant ? ` (Recipe ${selectedCocktail.variant})` : ''}`
+      <h1 id="cocktail-library-title" className={selectedCocktail ? 'cocktail-detail-title' : undefined} ref={headingRef} tabIndex={-1}>The {selectedCocktail
+        ? `${selectedCocktail.name}${selectedCocktail.variant ? ` (Recipe ${selectedCocktail.variant})` : '.'}`
         : 'Cocktails.'}</h1>
       {selectedCocktail && <GlassProfile glass={selectedCocktail.glass} ingredients={selectedCocktail.ingredients} />}
     </div>
@@ -180,7 +156,7 @@ export default function CocktailLibrary() {
         </dl>
       </aside>
       <div className={`cocktail-preview-column${showGlassPreview ? ' is-illustrating' : ''}`}>
-        <div className="cocktail-preview-copy" hidden={showGlassPreview}>
+        <div className="cocktail-preview-copy" aria-hidden={showGlassPreview} inert={showGlassPreview ? '' : undefined}>
           <p className="cocktail-summary">
             {selectedCocktail.baseSpirits.map(metadataLabel).join(' / ')} · {metadataLabel(selectedCocktail.strength)} · {metadataLabel(selectedCocktail.difficulty)}
           </p>
@@ -198,7 +174,7 @@ export default function CocktailLibrary() {
             <dt>{label}</dt><dd><button type="button" onClick={() => showResults(key, selectedCocktail[field])}>{metadataLabel(selectedCocktail[field])}</button></dd>
           </div>)}</dl>
         </div>
-        {showGlassPreview && <div className="cocktail-large-glass">
+        <div className="cocktail-large-glass" aria-hidden={!showGlassPreview}>
           <GlassProfile
             glass={selectedCocktail.glass}
             ingredients={selectedCocktail.ingredients}
@@ -206,10 +182,9 @@ export default function CocktailLibrary() {
               ? highlightedIngredient : null}
           />
           <p>{highlightedIngredient !== null
-            ? `${selectedCocktail.ingredients[highlightedIngredient].name}: ${displayedAmounts[highlightedIngredient]}${ingredientVolumes(selectedCocktail.ingredients).some(({ index }) => index === highlightedIngredient)
-              ? '' : ' (not represented in the volume bands)'}`
+            ? `${selectedCocktail.ingredients[highlightedIngredient].name}: ${displayedAmounts[highlightedIngredient]}`
             : ''}</p>
-        </div>}
+        </div>
       </div>
     </div> : <>
       <p className="cocktail-library-intro">What would you like to drink?</p>
@@ -239,59 +214,50 @@ export default function CocktailLibrary() {
           aria-hidden={!filtersOpen}
         >
           <div className="cocktail-filter-panel-content">
-            {filterGroups.map(({ label: groupLabel, keys }) => <div className="cocktail-filters" role="group" aria-label={groupLabel} key={groupLabel}>
-              {keys.map((key) => key === 'strength'
-                ? <FlavorFilters key={key} label="Strength" scales={strengthScales} filters={filters} onChange={changeFilter} />
-                : key === 'difficulty'
-                  ? <FlavorFilters key={key} label="Difficulty" scales={difficultyScales} filters={filters} onChange={changeFilter} />
-                  : key === 'carbonation'
+            {filterGroups.map(({ id, label: groupLabel, definitions, showReset }) => <div className="cocktail-filters" role="group" aria-label={groupLabel} key={id}>
+              {definitions.map((definition) => {
+                const { key, label, controlLabel, control, multiple, states, emptyLabel, illustration } = definition
+                return control === 'slider'
+                  ? <FlavorFilters key={key} label={controlLabel || label} scales={definition.scales || [filterScale(definition)]} filters={filters} onChange={changeFilter} />
+                  : control === 'toggle'
                     ? <FilterToggle
                       key={key}
-                      label="Carbonated"
+                      label={controlLabel || label}
                       value={filters[key]}
-                      states={carbonationStates}
+                      states={states}
+                      valueWidth={`${Math.max(3, ...states.map(({ label }) => label.length))}ch`}
                       onChange={(value) => changeFilter(key, value)}
                     />
-                    : key === 'temperature'
-                      ? <FilterToggle
-                        key={key}
-                        label="Temperature"
-                        value={filters[key]}
-                        states={temperatureStates}
-                        valueWidth="6ch"
-                        onChange={(value) => changeFilter(key, value)}
-                      />
-                      : <FilterSelect
-                        key={key}
-                        label={filterDefinitions.find((definition) => definition.key === key).label}
-                        value={filters[key]}
-                        multiple={['spirit', 'ingredient'].includes(key)}
-                        renderPreview={key === 'glass' ? (glass) => <div className="glass-selector-illustration">
-                          {glassProfiles[glass] && <GlassProfile glass={glass} />}
-                          <span>{!glass ? 'All glasses' : glassProfiles[glass] ? metadataLabel(glass) : `Unknown: ${glass}`}</span>
-                        </div> : undefined}
-                        options={[
-                          { value: '', label: key === 'spirit' ? 'Any spirits' : allFilterLabels[key] },
-                          ...(Array.isArray(filters[key]) ? filters[key] : [filters[key]])
-                            .filter((value) => value && !filterOptions[key].some((option) => option.value === value))
-                            .map((value) => ({ value, label: `Unknown: ${value}` })),
-                          ...filterOptions[key],
-                        ]}
-                        onChange={(value) => changeFilter(key, value)}
-                      />)}
-              {groupLabel === 'Additional filters' && activeFilterDescriptions.length > 0 && <div className="filter-reset-summary">
+                    : <FilterSelect
+                      key={key}
+                      label={label}
+                      value={filters[key]}
+                      multiple={multiple}
+                      renderPreview={illustration === 'glass' ? (glass) => <div className="glass-selector-illustration">
+                        {glassProfiles[glass] && <GlassProfile glass={glass} />}
+                        <span>{!glass ? emptyLabel : glassProfiles[glass] ? metadataLabel(glass) : `Unknown: ${glass}`}</span>
+                      </div> : undefined}
+                      options={[
+                        { value: '', label: emptyLabel },
+                        ...(Array.isArray(filters[key]) ? filters[key] : [filters[key]])
+                          .filter((value) => value && !filterOptions[key].some((option) => option.value === value))
+                          .map((value) => ({ value, label: `Unknown: ${value}` })),
+                        ...filterOptions[key],
+                      ]}
+                      onChange={(value) => changeFilter(key, value)}
+                    />
+              })}
+              {showReset && activeFilterDescriptions.length > 0 && <div className="filter-reset-summary">
                 <button type="button" className="library-button" aria-label={resetFiltersLabel} title={resetFiltersLabel} onClick={resetFilters}>
                   Reset filters
                 </button>
-                <p>{activeFilterDescriptions.length
-                  ? `${activeFilterDescriptions.join('; ')}`
-                  : ''}</p>
               </div>}
             </div>)}
           </div>
         </div>
         <div className="cocktail-results-toolbar">
           <p role="status">{filteredCocktails.length} {filteredCocktails.length === 1 ? 'cocktail' : 'cocktails'}</p>
+          {activeFilterDescriptions.length > 0 && <p className="cocktail-active-filters">{activeFilterDescriptions.join('; ')}</p>}
         </div>
       </div>
       {selectedCategory && <header className="cocktail-results-category">

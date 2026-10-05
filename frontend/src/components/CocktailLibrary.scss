@@ -113,8 +113,6 @@
   flex: 1 0 100%;
   flex-wrap: wrap;
   gap: 8px 12px;
-
-  p { color: #53665f; margin: 0; overflow-wrap: anywhere; }
 }
 .flavor-sliders {
   display: grid;
@@ -122,21 +120,25 @@
   grid-template-columns: minmax(0, 1fr);
 }
 .flavor-slider {
-  align-items: center;
   display: grid;
-  gap: 12px;
-  grid-template-columns: 9ch minmax(0, 1fr);
+  gap: 4px;
   min-width: 0;
 
   input { accent-color: #387f69; cursor: pointer; display: block; margin: 8px 0; width: 100%; }
 
   &.is-unfiltered {
-    label, .flavor-slider-value { color: #73837b; }
+    .flavor-slider-value { color: #73837b; }
     input { opacity: .8; }
   }
 }
-.flavor-slider-control { min-width: 0; }
-.flavor-slider-value { color: #53665f; display: block; text-align: center; overflow-wrap: anywhere; }
+.flavor-slider-control {
+  align-items: center;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 9ch minmax(0, 1fr);
+  min-width: 0;
+}
+.flavor-slider-value { color: #53665f; display: block; overflow-wrap: anywhere; }
 .filter-three-toggle {
   align-items: center;
   background: #fff;
@@ -197,7 +199,16 @@
     &::after { transform: translateX(28px); }
   }
 }
-.cocktail-results-toolbar { align-items: center; display: flex; justify-content: space-between; gap: 12px; margin-top: 12px; }
+.cocktail-results-toolbar {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-top: 12px;
+
+  p { margin: 0; }
+  .cocktail-active-filters { color: #53665f; flex: 1 1 240px; overflow-wrap: anywhere; }
+}
 .cocktail-results-category {
   margin: 20px 0;
 
@@ -254,8 +265,22 @@
   display: grid;
   min-width: 0;
 
-  > div { grid-area: 1 / 1; }
-  &.is-illustrating .cocktail-preview-copy[hidden] { display: block; visibility: hidden; pointer-events: none; }
+  > div {
+    grid-area: 1 / 1;
+    transition: opacity 220ms ease, visibility 0s 220ms;
+  }
+  .cocktail-preview-copy { opacity: 1; visibility: visible; transition-delay: 0s; }
+  .cocktail-large-glass { opacity: 0; visibility: hidden; pointer-events: none; }
+
+  &.is-illustrating {
+    .cocktail-preview-copy {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition-delay: 0s, 220ms;
+    }
+    .cocktail-large-glass { opacity: 1; visibility: visible; transition-delay: 0s; }
+  }
 }
 .cocktail-large-glass {
   align-self: start;
@@ -345,4 +370,5 @@
 
 @media (prefers-reduced-motion: reduce) {
   .cocktail-filter-panel { transition: none; }
+  .cocktail-preview-column > div { transition: none; }
 }

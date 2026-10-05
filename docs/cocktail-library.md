@@ -17,9 +17,27 @@ URLs are preserved; when duplicate recipes are consolidated, the retired recipe
 ID remains an alias to its canonical recipe. Taxonomy labels supply filter
 labels and category headings.
 
-The source's `filters` array defines filter keys, recipe fields, labels, and
-optional taxonomy references. The UI reads these definitions directly; no
-separate validation module is loaded. Alternatives retain
+The source's `filters` array defines filter keys, recipe fields, labels,
+taxonomy references, and `multiple` selection modes. Each filter's `control`
+is `select`, `slider`, `toggle`, or `hidden`. Visible filters use `group` and
+`order` to reference the source's `filterGroups` and establish display order.
+Selects define `emptyLabel` and optional `illustration`; toggles define their
+ordered `states` (the middle state is unfiltered). `controlLabel` optionally
+overrides the taxonomy-facing label for controls and active-filter summaries.
+Slider levels come directly from the referenced taxonomy in its stored order.
+Sliders with a `sliderGroup` share a popup configured by `sliderGroups`, which
+defines its label, display group, and order. The "Flavors" popup contains the
+sweetness, sourness, and bitterness sliders, each with an unfiltered "any" value.
+Slider labels appear above their controls, with the current value to the left
+of each slider.
+Hidden filters remain searchable, URL-addressable, and available through tags.
+Difficulty has no search-interface control; recipe difficulty metadata and
+tag-based or URL filtering remain available.
+Active-filter descriptions appear beside the result count, outside the
+collapsible filter panel, so they remain visible when the controls are closed.
+The source's `cocktailIdAliases` maps retired IDs to canonical recipe IDs.
+The UI reads these definitions directly; no separate validation module is loaded.
+Alternatives retain
 their existing behavior: all listed alternatives are available filter matches.
 Special handling of mutually exclusive alternatives is intentionally deferred.
 Optional ingredients appear in recipe details but do not count as required
@@ -68,6 +86,9 @@ Hovering the recipe card or focusing it or its controls temporarily replaces the
 right-hand copy with a large filled glass. Hovering an ingredient or focusing its
 search link highlights its band; non-ml ingredients instead show an explanatory
 caption. Leaving the card and moving focus outside restores the original copy.
+The glass and copy crossfade over 220 ms without changing the column layout.
+Hidden copy is excluded from keyboard navigation and assistive technology.
+The transition is disabled when reduced motion is requested.
 
 Nonalcoholic Ingredients lists catalog entries with `isAlcoholic: false`
 that occur in recipes, grouped by ingredient category and alphabetized.
@@ -89,9 +110,9 @@ The remaining groups and their entries are alphabetized.
 An ingredient with the same ID or label as a listed base-spirit family is
 omitted from the other group to avoid duplicates; distinct variants remain.
 
-Flavor Notes supports multiple selections. A recipe matches only when it
-contains every selected note. Select "Any flavor notes" to clear these
-selections; resetting the filters also clears them.
+Flavor Notes supports multiple selections through tags and URLs. A recipe
+matches only when it contains every selected note. Resetting the filters clears
+these selections; no dedicated flavor-note selector is shown.
 
 Selections are stored as repeated `flavor` query parameters, such as
 `?flavor=citrus&flavor=fruity`. Existing links with a single `flavor` parameter

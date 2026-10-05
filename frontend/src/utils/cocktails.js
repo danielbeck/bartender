@@ -1,6 +1,25 @@
-import library from '../../../data/cocktails.json'
+import library from '../../../data/cocktails.json' with { type: 'json' }
 
 export const filterDefinitions = library.filters
+export const filterGroups = library.filterGroups.map((group) => ({
+  ...group,
+  definitions: [
+    ...filterDefinitions.filter(({ control, group: groupId }) => control !== 'hidden' && groupId === group.id),
+    ...library.sliderGroups.filter(({ group: groupId }) => groupId === group.id).map((sliderGroup) => ({
+      ...sliderGroup,
+      control: 'slider',
+      scales: filterDefinitions.filter((definition) => definition.sliderGroup === sliderGroup.key).map(filterScale),
+    })),
+  ]
+    .sort((first, second) => first.order - second.order),
+}))
+export function filterScale(definition) {
+  return {
+    key: definition.key,
+    label: definition.controlLabel || definition.label,
+    levels: library.taxonomy[definition.taxonomy].map(({ id }) => id),
+  }
+}
 const ingredientsById = new Map(library.ingredients.map((ingredient) => [ingredient.id, ingredient]))
 const familiesById = new Map(library.taxonomy.spiritFamilies.map((family) => [family.id, family]))
 
@@ -27,9 +46,7 @@ export const cocktails = library.cocktails.map((cocktail) => {
     libraryId: cocktail.id,
   }
 })
-export const cocktailIdAliases = {
-  'vieux-carre-variant-2': 'vieux-carre',
-}
+export const cocktailIdAliases = library.cocktailIdAliases
 export const cocktailCategories = library.cocktailCategories
 const baseSpiritValues = new Set(cocktails.flatMap((cocktail) => cocktail.baseSpirits.map((id) => `family:${id}`)))
 
@@ -92,7 +109,7 @@ export const filterOptions = Object.fromEntries(filterDefinitions.map(({ key, fi
 export function readFilters(params) {
   return Object.fromEntries([
     ['q', params.get('q') || ''],
-    ...filterDefinitions.map(({ key }) => [key, ['flavor', 'spirit', 'ingredient'].includes(key)
+    ...filterDefinitions.map(({ key, multiple }) => [key, multiple
       ? [...new Set(params.getAll(key).filter(Boolean))]
       : params.get(key) || '']),
   ])
