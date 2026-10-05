@@ -16,11 +16,18 @@ explicit `variant` number rather than depending on array order. Existing recipe
 URLs are preserved; when duplicate recipes are consolidated, the retired recipe
 ID remains an alias to its canonical recipe. Taxonomy labels supply filter
 labels and category headings.
+Search results are grouped in source category order, with a heading and
+description only for categories containing matching cocktails. A cocktail
+appears in every category it belongs to, alphabetized within each group.
+The result count counts unique cocktails, not repeated cards. There is no
+category dropdown; existing category tags and URL filters remain supported.
 
 The source's `filters` array defines filter keys, recipe fields, labels,
 taxonomy references, and `multiple` selection modes. Each filter's `control`
 is `select`, `slider`, `toggle`, or `hidden`. Visible filters use `group` and
 `order` to reference the source's `filterGroups` and establish display order.
+The first row contains Spirits and Mixers; the second contains Strength, Glass,
+Flavors, Carbonated, and Temperature, in that order (wrapping on narrow screens).
 Selects define `emptyLabel` and optional `illustration`; toggles define their
 ordered `states` (the middle state is unfiltered). `controlLabel` optionally
 overrides the taxonomy-facing label for controls and active-filter summaries.
@@ -35,6 +42,8 @@ Difficulty has no search-interface control; recipe difficulty metadata and
 tag-based or URL filtering remain available.
 Active-filter descriptions appear beside the result count, outside the
 collapsible filter panel, so they remain visible when the controls are closed.
+The Reset filters button follows the descriptions on the right, outside the
+panel, and is hidden when all filters and search are at their defaults.
 The source's `cocktailIdAliases` maps retired IDs to canonical recipe IDs.
 The UI reads these definitions directly; no separate validation module is loaded.
 Alternatives retain

@@ -8,7 +8,7 @@ import { ingredientVolumes } from '../utils/glassFill'
 import FlavorFilters from './FlavorFilters'
 import { millilitersPerShot, recipeParts, recipeShots } from '../utils/recipeMeasurements'
 import {
-  cocktails, cocktailCategories, cocktailIdAliases, categoryLabel, filterCocktails,
+  cocktails, cocktailIdAliases, categoryLabel, filterCocktails, groupCocktailsByCategory,
   filterDefinitions, filterGroups, filterOptions, filterScale, librarySearch, metadataLabel, readFilters, visibleSpirits,
 } from '../utils/cocktails'
 import './CocktailLibrary.scss'
@@ -46,7 +46,7 @@ export default function CocktailLibrary() {
       : measurementUnit === 'shots' ? recipeShots(selectedCocktail.ingredients)
         : selectedCocktail.ingredients.map(({ amount }) => amount)
     : []
-  const selectedCategory = cocktailCategories.find((category) => category.id === filters.category)
+  const resultCategories = groupCocktailsByCategory(filteredCocktails)
   const activeFilters = filterDefinitions.filter(({ key }) => Array.isArray(filters[key]) ? filters[key].length > 0 : filters[key]).length
   const activeFilterDescriptions = [
     ...(filters.q.trim() ? [`Search: ${filters.q.trim()}`] : []),
@@ -214,7 +214,7 @@ export default function CocktailLibrary() {
           aria-hidden={!filtersOpen}
         >
           <div className="cocktail-filter-panel-content">
-            {filterGroups.map(({ id, label: groupLabel, definitions, showReset }) => <div className="cocktail-filters" role="group" aria-label={groupLabel} key={id}>
+            {filterGroups.map(({ id, label: groupLabel, definitions }) => <div className="cocktail-filters" role="group" aria-label={groupLabel} key={id}>
               {definitions.map((definition) => {
                 const { key, label, controlLabel, control, multiple, states, emptyLabel, illustration } = definition
                 return control === 'slider'
@@ -247,36 +247,36 @@ export default function CocktailLibrary() {
                       onChange={(value) => changeFilter(key, value)}
                     />
               })}
-              {showReset && activeFilterDescriptions.length > 0 && <div className="filter-reset-summary">
-                <button type="button" className="library-button" aria-label={resetFiltersLabel} title={resetFiltersLabel} onClick={resetFilters}>
-                  Reset filters
-                </button>
-              </div>}
             </div>)}
           </div>
         </div>
         <div className="cocktail-results-toolbar">
           <p role="status">{filteredCocktails.length} {filteredCocktails.length === 1 ? 'cocktail' : 'cocktails'}</p>
           {activeFilterDescriptions.length > 0 && <p className="cocktail-active-filters">{activeFilterDescriptions.join('; ')}</p>}
+          {activeFilterDescriptions.length > 0 && <button type="button" className="library-button" aria-label={resetFiltersLabel} title={resetFiltersLabel} onClick={resetFilters}>
+            Reset filters
+          </button>}
         </div>
       </div>
-      {selectedCategory && <header className="cocktail-results-category">
-        <h2>{selectedCategory.name}</h2>
-        <p>{selectedCategory.description}</p>
-      </header>}
-      {filteredCocktails.length ? <div className="cocktail-results">{filteredCocktails.map((cocktail) => <Link
+      {filteredCocktails.length ? resultCategories.map((category) => <section key={category.id} aria-labelledby={`category-${category.id}`}>
+        <header className="cocktail-results-category">
+          <h2 id={`category-${category.id}`}>{category.name}</h2>
+          <p>{category.description}</p>
+        </header>
+        <div className="cocktail-results">{category.cocktails.map((cocktail) => <Link
         className="cocktail-result"
         key={cocktail.libraryId}
         to={`/cocktails/${encodeURIComponent(cocktail.libraryId)}${location.search}`}
       >
         <div className="cocktail-result-heading">
-          <h2>{cocktail.name}{cocktail.variant ? ` (Recipe ${cocktail.variant})` : ''}</h2>
+          <h3>{cocktail.name}{cocktail.variant ? ` (Recipe ${cocktail.variant})` : ''}</h3>
           <GlassProfile glass={cocktail.glass} ingredients={cocktail.ingredients} />
         </div>
         <p className="cocktail-result-meta">{cocktail.baseSpirits.map(metadataLabel).join(' / ')} · {metadataLabel(cocktail.strength)}</p>
         <p>{cocktail.categories.map(categoryLabel).join(' / ')}</p>
         <p>{metadataLabel(cocktail.glass)} · {metadataLabel(cocktail.difficulty)}</p>
-      </Link>)}</div> : <div className="cocktail-empty">
+      </Link>)}</div>
+      </section>) : <div className="cocktail-empty">
         <h2>No cocktails match your filters</h2>
         <p>Try a different search or reset the filters to see the full library.</p>
         {activeFilterDescriptions.length > 0 && <button type="button" className="library-button" onClick={resetFilters}>Reset filters</button>}

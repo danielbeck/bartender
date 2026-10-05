@@ -107,13 +107,6 @@
   margin-top: 10px;
 
 }
-.filter-reset-summary {
-  align-items: center;
-  display: flex;
-  flex: 1 0 100%;
-  flex-wrap: wrap;
-  gap: 8px 12px;
-}
 .flavor-sliders {
   display: grid;
   gap: 16px;
@@ -208,6 +201,7 @@
 
   p { margin: 0; }
   .cocktail-active-filters { color: #53665f; flex: 1 1 240px; overflow-wrap: anywhere; }
+  .library-button { flex-shrink: 0; }
 }
 .cocktail-results-category {
   margin: 20px 0;
@@ -226,7 +220,7 @@
   overflow-wrap: anywhere;
 
   &:hover { background: #f0f6f3; border-color: #7e9f90; }
-  h2 { margin-bottom: 8px; }
+  h3 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
   p { font-size: 14px; margin-top: 6px; }
 }
 .cocktail-result-meta { color: #286650; font-weight: 600; }
@@ -247,7 +241,7 @@
   gap: 12px;
   justify-content: space-between;
 
-  h2 { min-width: 0; }
+  h3 { min-width: 0; }
   .glass-profile { height: 72px; width: 48px; }
 }
 .cocktail-detail-heading {

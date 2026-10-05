@@ -48,6 +48,12 @@ export const cocktails = library.cocktails.map((cocktail) => {
 })
 export const cocktailIdAliases = library.cocktailIdAliases
 export const cocktailCategories = library.cocktailCategories
+export function groupCocktailsByCategory(results) {
+  return cocktailCategories.map((category) => ({
+    ...category,
+    cocktails: results.filter((cocktail) => cocktail.categories.includes(category.id)),
+  })).filter((category) => category.cocktails.length > 0)
+}
 const baseSpiritValues = new Set(cocktails.flatMap((cocktail) => cocktail.baseSpirits.map((id) => `family:${id}`)))
 
 function duplicatesBaseSpirit(value) {

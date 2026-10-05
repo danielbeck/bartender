@@ -3,7 +3,7 @@ import test from 'node:test'
 import library from '../../../data/cocktails.json' with { type: 'json' }
 import {
   cocktails, cocktailIdAliases, filterDefinitions, filterGroups, filterScale,
-  filterCocktails, librarySearch, readFilters,
+  filterCocktails, groupCocktailsByCategory, librarySearch, readFilters,
 } from './cocktails.js'
 
 test('filter configuration references valid controls, groups, and taxonomies', () => {
@@ -37,16 +37,33 @@ test('filter configuration references valid controls, groups, and taxonomies', (
 
 test('visible filters retain their order and hidden filters remain available', () => {
   assert.deepEqual(filterGroups.map(({ definitions }) => definitions.map(({ key }) => key)), [
-    ['category', 'spirit', 'strength'],
-    ['glass', 'flavors', 'carbonation', 'ingredient', 'temperature'],
+    ['spirit', 'ingredient'],
+    ['strength', 'glass', 'flavors', 'carbonation', 'temperature'],
   ])
-  for (const key of ['method', 'flavor', 'difficulty']) {
+  for (const key of ['category', 'method', 'flavor', 'difficulty']) {
     assert.equal(filterDefinitions.find((definition) => definition.key === key).control, 'hidden')
   }
   const filters = readFilters(new URLSearchParams('method=shake&flavor=citrusy'))
   const results = filterCocktails(filters)
   assert.ok(results.length > 0)
   assert.ok(results.every(({ method, flavorProfile }) => method === 'shake' && flavorProfile.includes('citrusy')))
+})
+
+test('results appear in every matching category, in source order, with no empty groups', () => {
+  for (const filters of [{}, { q: 'gin' }, { category: 'classic' }, { q: 'no-such-cocktail' }]) {
+    const results = filterCocktails(filters)
+    const groups = groupCocktailsByCategory(results)
+    assert.deepEqual(groups.map(({ id }) => id), library.cocktailCategories
+      .filter(({ id }) => results.some(({ categories }) => categories.includes(id))).map(({ id }) => id))
+    for (const group of groups) {
+      assert.ok(group.cocktails.length > 0)
+      assert.ok(group.name && group.description)
+      assert.deepEqual(group.cocktails, results.filter(({ categories }) => categories.includes(group.id)))
+    }
+    for (const cocktail of results) {
+      assert.equal(groups.filter((group) => group.cocktails.includes(cocktail)).length, cocktail.categories.length)
+    }
+  }
 })
 
 test('Flavors groups all three taxonomy-backed sliders and preserves filtering', () => {

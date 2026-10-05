@@ -6,10 +6,7 @@
             "field": "categories",
             "label": "Category",
             "multiple": false,
-            "control": "select",
-            "group": "primary",
-            "order": 1,
-            "emptyLabel": "All categories"
+            "control": "hidden"
         },
         {
             "key": "spirit",
@@ -19,7 +16,7 @@
             "multiple": true,
             "control": "select",
             "group": "primary",
-            "order": 2,
+            "order": 1,
             "emptyLabel": "Any spirits"
         },
         {
@@ -28,8 +25,8 @@
             "label": "Mixers",
             "multiple": true,
             "control": "select",
-            "group": "additional",
-            "order": 4,
+            "group": "primary",
+            "order": 2,
             "emptyLabel": "Any Mixers"
         },
         {
@@ -56,7 +53,7 @@
             "multiple": false,
             "control": "select",
             "group": "additional",
-            "order": 1,
+            "order": 2,
             "emptyLabel": "Any glass",
             "illustration": "glass"
         },
@@ -67,8 +64,8 @@
             "taxonomy": "strengths",
             "multiple": false,
             "control": "slider",
-            "group": "primary",
-            "order": 3
+            "group": "additional",
+            "order": 1
         },
         {
             "key": "difficulty",
@@ -114,11 +111,20 @@
             "control": "toggle",
             "controlLabel": "Carbonated",
             "group": "additional",
-            "order": 3,
+            "order": 4,
             "states": [
-                { "value": "high", "label": "Yes" },
-                { "value": "", "label": " " },
-                { "value": "none", "label": "No" }
+                {
+                    "value": "none",
+                    "label": "No"
+                },
+                {
+                    "value": "",
+                    "label": " "
+                },
+                {
+                    "value": "high",
+                    "label": "Yes"
+                }
             ]
         },
         {
@@ -131,18 +137,38 @@
             "group": "additional",
             "order": 5,
             "states": [
-                { "value": "frozen", "label": "Frozen" },
-                { "value": "", "label": " " },
-                { "value": "hot", "label": "Hot" }
+                {
+                    "value": "frozen",
+                    "label": "Frozen"
+                },
+                {
+                    "value": "",
+                    "label": " "
+                },
+                {
+                    "value": "hot",
+                    "label": "Hot"
+                }
             ]
         }
     ],
     "sliderGroups": [
-        { "key": "flavors", "label": "Flavors", "group": "additional", "order": 2 }
+        {
+            "key": "flavors",
+            "label": "Flavors",
+            "group": "additional",
+            "order": 3
+        }
     ],
     "filterGroups": [
-        { "id": "primary", "label": "Primary filters" },
-        { "id": "additional", "label": "Additional filters", "showReset": true }
+        {
+            "id": "primary",
+            "label": "Primary filters"
+        },
+        {
+            "id": "additional",
+            "label": "Additional filters"
+        }
     ],
     "cocktailIdAliases": {
         "vieux-carre-variant-2": "vieux-carre"
