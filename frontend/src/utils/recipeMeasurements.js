@@ -1,17 +1,21 @@
 const milliliterAmount = (amount) => amount.match(/^(\d+(?:\.\d+)?) ml$/)
 export const millilitersPerShot = 45
 
+function formatQuarterQuantity(quarters) {
+  const fractions = ['', '¼', '½', '¾']
+  const whole = Math.floor(quarters / 4)
+  const fraction = fractions[quarters % 4]
+  return [whole || !fraction ? String(whole) : '', fraction].filter(Boolean).join(' ')
+}
+
 export function recipeShots(ingredients) {
-  const fractions = ['', '1/8', '1/4', '3/8', '1/2', '5/8', '3/4', '7/8']
   return ingredients.map(({ amount }) => {
     const measurement = milliliterAmount(amount)
     if (!measurement) return amount
     const volume = Number(measurement[1])
-    const eighths = volume > 0 ? Math.max(1, Math.round(volume / millilitersPerShot * 8)) : 0
-    const whole = Math.floor(eighths / 8)
-    const fraction = fractions[eighths % 8]
-    const quantity = [whole || !fraction ? String(whole) : '', fraction].filter(Boolean).join(' ')
-    return `${quantity} ${eighths > 0 && eighths <= 8 ? 'shot' : 'shots'}`
+    const quarters = Math.round(volume / millilitersPerShot * 4)
+    const quantity = formatQuarterQuantity(quarters)
+    return `${quantity} ${quarters > 0 && quarters <= 4 ? 'shot' : 'shots'}`
   })
 }
 
@@ -58,7 +62,7 @@ export function recipeParts(ingredients) {
     const exactParts = Number(measurements[index][1]) / millilitersPerPart
     const parts = exactParts > 0 ? Math.min(4.75, Math.max(0.25, Math.round(exactParts * 4) / 4)) : 0
     if (Math.abs(parts * millilitersPerPart - Number(measurements[index][1])) > 1e-9) rounded = true
-    return `${parts} ${parts === 1 ? 'part' : 'parts'}`
+    return `${formatQuarterQuantity(parts * 4)} ${parts === 1 ? 'part' : 'parts'}`
   })
 
   return {

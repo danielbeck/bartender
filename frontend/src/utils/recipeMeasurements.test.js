@@ -5,20 +5,23 @@ import { millilitersPerShot, recipeParts, recipeShots } from './recipeMeasuremen
 
 const ingredients = (...amounts) => amounts.map((amount) => ({ amount }))
 
-test('converts shots using 45 ml and simplified eighth fractions', () => {
+const quantityValue = (amount) => amount.replace(/ (?:shots?|parts?)$/, '').split(' ')
+  .reduce((sum, part) => sum + ({ '¼': 0.25, '½': 0.5, '¾': 0.75 }[part] ?? Number(part)), 0)
+
+test('converts shots using 45 ml and simplified quarter fractions', () => {
   assert.equal(millilitersPerShot, 45)
   assert.deepEqual(recipeShots(ingredients('45 ml', '22.5 ml', '90 ml', '60 ml', '50 ml', '15 ml', '5 ml')),
-    ['1 shot', '1/2 shot', '2 shots', '1 3/8 shots', '1 1/8 shots', '3/8 shot', '1/8 shot'])
+    ['1 shot', '½ shot', '2 shots', '1 ¼ shots', '1 shot', '¼ shot', '0 shots'])
 })
 
 test('shot conversion preserves non-ml amounts without mutating ingredients', () => {
   const original = ingredients('30 ml', '2 dashes', '1 (optional)', '1 cup', 'to taste')
   const snapshot = structuredClone(original)
-  assert.deepEqual(recipeShots(original), ['5/8 shot', '2 dashes', '1 (optional)', '1 cup', 'to taste'])
+  assert.deepEqual(recipeShots(original), ['¾ shot', '2 dashes', '1 (optional)', '1 cup', 'to taste'])
   assert.deepEqual(original, snapshot)
 })
 
-test('shot rounding stays within half an eighth for every catalog volume', () => {
+test('shot rounding uses the nearest quarter for every catalog volume', () => {
   const library = JSON.parse(readFileSync(new URL('../../../data/cocktails.json', import.meta.url), 'utf8'))
   for (const cocktail of library.cocktails) {
     const converted = recipeShots(cocktail.ingredients)
@@ -27,15 +30,16 @@ test('shot rounding stays within half an eighth for every catalog volume', () =>
         assert.equal(converted[index], amount)
         return
       }
-      const quantity = converted[index].replace(/ shots?$/, '')
-      const shots = quantity.split(' ').reduce((sum, part) => {
-        const [numerator, denominator = 1] = part.split('/').map(Number)
-        return sum + numerator / denominator
-      }, 0)
-      assert.ok(shots > 0, cocktail.id)
-      assert.ok(Math.abs(shots * millilitersPerShot - Number.parseFloat(amount)) <= millilitersPerShot / 16, cocktail.id)
+      const shots = quantityValue(converted[index])
+      assert.equal(shots, Math.round(Number.parseFloat(amount) / millilitersPerShot * 4) / 4, cocktail.id)
+      assert.ok(Math.abs(shots * millilitersPerShot - Number.parseFloat(amount)) <= millilitersPerShot / 8, cocktail.id)
     })
   }
+})
+
+test('shot rounding rounds halfway amounts up and small amounts to zero', () => {
+  assert.deepEqual(recipeShots(ingredients('0 ml', '5 ml', '5.625 ml', '16.875 ml', '33.75 ml')),
+    ['0 shots', '0 shots', '¼ shot', '½ shot', '¾ shot'])
 })
 
 test('keeps simple whole-number ratios and scales larger ratios below five', () => {
@@ -45,7 +49,7 @@ test('keeps simple whole-number ratios and scales larger ratios below five', () 
     rounded: false,
   })
   assert.deepEqual(recipeParts(ingredients('50 ml', '20 ml', '25 ml')), {
-    amounts: ['4 parts', '1.5 parts', '2 parts'],
+    amounts: ['4 parts', '1 ½ parts', '2 parts'],
     millilitersPerPart: 12.5,
     rounded: true,
   })
@@ -53,7 +57,7 @@ test('keeps simple whole-number ratios and scales larger ratios below five', () 
 
 test('handles decimal volumes and equal-parts recipes', () => {
   assert.deepEqual(recipeParts(ingredients('60 ml', '7.5 ml')), {
-    amounts: ['4 parts', '0.5 parts'],
+    amounts: ['4 parts', '½ parts'],
     millilitersPerPart: 15,
     rounded: false,
   })
@@ -66,7 +70,7 @@ test('handles decimal volumes and equal-parts recipes', () => {
 
 test('simplifies the Ramos Gin Fizz with only one fractional ingredient', () => {
   assert.deepEqual(recipeParts(ingredients('45 ml', '15 ml', '15 ml', '25 ml', '30 ml')), {
-    amounts: ['3 parts', '1 part', '1 part', '1.75 parts', '2 parts'],
+    amounts: ['3 parts', '1 part', '1 part', '1 ¾ parts', '2 parts'],
     millilitersPerPart: 15,
     rounded: true,
   })
@@ -75,7 +79,7 @@ test('simplifies the Ramos Gin Fizz with only one fractional ingredient', () => 
 test('prioritizes accuracy when the size limits make 10% rounding impossible', () => {
   const converted = recipeParts(ingredients('120 ml', '5 ml'))
   assert.equal(converted.millilitersPerPart, 22.5)
-  assert.deepEqual(converted.amounts, ['4.75 parts', '0.25 parts'])
+  assert.deepEqual(converted.amounts, ['4 ¾ parts', '¼ parts'])
   assert.equal(converted.rounded, true)
 })
 
@@ -100,7 +104,7 @@ test('every catalog recipe uses quarter-parts below five and reports approximati
     let maximumError = 0
     cocktail.ingredients.forEach(({ amount }, index) => {
       if (amount.endsWith(' ml')) {
-        const parts = Number(converted.amounts[index].split(' ')[0])
+        const parts = quantityValue(converted.amounts[index])
         assert.ok(parts >= 0.25 && parts < 5, `${cocktail.id}: ${parts} parts`)
         assert.ok(Number.isInteger(parts * 4), cocktail.id)
         const exactParts = Number.parseFloat(amount) / converted.millilitersPerPart

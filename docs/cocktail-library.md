@@ -111,12 +111,15 @@ Candidates allow up to 10% error per ingredient; when none satisfy that limit,
 the calculator prioritizes the lowest maximum relative error instead.
 Amounts use quarter-part increments, with a minimum of 0.25 part for positive
 volumes and a maximum of 4.75 parts. For example, 45/15/15/25/30 ml becomes
-3/1/1/1.75/2 parts with only the syrup rounded.
+3/1/1/1 ¾/2 parts with only the syrup rounded. Fractional parts use the
+same ¼, ½, and ¾ glyphs as shots (for example, 1 ½ parts instead of 1.5 parts).
 The UI shows the ml equivalent of one part and marks recipes
 whose proportions have been rounded as approximate.
-Shots use 45 ml per shot, rounded to the nearest eighth and displayed as
-simplified mixed fractions (for example, 60 ml becomes 1 3/8 shots).
-Positive quantities never round down to zero; the minimum is 1/8 shot.
+Shots use 45 ml per shot, rounded to the nearest quarter and displayed as
+simplified mixed fractions using fraction glyphs (¼, ½, ¾; for example,
+60 ml becomes 1 ¼ shots).
+Each amount is rounded independently, so drink proportions can change.
+Halfway amounts round up; amounts below 5.625 ml round to 0 shots.
 Counts, dashes, cups, and other non-ml measurements remain unchanged.
 This is a display conversion only; source recipes are not modified.
 

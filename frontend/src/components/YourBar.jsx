@@ -45,7 +45,7 @@ export default function YourBar({ bar, user }) {
           <legend>{group.label}</legend>
           <button
             type="button"
-            className="library-button"
+            className="your-bar-select-group"
             aria-label={`${group.ingredients.every(({ id }) => stockedIds.has(id)) ? 'Select none' : 'Select all'} in ${group.label}`}
             onClick={() => {
               const nextIds = new Set(stockedIds)

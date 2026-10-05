@@ -84,14 +84,39 @@
 
   label {
     align-items: baseline;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1em minmax(0, 1fr);
     gap: 8px;
     cursor: pointer;
   }
 
   input {
     accent-color: #286650;
-    flex-shrink: 0;
+    width: 1em;
+    height: 1em;
+    margin: 0;
+  }
+
+  .your-bar-select-group {
+    background: none;
+    border: 0;
+    color: #286650;
+    display: block;
+    margin: 0 0 4px;
+    padding: 0 0 0 calc(1em + 8px);
+    text-align: left;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+
+    &:hover:not(:disabled) {
+      color: #263b36;
+      text-decoration-thickness: 2px;
+    }
+
+    &:disabled {
+      cursor: default;
+      opacity: .5;
+    }
   }
 
   fieldset {
@@ -477,7 +502,7 @@
 }
 
 .cocktail-empty {
-  padding: 32px 0;
+  padding: 5em 0 25em;
   text-align: center;
 
   p {
