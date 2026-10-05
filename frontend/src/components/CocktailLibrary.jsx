@@ -6,6 +6,9 @@ import GlassProfile from './GlassProfile'
 import { glassProfiles } from '../utils/glassProfiles'
 import { ingredientVolumes } from '../utils/glassFill'
 import FlavorFilters from './FlavorFilters'
+import YourBar from './YourBar'
+import useBarStock from '../utils/useBarStock'
+import { canMakeCocktail } from '../utils/barStock'
 import { millilitersPerShot, recipeParts, recipeShots } from '../utils/recipeMeasurements'
 import {
   cocktails, cocktailIdAliases, categoryLabel, filterCocktails, groupCocktailsByCategory,
@@ -22,7 +25,7 @@ function MetadataTags({ title, values, filter, onShowResults }) {
   </section>
 }
 
-export default function CocktailLibrary() {
+export default function CocktailLibrary({ user }) {
   const { cocktailId } = useParams()
   const location = useLocation()
   const navigate = useNavigate()
@@ -37,7 +40,11 @@ export default function CocktailLibrary() {
   const showGlassPreview = recipeHovered || recipeFocused
   const highlightedIngredient = hoveredIngredient ?? focusedIngredient
   const filters = readFilters(new URLSearchParams(location.search))
+  const bar = useBarStock(user)
+  const stockOnly = Boolean(user && bar.stockOnly)
+  const stockedIds = new Set(bar.ingredientIds || [])
   const filteredCocktails = filterCocktails(filters)
+    .filter((cocktail) => !stockOnly || canMakeCocktail(cocktail, stockedIds))
   const selectedCocktailId = cocktailIdAliases[cocktailId] || cocktailId
   const selectedCocktail = cocktails.find((cocktail) => cocktail.libraryId === selectedCocktailId)
   const partsRecipe = selectedCocktail ? recipeParts(selectedCocktail.ingredients) : null
@@ -92,6 +99,7 @@ export default function CocktailLibrary() {
   }
 
   return <section className="cocktail-library" aria-labelledby="cocktail-library-title">
+    {user && !cocktailId && <YourBar bar={bar} />}
     {selectedCocktail && <Link className="library-back" to={listUrl}>Back to the cocktails</Link>}
     <div className={selectedCocktail ? 'cocktail-detail-heading' : undefined}>
       <h1 id="cocktail-library-title" className={selectedCocktail ? 'cocktail-detail-title' : undefined} ref={headingRef} tabIndex={-1}>The {selectedCocktail
@@ -278,7 +286,9 @@ export default function CocktailLibrary() {
       </Link>)}</div>
       </section>) : <div className="cocktail-empty">
         <h2>No cocktails match your filters</h2>
-        <p>Try a different search or reset the filters to see the full library.</p>
+        <p>{stockOnly
+          ? 'Check more ingredients in Your Bar or choose "Show all the drinks". You can also adjust your search filters.'
+          : 'Try a different search or reset the filters to see the full library.'}</p>
         {activeFilterDescriptions.length > 0 && <button type="button" className="library-button" onClick={resetFilters}>Reset filters</button>}
       </div>}
     </>}

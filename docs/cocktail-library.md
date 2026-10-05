@@ -1,5 +1,43 @@
 # Cocktail library filters
 
+## Your Bar
+
+The header profile icon links to `/profile` when logged in and `/auth` for
+guests. The profile page displays the username and a Log out button, using
+the login/register page's shared styling. Logout errors are displayed without
+clearing the current account; successful logout returns to the library.
+Direct profile visits wait for the account check before redirecting guests
+to login.
+
+Logged-in users see Your Bar above the main cocktail library only, not on
+individual recipe pages.
+"Show all the drinks" leaves the existing search unchanged. "Show what I have
+in stock" expands ingredient checkboxes, with Spirits first and Mixers second,
+each grouped by the catalog's ingredient categories and alphabetized within
+each type. Only specific catalog ingredients are stocked; selecting Gin does
+not implicitly stock flavored variants.
+Each ingredient group has a Select all / Select none toggle. Select all adds
+every ingredient in that group; when all are selected, Select none clears
+only that group. Both actions preserve other groups and save to the account.
+
+Stock mode requires every non-optional recipe ingredient, accepting any one
+of a recipe's explicitly listed alternatives. Garnishes and optional ingredients
+are ignored. Everyday basics (water, ice, sugar, brown sugar, and salt/pepper)
+are assumed available and omitted from the checklist; syrups still require
+selection. An empty inventory therefore normally produces no matches.
+Stock filtering combines with all existing search and URL filters. Reset filters
+does not clear the inventory or disable stock mode.
+
+Ingredient IDs and the selected mode are saved in SQLite per authenticated user,
+so they survive logout and work across sessions and devices. The UI waits for
+each save and retains the last saved settings if it fails, displaying an error.
+Load failures offer Retry. Guests have neither stock controls nor stock filtering.
+The authenticated `GET /bar` and CSRF-protected `PUT /bar` endpoints manage these
+settings. The `user_bar` table is created non-destructively on first use for
+existing deployments, and by database initialization for fresh deployments.
+
+## Catalog and search
+
 `data/cocktails.json` is the source of truth for alcoholic ingredients. Each
 entry in its shared `ingredients` catalog defines an `isAlcoholic` boolean.
 Alcoholic entries may define `spiritFamilyIds` referencing `taxonomy.spiritFamilies`

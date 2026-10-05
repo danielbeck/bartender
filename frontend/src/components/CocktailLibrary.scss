@@ -36,6 +36,27 @@
 }
 
 .library-back { color: #286650; display: inline-block; margin-bottom: 16px; }
+.your-bar {
+  margin-bottom: 28px;
+
+  h2 {
+    font-size: clamp(44px, 7vw, 76px);
+    line-height: 1.1;
+    margin: 0 0 12px;
+    overflow-wrap: anywhere;
+  }
+  h3 { margin: 16px 0 8px; }
+  label { align-items: baseline; display: flex; gap: 8px; cursor: pointer; }
+  input { accent-color: #286650; flex-shrink: 0; }
+  fieldset { border: 1px solid #b7c9c2; border-radius: 6px; min-width: 0; padding: 10px 12px; }
+  legend { font-weight: 600; padding: 0 4px; }
+  .your-bar-save-status { color: #53665f; font-size: 14px; margin: 8px 0 0; }
+}
+.your-bar-groups {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+}
 .cocktail-library-intro { color: #53665f; margin-bottom: 16px; }
 .cocktail-library-search {
   background: #f5f5f5;
@@ -148,7 +169,8 @@
   padding: 7px 9px;
   text-align: left;
 
-  &:hover { background: #eaf2ee; }
+  &:hover:not(:disabled) { background: #eaf2ee; }
+  &:disabled { cursor: default; opacity: .5; }
 }
 .filter-three-toggle-state {
   align-items: center;

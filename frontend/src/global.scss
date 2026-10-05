@@ -14,13 +14,17 @@ body {
 }
 
 .App-header .auth-link {
-    color: #007bff;
-    font-weight: bold;
+    align-items: center;
+    border-radius: 50%;
+    color: #286650;
+    display: inline-flex;
+    height: 44px;
+    justify-content: center;
     text-decoration: none;
-}
+    width: 44px;
 
-.App-header .user-status {
-    margin-right: 16px;
+    &:hover { background: #eaf2ee; }
+    &:focus-visible { outline: 3px solid #387f69; outline-offset: 3px; }
 }
 
 h1,

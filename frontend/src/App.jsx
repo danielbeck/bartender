@@ -3,12 +3,14 @@ import { useState, useEffect } from 'react'
 import { Link, Navigate, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import { fetchAPI } from './api'
 import AuthPage from './components/AuthPage'
+import ProfilePage from './components/ProfilePage'
 import CocktailLibrary from './components/CocktailLibrary'
 import './global.scss'
 
 
 function App() {
   const [user, setUser] = useState(null)
+  const [userLoading, setUserLoading] = useState(true)
   const navigate = useNavigate();
   const location = useLocation()
 
@@ -22,6 +24,8 @@ function App() {
       setUser(data.user)
     } catch (err) {
       setUser(null)
+    } finally {
+      setUserLoading(false)
     }
   }
 
@@ -38,22 +42,28 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        {user ? (
-          <>
-            <span className="user-status">Logged in as <b>{user}</b></span>
-            <button onClick={handleLogout}>Logout</button>
-          </>
-        ) : (
-          <Link className="auth-link" to="/auth">Go to Auth Page</Link>
+        {(user || location.pathname.replace(/\/+$/, '') !== '/auth') && (
+          <Link className="auth-link" to={user ? '/profile' : '/auth'}
+            aria-label={user ? 'Your profile' : 'Log in or register'}
+            title={user ? 'Your profile' : 'Log in or register'}>
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 21v-2a8 8 0 0 1 16 0v2" />
+            </svg>
+          </Link>
         )}
       </header>
 
       <main>
         <Routes>
           <Route path="/auth" element={<AuthPage onAuth={handleAuth} />} />
+          <Route path="/profile" element={userLoading
+            ? <section className="auth-page"><p role="status">Loading your profile...</p></section>
+            : user ? <ProfilePage user={user} onLogout={handleLogout} />
+              : <Navigate to="/auth" replace />} />
           <Route path="/" element={<Navigate to={`/cocktails${location.search}`} replace />} />
-          <Route path="/cocktails" element={<CocktailLibrary />} />
-          <Route path="/cocktails/:cocktailId" element={<CocktailLibrary />} />
+          <Route path="/cocktails" element={<CocktailLibrary user={user} />} />
+          <Route path="/cocktails/:cocktailId" element={<CocktailLibrary user={user} />} />
           <Route path="*" element={<div className="cocktail-library"><h1>Page not found</h1><Link to="/cocktails">Back to the cocktails</Link></div>} />
         </Routes>
       </main>

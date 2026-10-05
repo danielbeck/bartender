@@ -86,7 +86,7 @@ def get_db():
 def index():
     return jsonify({
         'message': 'Bartender API',
-        'endpoints': ['/auth/register', '/auth/login', '/auth/logout', '/auth/me']
+        'endpoints': ['/auth/register', '/auth/login', '/auth/logout', '/auth/me', '/bar']
     })
 
 
@@ -97,9 +97,11 @@ def index():
 try:
     # If run as module (python3 -m backend.app)
     from backend.endpoints.auth import bp as auth_bp
+    from backend.endpoints.bar import bp as bar_bp
 except ImportError:
     # If run as script (python3 app.py)
     from endpoints.auth import bp as auth_bp
+    from endpoints.bar import bp as bar_bp
 
 # Provide DB helpers to Blueprints via app config
 
@@ -136,6 +138,8 @@ app.config['WTF_CSRF_TIME_LIMIT'] = None  # CSRF tokens don't expire (session-ba
 app.config['WTF_CSRF_CHECK_DEFAULT'] = False  # We'll manually protect endpoints
 
 app.register_blueprint(auth_bp)
+limiter.limit('120 per minute')(bar_bp)
+app.register_blueprint(bar_bp)
 
 
 @app.after_request
