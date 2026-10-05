@@ -7,7 +7,14 @@ This backend provides account authentication and per-user bar settings using Pyt
 ## Directory Structure and File Explanations
 
 - **app.py**: Main Flask application. Sets up the app, logging, error handling, database helpers, and registers all endpoints (via Blueprints).
-- **api.cgi**: CGI entry point for running the Flask app under CGI. Handles environment setup and error logging for CGI deployments.
+- **api.cgi**: Shell CGI launcher that invokes the adjacent `venv/bin/python`
+  and `cgi_app.py`. This avoids Python-shebang startup failures under the
+  hosting Apache environment and uses the deployed dependencies.
+- **cgi_app.py**: Python CGI entry point. Resolves backend paths from its own
+  location, initializes logging, and runs Flask. Import/startup exceptions are
+  recorded in `logs/cgi_error.log`. No deploy-time path substitution is needed.
+  The launcher uses Apache's `SCRIPT_FILENAME` to locate its files because
+  the CGI working directory and shell `$0` are not reliable backend paths.
 - **config_helper.py**: Utility for reading deployment configuration from config.json and determining backend paths.
 - **init_db.py**: Script to initialize the SQLite database and create the users and user_bar tables without changing existing records.
 - **logging_helper.py**: Helper for logging exceptions from CGI scripts to backend/logs/cgi_error.log.
@@ -43,6 +50,11 @@ This backend provides account authentication and per-user bar settings using Pyt
     ```
 
 ## API
+
+Authentication endpoints rely on Flask-Limiter's automatic request hook for
+the configured API limits. They do not manually invoke the limiter extension;
+newer Flask-Limiter releases store that extension as a set, not an object with
+a `check()` method.
 
 The Vite development frontend uses `<BASE_URL>api` (for example `/bar/api`),
 proxied to Flask on port 8000. Production builds use the generated CGI URL.

@@ -97,17 +97,6 @@ done
 BACKEND_EXISTS=$(ssh -o ControlPath="$CONTROL_PATH" $USER@$HOST "if [ -d '${REMOTE_DIR}backend' ]; then echo 1; else echo 0; fi")
 ssh -o ControlPath="$CONTROL_PATH" $USER@$HOST "mkdir -p ${REMOTE_DIR}backend ${REMOTE_DIR}frontend"
 echo "✅ Remote directories ensured."
-# Prepare a templated api.cgi with the computed backend dir and upload it
-# Build and normalize backend dir by collapsing duplicate slashes
-BACKEND_DIR="${BACKEND_ROOT}${BASE_DIR}${SUB_DIR}backend"
-BACKEND_DIR=$(echo "${BACKEND_DIR}" | sed -E 's:/+:/:g')
-if [ -z "$SUB_DIR" ]; then
-    BACKEND_DIR="${BACKEND_ROOT}${BASE_DIR}backend"
-    BACKEND_DIR=$(echo "${BACKEND_DIR}" | sed -E 's:/+:/:g')
-fi
-echo "[DEBUG] BACKEND_DIR: $BACKEND_DIR"
-
-
 # Rsync backend with --delete to remove unwanted files
 rsync -avz --delete --progress \
     -e "ssh -o ControlPath=$CONTROL_PATH" \
@@ -125,11 +114,8 @@ rsync -avz --delete --progress \
     --exclude='.DS_Store' \
     backend/ $USER@$HOST:${REMOTE_DIR}backend/
 
-# Create a templated api.cgi locally with the correct backend path
-TMP_API=$(mktemp /tmp/api.cgi.XXXX)
-sed "s|__DEPLOY_BACKEND_DIR__|${BACKEND_DIR}|g" backend/api.cgi > "$TMP_API"
-scp -o ControlPath="$CONTROL_PATH" "$TMP_API" $USER@$HOST:${REMOTE_DIR}backend/api.cgi
-rm -f "$TMP_API"
+# The CGI launcher resolves its adjacent virtualenv and Python entry point.
+scp -o ControlPath="$CONTROL_PATH" backend/api.cgi $USER@$HOST:${REMOTE_DIR}backend/api.cgi
 
 # Harden permissions: remove group/world write bits on backend files and
 # ensure CGI scripts are executable. Keep logs directory writable so the

@@ -113,7 +113,7 @@ Result:
 ### Backend Configuration
 
 1. **deploy.sh**: Reads `config.json` and constructs the deployment path
-2. **api.cgi**: The deployed `api.cgi` contains a deploy-time placeholder (`__DEPLOY_BACKEND_DIR__`) which `deploy.sh` replaces with the computed absolute backend directory. This avoids requiring `config.json` on the host for shared-host compatibility.
+2. **api.cgi**: A shell launcher invokes the adjacent `venv/bin/python` and `cgi_app.py`. The Python entry point resolves its backend directory from its own location, so CGI startup requires neither deploy-time path substitution nor `config.json`.
 3. **config_helper.py**: A local helper that can parse `config.json` when running locally; not required on the server when using deploy-time templating.
 
 ### Frontend Configuration
@@ -172,7 +172,7 @@ The script reads `config.json` and deploys to the configured location.
 
 If `config.json` is missing:
 - **deploy.sh**: Will exit with an error
-- **api.cgi**: Falls back to hardcoded path `/kunden/homepages/29/d557350892/htdocs/nb/backend`
+- **api.cgi**: Resolves the adjacent virtualenv and Python entry point relative to its own location.
 - **Frontend build**: Uses default base path `/`
 
 ### Wrong Paths After Deployment
