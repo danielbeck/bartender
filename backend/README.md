@@ -32,6 +32,19 @@ This backend provides account authentication and per-user bar settings using Pyt
 
 ## Setup
 
+Set `SECRET_KEY` in the project-root `.env` before starting the backend.
+Direct Flask startup reads that key (an explicit process `SECRET_KEY` takes
+precedence). There is no hardcoded fallback; missing or empty keys stop startup.
+The existing HTTP/HTTPS cookie configuration is unchanged by this setting.
+
+Deployment copies only `SECRET_KEY` to `~/.config/bartender/session.json`,
+outside the web root, using an encrypted SSH connection without printing it.
+The directory is mode 700 and the file is mode 600. CGI loads this private file
+before starting Flask; it does not require the project `.env` on the server.
+Keep the key stable across redeploys. Changing it logs out existing sessions
+but preserves accounts and inventories. `APP_SECRET_FILE` can override the
+private configuration path. Do not commit or serve either secrets file.
+
 1. Install Python dependencies:
     ```bash
     pip3 install -r requirements.txt

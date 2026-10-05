@@ -2,6 +2,7 @@ import os
 from wsgiref.handlers import CGIHandler
 
 os.environ.setdefault('APP_BASE_DIR', os.path.dirname(os.path.abspath(__file__)))
+os.environ.setdefault('APP_SECRET_FILE', os.path.expanduser('~/.config/bartender/session.json'))
 os.makedirs(os.path.join(os.environ['APP_BASE_DIR'], 'logs'), exist_ok=True)
 
 import logging_helper

@@ -10,6 +10,14 @@ The `.env` file in the root directory controls:
 - Production domain
 - Flask secret key and other environment variables
 
+The local backend reads `SECRET_KEY` from the project `.env`, unless a process
+environment value overrides it. Deployment transfers only the key over SSH
+to `~/.config/bartender/session.json` (permissions 600, outside the web root).
+CGI loads that file for every request; the key is not bundled into the frontend
+or printed during deployment. Missing configuration stops backend startup;
+there is no development fallback. Keep the same key across deployments to
+preserve sessions. This does not enable HTTPS-only cookies.
+
 ### Setup
 
 Copy the example file to create your configuration:

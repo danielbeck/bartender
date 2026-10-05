@@ -2,6 +2,7 @@
 
 # Deployment script - Deploys to configured directory
 # Configuration is read from .env file
+set -o pipefail
 
 # Read configuration from .env file
 if [ ! -f ".env" ]; then
@@ -14,6 +15,11 @@ fi
 set -a
 source .env
 set +a
+
+if [ -z "${SECRET_KEY:-}" ]; then
+    echo "SECRET_KEY must be set in .env before deploying."
+    exit 1
+fi
 
 # Normalize paths using Python
 eval $(python3 - <<PY
@@ -81,6 +87,14 @@ cleanup() {
 }
 
 trap cleanup EXIT
+
+echo "🔐 Installing private session configuration (key is not printed)..."
+if ! node -e 'process.stdout.write(JSON.stringify({SECRET_KEY: process.env.SECRET_KEY}))' |
+    ssh -o ControlPath="$CONTROL_PATH" $USER@$HOST \
+        'set -e; umask 077; mkdir -p "$HOME/.config/bartender"; chmod 700 "$HOME/.config/bartender"; temp=$(mktemp "$HOME/.config/bartender/session.XXXXXX"); trap '\''rm -f "$temp"'\'' EXIT; cat > "$temp"; chmod 600 "$temp"; mv "$temp" "$HOME/.config/bartender/session.json"'; then
+    echo "Failed to install private session configuration; deployment stopped."
+    exit 1
+fi
 
 echo "📦 Deploying backend to ${REMOTE_DIR}backend/..."
 echo "🗂️  Ensuring remote directories exist..."

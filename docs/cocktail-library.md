@@ -157,6 +157,13 @@ The remaining groups and their entries are alphabetized.
 An ingredient with the same ID or label as a listed base-spirit family is
 omitted from the other group to avoid duplicates; distinct variants remain.
 
+Recipe ingredient links select the matching Spirits or Mixers option instead
+of searching by text, clearing previous search filters. Ingredients omitted
+as duplicate base spirits select their family (for example, Gin); distinct
+variants select the specific ingredient (for example, White Rum).
+Ingredients without an available filter option fall back to a text search.
+Navigation to these results scrolls to the "The Cocktails." heading.
+
 Flavor Notes supports multiple selections through tags and URLs. A recipe
 matches only when it contains every selected note. Resetting the filters clears
 these selections; no dedicated flavor-note selector is shown.

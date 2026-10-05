@@ -3,7 +3,7 @@ import test from 'node:test'
 import library from '../../../data/cocktails.json' with { type: 'json' }
 import {
   cocktails, cocktailIdAliases, filterDefinitions, filterGroups, filterScale,
-  filterCocktails, groupCocktailsByCategory, librarySearch, readFilters,
+  filterCocktails, filterOptions, groupCocktailsByCategory, ingredientFilters, librarySearch, readFilters,
 } from './cocktails.js'
 
 test('filter configuration references valid controls, groups, and taxonomies', () => {
@@ -106,4 +106,31 @@ test('source recipe aliases point to canonical recipes without duplicate entries
     assert.ok(!cocktails.some(({ id }) => id === alias))
     assert.ok(cocktails.some(({ id }) => id === canonical))
   }
+})
+
+test('ingredient links select Spirits or Mixers and clear previous search filters', () => {
+  assert.deepEqual(ingredientFilters({ ingredientId: 'gin', name: 'gin' }), { spirit: ['family:gin'] })
+  assert.deepEqual(ingredientFilters({ ingredientId: 'white-rum', name: 'white rum' }), { spirit: ['ingredient:white-rum'] })
+  assert.deepEqual(ingredientFilters({ ingredientId: 'lime-juice', name: 'lime juice' }), { ingredient: ['lime-juice'] })
+  for (const cocktail of cocktails) {
+    for (const ingredient of cocktail.ingredients) {
+      const selection = ingredientFilters(ingredient)
+      const filters = readFilters(new URLSearchParams(librarySearch(selection, '?q=old&spirit=family:vodka&ingredient=tonic-water')))
+      if (selection.q) {
+        assert.equal(selection.q, ingredient.name)
+        const definition = library.ingredients.find(({ id }) => id === ingredient.ingredientId)
+        const key = definition.isAlcoholic ? 'spirit' : 'ingredient'
+        const value = definition.isAlcoholic ? `ingredient:${definition.id}` : definition.id
+        assert.ok(!filterOptions[key].some((option) => option.value === value))
+        continue
+      }
+      assert.equal(filters.q, '')
+      const [key] = Object.keys(selection)
+      assert.deepEqual(filters[key], selection[key])
+      assert.deepEqual(filters[key === 'spirit' ? 'ingredient' : 'spirit'], [])
+      assert.ok(filterOptions[key].some((option) => option.value === selection[key][0]))
+      if (!ingredient.optional) assert.ok(filterCocktails(filters).includes(cocktail))
+    }
+  }
+  assert.throws(() => ingredientFilters({ ingredientId: 'unknown', name: 'unknown' }), /Unknown ingredient ID/)
 })

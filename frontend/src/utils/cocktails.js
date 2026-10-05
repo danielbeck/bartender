@@ -112,6 +112,21 @@ export const filterOptions = Object.fromEntries(filterDefinitions.map(({ key, fi
       : 0) || first.label.localeCompare(second.label)),
 ]))
 
+export function ingredientFilters({ ingredientId, name }) {
+  const ingredient = ingredientsById.get(ingredientId)
+  if (!ingredient) throw new Error(`Unknown ingredient ID: ${ingredientId}`)
+  const key = ingredient.isAlcoholic ? 'spirit' : 'ingredient'
+  const value = ingredient.isAlcoholic ? `ingredient:${ingredientId}` : ingredientId
+  if (filterOptions[key].some((option) => option.value === value)) return { [key]: [value] }
+  if (ingredient.isAlcoholic && duplicatesBaseSpirit(value)) {
+    const family = (ingredient.spiritFamilyIds || []).find((id) =>
+      (ingredient.id === id || normalize(ingredient.name) === normalize(familiesById.get(id).label))
+      && filterOptions.spirit.some((option) => option.value === `family:${id}`))
+    if (family) return { spirit: [`family:${family}`] }
+  }
+  return { q: name }
+}
+
 export function readFilters(params) {
   return Object.fromEntries([
     ['q', params.get('q') || ''],

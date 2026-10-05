@@ -12,7 +12,7 @@ import { canMakeCocktail } from '../utils/barStock'
 import { millilitersPerShot, recipeParts, recipeShots } from '../utils/recipeMeasurements'
 import {
   cocktails, cocktailIdAliases, categoryLabel, filterCocktails, groupCocktailsByCategory,
-  filterDefinitions, filterGroups, filterOptions, filterScale, librarySearch, metadataLabel, readFilters, visibleSpirits,
+  filterDefinitions, filterGroups, filterOptions, filterScale, ingredientFilters, librarySearch, metadataLabel, readFilters, visibleSpirits,
 } from '../utils/cocktails'
 import './CocktailLibrary.scss'
 
@@ -75,7 +75,7 @@ export default function CocktailLibrary({ user }) {
     setRecipeFocused(false)
     setHoveredIngredient(null)
     setFocusedIngredient(null)
-    window.scrollTo(0, 0)
+    headingRef.current?.scrollIntoView({ block: 'start' })
     headingRef.current?.focus({ preventScroll: true })
   }, [cocktailId])
 
@@ -152,7 +152,7 @@ export default function CocktailLibrary({ user }) {
           <span className="ingredient-amount">{displayedAmounts[index]}</span>
           <Link
             className="ingredient-search-link"
-            to={`/cocktails${librarySearch({ q: ingredient.name }, location.search)}`}
+            to={`/cocktails${librarySearch(ingredientFilters(ingredient), location.search)}`}
           >{ingredient.name}</Link>
         </li>)}</ul>
         <h2>Garnish</h2>
