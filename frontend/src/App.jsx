@@ -4,6 +4,7 @@ import { Link, Navigate, Routes, Route, useLocation, useNavigate } from 'react-r
 import { fetchAPI } from './api'
 import AuthPage from './components/AuthPage'
 import ProfilePage from './components/ProfilePage'
+import PasswordRecoveryPage from './components/PasswordRecoveryPage'
 import CocktailLibrary from './components/CocktailLibrary'
 import './global.scss'
 
@@ -30,7 +31,7 @@ function App() {
   }
 
   const handleAuth = (data) => {
-    setUser(data.username || data.user)
+    setUser(data.email || data.user)
   }
 
   const handleLogout = async () => {
@@ -57,6 +58,8 @@ function App() {
       <main>
         <Routes>
           <Route path="/auth" element={<AuthPage onAuth={handleAuth} />} />
+          <Route path="/forgot-password" element={<PasswordRecoveryPage key="forgot" />} />
+          <Route path="/reset-password" element={<PasswordRecoveryPage key="reset" reset onReset={() => setUser(null)} />} />
           <Route path="/profile" element={userLoading
             ? <section className="auth-page"><p role="status">Loading your profile...</p></section>
             : user ? <ProfilePage user={user} onLogout={handleLogout} />

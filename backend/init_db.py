@@ -2,8 +2,10 @@ import sqlite3
 import os
 try:
     from backend.bar_storage import ensure_bar_table
+    from backend.account_schema import ensure_account_schema
 except ImportError:
     from bar_storage import ensure_bar_table
+    from account_schema import ensure_account_schema
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_DIR = os.path.join(BASE_DIR, 'database')
@@ -25,6 +27,7 @@ def init_database():
     ''')
 
     conn.commit()
+    ensure_account_schema(conn)
     ensure_bar_table(conn)
     conn.close()
     print(f"\nDatabase initialized at {DB_PATH}")

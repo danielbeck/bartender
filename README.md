@@ -31,6 +31,13 @@ Authentication is available at `/auth`. The boilerplate todo UI and API have
 been removed. Existing database records are left untouched; new databases
 contain only the users table.
 
+Login and registration use email addresses. The "Forgot my password" link opens
+an email request form; emailed single-use links let users enter and confirm a new
+password and expire after 15 minutes. Successful resets revoke existing sessions.
+Set SMTP values in `.env`; see [the email configuration guide](CONFIG.md#password-recovery-email).
+Legacy username-only accounts are preserved in the database but cannot log in;
+create new email-based accounts.
+
 Modify .env to deploy to different subdirectories or domains (see .env.example)
 
 ## Quick links
@@ -66,10 +73,11 @@ Dev frontend runs on http://localhost:3000 and proxies API requests to the backe
 ## API (current)
 
 - GET / — root info
-- POST /auth/register — create an account
-- POST /auth/login — log in
+- POST /auth/register and POST /auth/login — `{"email":"person@example.com","password":"YourPassword123"}`
 - POST /auth/logout — log out
-- GET /auth/me — fetch the current username (returns `{ user: ... }`)
+- GET /auth/me — fetch the current email (returns `{ user: ... }`)
+- POST /auth/forgot-password — `{"email":"person@example.com"}`; returns the same generic confirmation for known and unknown emails
+- POST /auth/reset-password — `{"token":"<emailed-token>","password":"NewPassword123","confirm_password":"NewPassword123"}`
 
 
 See `backend/app.py` for authoritative endpoint behavior.
@@ -101,9 +109,13 @@ cp .env.example .env
 ./deploy.sh
 ```
 - Syncs backend and frontend code to the configured remote directory.
+- Copies the session key, SMTP settings, and reset URL to private server configuration
+  outside the web root, without printing secrets. No `.env` upload is needed;
+  see [backend/README.md](backend/README.md).
 - Installs backend Python dependencies in a virtual environment (if not already present).
 - Initializes the backend database **only if** this is the first deploy (i.e., the backend directory did not previously exist).
 - Does **not** overwrite an existing database on redeploys.
+- Applies additive account-schema migrations on every deploy.
 
 ### Force Fresh Deploy (reset database)
 

@@ -11,12 +11,15 @@ The `.env` file in the root directory controls:
 - Flask secret key and other environment variables
 
 The local backend reads `SECRET_KEY` from the project `.env`, unless a process
-environment value overrides it. Deployment transfers only the key over SSH
-to `~/.config/bartender/session.json` (permissions 600, outside the web root).
-CGI loads that file for every request; the key is not bundled into the frontend
-or printed during deployment. Missing configuration stops backend startup;
-there is no development fallback. Keep the same key across deployments to
-preserve sessions. This does not enable HTTPS-only cookies.
+environment value overrides it. Deployment transfers the key, SMTP settings,
+and the reset URL over SSH to `~/.config/bartender/session.json` (permissions
+600, outside the web root). CGI loads that file for every request; secrets are
+not bundled into the frontend or printed during deployment. Missing
+configuration stops backend startup; there is no development fallback. Keep
+the same key across deployments to preserve sessions. Deployment sets
+`FLASK_ENV=production`, which enables secure-only cookies, only when
+`PRODUCTION_DOMAIN` uses HTTPS; over plain HTTP, cookies stay non-secure so
+sessions keep working.
 
 ### Setup
 
@@ -63,6 +66,44 @@ A subdirectory within baseDir for this specific app.
 
 #### PRODUCTION_DOMAIN
 The full production domain URL (e.g., `https://yourdomain.com`).
+
+### Password Recovery Email
+
+Set these values in the project-root `.env` (never commit real credentials):
+
+```env
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_FROM_EMAIL=accounts@yourdomain.com
+SMTP_FROM_NAME="Your App"
+SMTP_USERNAME=accounts@yourdomain.com
+SMTP_PASSWORD="your-smtp-password"
+```
+
+`SMTP_SECURE=false` uses STARTTLS (typically port 587), not unencrypted SMTP.
+`SMTP_SECURE=true` uses implicit TLS (typically port 465). Certificate verification
+is enabled in both modes. The SMTP provider must authorize the sender address.
+
+`PASSWORD_RESET_URL` optionally overrides the complete frontend reset-page URL,
+including any subdirectory, with no query or fragment. Local development defaults
+to `http://localhost:3000/<DEPLOY_SUB_DIR>/reset-password`; deployment defaults to
+`<PRODUCTION_DOMAIN>/<DEPLOY_SUB_DIR>/reset-password`, matching whatever scheme
+`PRODUCTION_DOMAIN` uses (HTTPS is recommended but not required, since not every
+deployment target can get a certificate). If Vite uses a different port, set a
+local override. Remove or update that override before deployment, since an
+explicit override is also deployed.
+
+Local startup reads these settings from `.env`, with process environment values
+taking precedence. Deployment copies only the session key, SMTP settings, reset
+URL, and production cookie setting to the private server configuration outside
+the web root; SMTP credentials are never added to the frontend build. Redeploy
+after changing SMTP settings. Links expire after 15 minutes and may be used once.
+The backend enforces matching passwords with 8-128 characters, uppercase,
+lowercase, and a number, then invalidates existing sessions after a reset.
+
+Email recovery requires a registered email account. Existing username-only rows
+are preserved but are no longer login identities; register new email accounts.
 
 ## Deployment Scenarios
 
