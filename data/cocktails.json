@@ -1,5 +1,5 @@
 {
-    "version": "1.2.4",
+    "version": "1.2.5",
     "filters": [
         {
             "key": "category",
@@ -4429,7 +4429,7 @@
                     "ingredientId": "simple-syrup"
                 },
                 {
-                    "name": "blackberry liqueur",
+                    "name": "Crème de Mûre",
                     "amount": "15 ml",
                     "ingredientId": "creme-de-mure"
                 }
@@ -4452,7 +4452,7 @@
             "temperature": "cold",
             "difficulty": "easy",
             "description": "A modern gin sour layered with blackberry liqueur for a deep berry aroma and color.",
-            "mixingInstructions": "Shake gin, lemon juice, and syrup with ice. Strain over crushed ice in a rocks glass, then drizzle blackberry liqueur over the top. Garnish with blackberries and lemon."
+            "mixingInstructions": "Shake gin, lemon juice, and syrup with ice. Strain over crushed ice in a rocks glass, then drizzle Crème de Mûre over the top. Garnish with blackberries and lemon."
         },
         {
             "id": "gold-rush",
@@ -5712,58 +5712,6 @@
             "mixingInstructions": "Shake all ingredients with ice until well chilled. Strain into a chilled coupe and garnish with freshly grated nutmeg."
         },
         {
-            "id": "john-collins",
-            "name": "John Collins",
-            "baseSpirits": [
-                "gin"
-            ],
-            "categories": [
-                "tall-refreshing"
-            ],
-            "method": "build",
-            "glass": "highball",
-            "ingredients": [
-                {
-                    "name": "Gin",
-                    "amount": "45 ml",
-                    "ingredientId": "gin"
-                },
-                {
-                    "name": "Fresh lemon juice",
-                    "amount": "30 ml",
-                    "ingredientId": "lemon-juice"
-                },
-                {
-                    "name": "Simple syrup",
-                    "amount": "15 ml",
-                    "ingredientId": "simple-syrup"
-                },
-                {
-                    "name": "Soda water",
-                    "amount": "60 ml",
-                    "ingredientId": "soda-water"
-                }
-            ],
-            "garnish": [
-                "lemon slice",
-                "cherry"
-            ],
-            "flavorProfile": [
-                "citrusy",
-                "refreshing",
-                "sweet"
-            ],
-            "strength": "moderate",
-            "sweetness": "medium",
-            "sourness": "medium",
-            "bitterness": "none",
-            "carbonation": "high",
-            "temperature": "cold",
-            "difficulty": "easy",
-            "description": "A tall gin sour lengthened with soda water, bright and refreshing.",
-            "mixingInstructions": "Build the gin, lemon juice, and simple syrup over ice in a highball glass. Top with soda water, stir gently, and garnish."
-        },
-        {
             "id": "vesper",
             "name": "Vesper",
             "baseSpirits": [
@@ -6166,7 +6114,8 @@
             "id": "porto-flip",
             "name": "Porto Flip",
             "baseSpirits": [
-                "brandy"
+                "cognac",
+                "wine"
             ],
             "categories": [
                 "dessert"
@@ -6188,6 +6137,12 @@
                     "name": "Egg yolk",
                     "amount": "1",
                     "ingredientId": "egg-yolk"
+                },
+                {
+                    "name": "Simple syrup",
+                    "amount": "5 ml",
+                    "ingredientId": "simple-syrup",
+                    "optional": true
                 }
             ],
             "garnish": [
@@ -12271,59 +12226,6 @@
             "mixingInstructions": "Shake all ingredients with ice until thoroughly chilled. Strain into a chilled coupe and finish with grated nutmeg."
         },
         {
-            "id": "port-flip",
-            "name": "Port Flip",
-            "baseSpirits": [
-                "port-wine",
-                "cognac"
-            ],
-            "categories": [
-                "dessert"
-            ],
-            "method": "shake",
-            "glass": "coupe",
-            "ingredients": [
-                {
-                    "name": "Port Wine",
-                    "amount": "45 ml",
-                    "ingredientId": "port-wine"
-                },
-                {
-                    "name": "Cognac",
-                    "amount": "30 ml",
-                    "ingredientId": "cognac"
-                },
-                {
-                    "name": "Egg Yolk",
-                    "amount": "1",
-                    "ingredientId": "egg-yolk"
-                },
-                {
-                    "name": "Simple Syrup",
-                    "amount": "5 ml",
-                    "ingredientId": "simple-syrup"
-                }
-            ],
-            "garnish": [
-                "grated nutmeg"
-            ],
-            "flavorProfile": [
-                "rich",
-                "fruity",
-                "creamy",
-                "spiced"
-            ],
-            "strength": "moderate",
-            "sweetness": "medium",
-            "sourness": "none",
-            "bitterness": "none",
-            "carbonation": "none",
-            "temperature": "cold",
-            "difficulty": "medium",
-            "description": "A rich historic flip combining fortified wine, brandy, and egg yolk for a velvety texture.",
-            "mixingInstructions": "Dry-shake all ingredients vigorously, then add ice and shake again until very cold. Fine-strain into a chilled coupe and grate nutmeg over the surface."
-        },
-        {
             "id": "coffee-cocktail",
             "name": "Coffee Cocktail",
             "baseSpirits": [
@@ -12582,59 +12484,6 @@
             "mixingInstructions": "Gently press mint with simple syrup in a julep cup. Add bourbon and crushed ice, stir briefly, then top with chilled Champagne and garnish with mint."
         },
         {
-            "id": "blackberry-bramble",
-            "name": "Blackberry Bramble",
-            "baseSpirits": [
-                "gin"
-            ],
-            "categories": [
-                "sour"
-            ],
-            "method": "shake",
-            "glass": "rocks",
-            "ingredients": [
-                {
-                    "name": "Gin",
-                    "amount": "45 ml",
-                    "ingredientId": "gin"
-                },
-                {
-                    "name": "Fresh lemon juice",
-                    "amount": "25 ml",
-                    "ingredientId": "lemon-juice"
-                },
-                {
-                    "name": "Simple Syrup",
-                    "amount": "15 ml",
-                    "ingredientId": "simple-syrup"
-                },
-                {
-                    "name": "Crème de Mûre",
-                    "amount": "15 ml",
-                    "ingredientId": "creme-de-mure"
-                }
-            ],
-            "garnish": [
-                "blackberries",
-                "lemon slice"
-            ],
-            "flavorProfile": [
-                "fruity",
-                "tart",
-                "citrusy",
-                "refreshing"
-            ],
-            "strength": "strong",
-            "sweetness": "medium",
-            "sourness": "high",
-            "bitterness": "none",
-            "carbonation": "none",
-            "temperature": "cold",
-            "difficulty": "easy",
-            "description": "A berry-forward variation on the Bramble, layering blackberry liqueur over a crisp gin and lemon sour.",
-            "mixingInstructions": "Shake gin, lemon juice, and simple syrup with ice. Strain over crushed ice in a rocks glass. Drizzle crème de mûre over the top and garnish."
-        },
-        {
             "id": "pisco-elderflower-sour",
             "name": "Pisco Elderflower Sour",
             "baseSpirits": [
@@ -12854,59 +12703,6 @@
             "mixingInstructions": "Add Pimm’s to an ice-filled highball glass. Add orange and lime, top with ginger ale, stir gently, and garnish with mint."
         },
         {
-            "id": "amontillado-cobbler",
-            "name": "Amontillado Cobbler",
-            "baseSpirits": [
-                "amontillado-sherry"
-            ],
-            "categories": [
-                "tall-refreshing"
-            ],
-            "method": "muddle",
-            "glass": "tall",
-            "ingredients": [
-                {
-                    "name": "Amontillado Sherry",
-                    "amount": "90 ml",
-                    "ingredientId": "amontillado-sherry"
-                },
-                {
-                    "name": "Simple Syrup",
-                    "amount": "10 ml",
-                    "ingredientId": "simple-syrup"
-                },
-                {
-                    "name": "Orange",
-                    "amount": "3 wedges",
-                    "ingredientId": "orange"
-                },
-                {
-                    "name": "Crushed Ice",
-                    "amount": "1 cup",
-                    "ingredientId": "crushed-ice"
-                }
-            ],
-            "garnish": [
-                "orange slices",
-                "grapes"
-            ],
-            "flavorProfile": [
-                "nutty",
-                "fruity",
-                "refreshing",
-                "light"
-            ],
-            "strength": "light",
-            "sweetness": "medium",
-            "sourness": "low",
-            "bitterness": "low",
-            "carbonation": "none",
-            "temperature": "cold",
-            "difficulty": "easy",
-            "description": "A sherry cobbler variation showcasing Amontillado’s nutty character with muddled orange and crushed ice.",
-            "mixingInstructions": "Gently muddle orange wedges with simple syrup in a tall glass. Add sherry and crushed ice, churn until chilled, and garnish with orange and grapes."
-        },
-        {
             "id": "cynar-julep",
             "name": "Cynar Julep",
             "baseSpirits": [
@@ -13104,65 +12900,6 @@
             "difficulty": "easy",
             "description": "A whiskey sour that blends Scotch and Irish whiskey, with almond orgeat smoothing the malt and lemon adding a bright edge.",
             "mixingInstructions": "Shake both whiskies, lemon juice, and orgeat with ice until chilled. Strain into a chilled coupe and garnish with a lemon twist."
-        },
-        {
-            "id": "tuxedo-no-2",
-            "name": "Tuxedo No. 2",
-            "baseSpirits": [
-                "gin"
-            ],
-            "categories": [
-                "spirit-forward"
-            ],
-            "method": "stir",
-            "glass": "coupe",
-            "ingredients": [
-                {
-                    "name": "Gin",
-                    "amount": "45 ml",
-                    "ingredientId": "gin"
-                },
-                {
-                    "name": "Dry vermouth",
-                    "amount": "22.5 ml",
-                    "ingredientId": "dry-vermouth"
-                },
-                {
-                    "name": "Maraschino liqueur",
-                    "amount": "5 ml",
-                    "ingredientId": "maraschino-liqueur"
-                },
-                {
-                    "name": "Absinthe",
-                    "amount": "5 ml",
-                    "ingredientId": "absinthe"
-                },
-                {
-                    "name": "Orange bitters",
-                    "amount": "2 dashes",
-                    "ingredientId": "orange-bitters"
-                }
-            ],
-            "garnish": [
-                "lemon twist",
-                "maraschino cherry (optional)"
-            ],
-            "flavorProfile": [
-                "botanical",
-                "herbal",
-                "anise",
-                "dry",
-                "citrusy"
-            ],
-            "strength": "strong",
-            "sweetness": "low",
-            "sourness": "none",
-            "bitterness": "medium",
-            "carbonation": "none",
-            "temperature": "cold",
-            "difficulty": "moderate",
-            "description": "A complex gin martini variation with dry vermouth, maraschino, absinthe, and orange bitters adding herbal, anise, and citrus notes.",
-            "mixingInstructions": "Stir gin, dry vermouth, maraschino liqueur, absinthe, and orange bitters with ice until very cold. Strain into a chilled coupe and garnish with a lemon twist."
         }
     ],
     "ingredients": [
