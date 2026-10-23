@@ -10658,6 +10658,9 @@
             "color": "#813d50",
             "category": "wine",
             "isAlcoholic": true,
+            "spiritFamilyIds": [
+                "wine"
+            ],
             "description": "A red wine with little noticeable residual sugar. In cocktails, use a wine whose flavor you enjoy drinking on its own."
         },
         {
@@ -11419,8 +11422,7 @@
             "category": "liqueurs",
             "isAlcoholic": true,
             "spiritFamilyIds": [
-                "aperitivo",
-                "liqueur"
+                "aperitivo"
             ],
             "description": "A French bittersweet orange aperitif with citrus and quinine-like bitterness. The original can be difficult to find, and substitutes may differ."
         },
@@ -11430,9 +11432,6 @@
             "color": "#b6c58a",
             "category": "liqueurs",
             "isAlcoholic": true,
-            "spiritFamilyIds": [
-                "liqueur"
-            ],
             "description": "A British gin-based fruit-and-herb liqueur with a relatively low alcohol strength and a bittersweet, spiced character; traditionally lengthened with lemonade."
         },
         {
@@ -11481,9 +11480,6 @@
             "color": "#e3dfb0",
             "category": "liqueurs",
             "isAlcoholic": true,
-            "spiritFamilyIds": [
-                "liqueur"
-            ],
             "description": "A fragrant, sweet liqueur made with elderflowers, often showing floral, pear, and citrus notes."
         },
         {
@@ -11521,9 +11517,6 @@
             "color": "#d7a94f",
             "category": "liqueurs",
             "isAlcoholic": true,
-            "spiritFamilyIds": [
-                "liqueur"
-            ],
             "description": "A Spanish golden liqueur with a sweet vanilla-forward flavor and citrus and spice notes; often paired with coffee."
         }
     ],
@@ -12069,15 +12062,18 @@
             },
             {
                 "id": "bourbon",
-                "label": "Bourbon"
+                "label": "Bourbon",
+                "parentId": "whiskey"
             },
             {
                 "id": "rye",
-                "label": "Rye"
+                "label": "Rye",
+                "parentId": "whiskey"
             },
             {
                 "id": "scotch",
-                "label": "Scotch"
+                "label": "Scotch",
+                "parentId": "whiskey"
             },
             {
                 "id": "gin",
@@ -12125,11 +12121,8 @@
             },
             {
                 "id": "irish-whiskey",
-                "label": "Irish Whiskey"
-            },
-            {
-                "id": "liqueur",
-                "label": "Liqueur"
+                "label": "Irish Whiskey",
+                "parentId": "whiskey"
             },
             {
                 "id": "pisco",
@@ -12137,7 +12130,8 @@
             },
             {
                 "id": "sparkling-wine",
-                "label": "Sparkling Wine"
+                "label": "Sparkling Wine",
+                "parentId": "wine"
             },
             {
                 "id": "wine",

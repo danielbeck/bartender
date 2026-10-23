@@ -108,6 +108,86 @@ test('source recipe aliases point to canonical recipes without duplicate entries
   }
 })
 
+test('Spirits groups family choices with their ingredients without changing available values', () => {
+  const options = filterOptions.spirit
+  const ingredients = new Map(library.ingredients.map((ingredient) => [ingredient.id, ingredient]))
+  const families = new Map(library.taxonomy.spiritFamilies.map((family) => [family.id, family]))
+  const ancestors = (id) => {
+    const ids = []
+    while (id) {
+      assert.ok(!ids.includes(id), `Cyclic family: ${id}`)
+      assert.ok(families.has(id), `Unknown family: ${id}`)
+      ids.push(id)
+      id = families.get(id).parentId
+    }
+    return ids
+  }
+  assert.equal(new Set(options.map(({ value }) => value)).size, options.length)
+  const groups = [...new Set(options.map(({ group }) => group))]
+  assert.deepEqual(groups, [...groups].sort((a, b) => a.localeCompare(b)))
+  assert.ok(!groups.includes('Base spirits'))
+  assert.ok(!groups.includes('Liqueur'))
+  assert.ok(!options.some(({ value }) => value === 'family:liqueur'))
+  for (const id of ['pimms-no-1', 'elderflower-liqueur', 'licor-43']) {
+    assert.equal(options.find(({ value }) => value === `ingredient:${id}`).group, 'Liqueurs')
+  }
+  for (const option of options) {
+    const familyId = option.value.startsWith('family:')
+      ? option.value.slice(7) : ingredients.get(option.value.slice(11)).spiritFamilyIds?.[0]
+    if (familyId) assert.equal(option.group, families.get(ancestors(familyId).at(-1)).label)
+  }
+  for (const group of groups) {
+    const entries = options.filter((option) => option.group === group)
+    assert.deepEqual(entries, [...entries].sort((a, b) =>
+      Number(b.value.startsWith('family:')) - Number(a.value.startsWith('family:'))
+      || (a.value.startsWith('family:') && b.value.startsWith('family:')
+        ? ancestors(a.value.slice(7)).length - ancestors(b.value.slice(7)).length : 0)
+      || a.label.localeCompare(b.label)))
+    const start = options.indexOf(entries[0])
+    assert.deepEqual(options.slice(start, start + entries.length), entries)
+  }
+  assert.equal(options.find(({ value }) => value === 'ingredient:white-rum').group, 'Rum')
+  assert.equal(options.find(({ value }) => value === 'family:rum').group, 'Rum')
+})
+
+test('Whiskey groups and matches its subfamilies without broadening specific filters', () => {
+  const broad = filterCocktails({ spirit: ['family:whiskey'] })
+  assert.ok(broad.length > 0)
+  for (const family of ['bourbon', 'rye', 'scotch', 'irish-whiskey']) {
+    const specific = filterCocktails({ spirit: [`family:${family}`] })
+    assert.ok(specific.length > 0, family)
+    assert.ok(specific.every((cocktail) => broad.includes(cocktail)), family)
+    assert.equal(filterOptions.spirit.find(({ value }) => value === `family:${family}`).group, 'Whiskey')
+    for (const cocktail of specific) {
+      assert.ok(cocktail.ingredients.filter(({ optional }) => !optional).some((ingredient) =>
+        [ingredient.ingredientId, ...(ingredient.alternativeIngredientIds || [])].some((id) =>
+          library.ingredients.find((entry) => entry.id === id).spiritFamilyIds?.includes(family))), family)
+    }
+  }
+  const grouped = filterOptions.spirit.filter(({ group }) => group === 'Whiskey')
+  assert.equal(grouped[0].value, 'family:whiskey')
+  assert.ok(grouped.some(({ value }) => value === 'ingredient:islay-scotch'))
+  assert.ok(grouped.some(({ value }) => value === 'ingredient:bacon-fat-washed-bourbon'))
+  assert.ok(broad.some((cocktail) => !cocktail.spirits.includes('family:scotch')))
+})
+
+test('Wine unifies still and sparkling wines while retaining a specific sparkling filter', () => {
+  const options = filterOptions.spirit.filter(({ group }) => group === 'Wine')
+  assert.equal(options[0].value, 'family:wine')
+  for (const value of ['family:sparkling-wine', 'ingredient:champagne', 'ingredient:prosecco', 'ingredient:dry-red-wine', 'ingredient:dry-white-wine']) {
+    assert.ok(options.some((option) => option.value === value), value)
+  }
+  assert.ok(!filterOptions.spirit.some(({ group }) => group === 'Wine & Sparkling Wine'))
+  const wine = filterCocktails({ spirit: ['family:wine'] })
+  const sparkling = filterCocktails({ spirit: ['family:sparkling-wine'] })
+  assert.ok(sparkling.length > 0)
+  assert.ok(sparkling.every((cocktail) => wine.includes(cocktail)))
+  assert.ok(wine.some((cocktail) => !sparkling.includes(cocktail)))
+  for (const cocktail of cocktails.filter(({ spirits }) => spirits.includes('ingredient:dry-red-wine'))) {
+    assert.ok(wine.includes(cocktail))
+  }
+})
+
 test('ingredient links select Spirits or Mixers and clear previous search filters', () => {
   assert.deepEqual(ingredientFilters({ ingredientId: 'gin', name: 'gin' }), { spirit: ['family:gin'] })
   assert.deepEqual(ingredientFilters({ ingredientId: 'white-rum', name: 'white rum' }), { spirit: ['ingredient:white-rum'] })

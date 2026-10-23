@@ -9,39 +9,45 @@ clearing the current account; successful logout returns to the library.
 Direct profile visits wait for the account check before redirecting guests
 to login.
 
-All users see "The Bar." and its Show toggle above the main cocktail library
-only, not on individual recipe pages. Guests start with "all the drinks";
-switching to stock mode shows "Log in or Create an account to show only the
-drinks you can make with what you have in stock right now." in place of the
-inventory checklist. The two links open the login and registration tabs,
-respectively (`/auth?mode=login` and `/auth?mode=register`). Switching back hides
-the prompt; guest results remain unfiltered by stock. Logged-in users can
-switch modes and manage their saved inventory.
-"Show all the drinks" leaves the existing search unchanged. "Show what I have
-in stock" expands ingredient checkboxes, with Spirits first and Mixers second,
-each grouped by the catalog's ingredient categories and alphabetized within
-each type. Only specific catalog ingredients are stocked; selecting Gin does
+All users see "The Bar." above the main cocktail library only, not on individual
+recipe pages. Its "Ingredients in your bar" disclosure starts collapsed.
+Guests see a login/create-account prompt inside the disclosure instead of the
+inventory checklist. The links open `/auth?mode=login` and
+`/auth?mode=register`; guest results are unaffected by stock.
+For logged-in users, stock-based ordering is always active once inventory loads,
+regardless of the disclosure state or the legacy saved `stockOnly` setting.
+Expanding the disclosure shows ingredient checkboxes, with Spirits first and Mixers second,
+with Spirits grouped by root spirit family using the same grouping as the search
+filter (including Whiskey and Wine). Spirits without a family fall back to their
+ingredient category. Spirit groups and their ingredients are alphabetical;
+Mixers retain catalog category order with ingredients alphabetized within each
+category. Within each section, single-item groups are combined into an
+alphabetical Other group shown last. Only specific catalog ingredients are stocked; selecting Gin does
 not implicitly stock flavored variants.
 Each ingredient group has a Select all / Select none toggle. Select all adds
 every ingredient in that group; when all are selected, Select none clears
 only that group. Both actions preserve other groups and save to the account.
 
-Stock mode requires every non-optional recipe ingredient, accepting any one
+Makeability requires every non-optional recipe ingredient, accepting any one
 of a recipe's explicitly listed alternatives. Garnishes and optional ingredients
 are ignored. Everyday basics (water, ice, sugar, brown sugar, and salt/pepper)
 are assumed available and omitted from the checklist; syrups still require
-selection. An empty inventory therefore normally produces no matches.
-Stock filtering combines with all existing search and URL filters. Reset filters
-does not clear the inventory or disable stock mode.
+selection. All drinks matching search and URL filters remain visible.
+Makeable drinks appear first, followed by dimmed cards labeled "Missing
+ingredients"; each tier retains alphabetical order. With category grouping on,
+this ordering applies within each category. Unavailable cards remain clickable
+and return to full opacity on hover or keyboard focus. An empty inventory does
+not hide results. Reset filters
+does not clear the inventory or disable stock-based ordering.
 
-When browsing all drinks, recipe ingredients unavailable in Your Bar are marked
+In recipe details, ingredients unavailable in Your Bar are marked
 with `*`, with a legend and a screen-reader description. A stocked explicit
 alternative counts as available, and assumed pantry basics are not marked.
 Optional ingredients are marked when unavailable but remain optional for stock
 filtering. Markers appear only after inventory has loaded for a logged-in user,
-and are hidden in stock-only mode.
+regardless of whether the inventory disclosure is expanded.
 
-Ingredient IDs and the selected mode are saved in SQLite per authenticated user,
+Ingredient IDs are saved in SQLite per authenticated user,
 so they survive logout and work across sessions and devices. The UI waits for
 each save and retains the last saved settings if it fails, displaying an error.
 Load failures offer Retry. Guests have no inventory checklist or stock filtering,
@@ -216,16 +222,26 @@ ingredients" to clear it. Selections use repeated `ingredient` query parameters.
 Spirits matches alcoholic ingredients anywhere in a recipe, not only its base
 spirits. It includes liqueurs, aperitifs, vermouths, and wines. Ingredient
 variants also match their spirit family: for example, white rum matches Rum,
-and rye whiskey matches Rye.
+and rye whiskey matches Rye. Spirit families can declare a `parentId`; recipes
+also match every ancestor family. Bourbon, Rye, Scotch, and Irish Whiskey are
+children of Whiskey, so Whiskey matches all four while each specific filter
+retains its narrower meaning.
+Sparkling Wine is a child of Wine: the Wine search option includes still and
+sparkling wines, while Sparkling Wine remains a narrower option. Both appear
+in the Wine group in both search and The Bar.
 Spirits supports multiple selections, and a drink must contain every selected
 spirit to match. Select "Any spirits" to clear the selection. Selections use
 repeated `spirit` query parameters, such as
 `?spirit=family:gin&spirit=ingredient:campari`.
-The list groups values from the recipes' `baseSpirits` first, followed by
-alcoholic ingredients grouped by their source-defined ingredient category.
-The remaining groups and their entries are alphabetized.
+The search list groups family-wide options and individual ingredients together
+by spirit family, using the first `spiritFamilyIds` entry for ingredients with
+multiple families and grouping child families under their root family.
+Ingredients without a family retain their ingredient-category group. Groups are
+alphabetical, with family-wide options first (ancestors before children), then
+individual ingredients alphabetically. The Bar uses the same family groups,
+listing only specific ingredients alphabetically within each group.
 An ingredient with the same ID or label as a listed base-spirit family is
-omitted from the other group to avoid duplicates; distinct variants remain.
+omitted to avoid duplicates; distinct variants remain.
 
 Recipe ingredient links select the matching Spirits or Mixers option instead
 of searching by text, clearing previous search filters. Ingredients omitted

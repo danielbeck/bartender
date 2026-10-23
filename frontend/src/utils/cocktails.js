@@ -23,6 +23,18 @@ export function filterScale(definition) {
 const ingredientsById = new Map(library.ingredients.map((ingredient) => [ingredient.id, ingredient]))
 const ingredientsByName = new Map(library.ingredients.map((ingredient) => [ingredient.name.trim().toLowerCase(), ingredient]))
 const familiesById = new Map(library.taxonomy.spiritFamilies.map((family) => [family.id, family]))
+const familyAncestry = new Map(library.taxonomy.spiritFamilies.map(({ id }) => {
+  const ids = []
+  let current = id
+  while (current) {
+    if (ids.includes(current)) throw new Error(`Cyclic spirit family: ${current}`)
+    const family = familiesById.get(current)
+    if (!family) throw new Error(`Unknown spirit family: ${current}`)
+    ids.push(current)
+    current = family.parentId
+  }
+  return [id, ids]
+}))
 
 export function ingredientDescription({ ingredientId, name }) {
   if (ingredientId && !ingredientsById.has(ingredientId)) {
@@ -49,7 +61,8 @@ export const cocktails = library.cocktails.map((cocktail) => {
   return {
     ...cocktail,
     spirits: [...new Set(ingredientDefinitions.filter(({ isAlcoholic }) => isAlcoholic)
-      .flatMap((ingredient) => [`ingredient:${ingredient.id}`, ...(ingredient.spiritFamilyIds || []).map((id) => `family:${id}`)]))],
+      .flatMap((ingredient) => [`ingredient:${ingredient.id}`, ...(ingredient.spiritFamilyIds || [])
+        .flatMap((id) => familyAncestry.get(id).map((familyId) => `family:${familyId}`))]))],
     nonalcoholicIngredients: [...new Set(ingredientDefinitions.filter(({ isAlcoholic }) => !isAlcoholic)
       .map(({ id }) => id))],
     libraryId: cocktail.id,
@@ -77,9 +90,10 @@ export function visibleSpirits(values) {
   return values.filter((value) => !duplicatesBaseSpirit(value))
 }
 
-function spiritGroup(value) {
-  if (baseSpiritValues.has(value)) return 'Base spirits'
+export function spiritGroup(value) {
   const ingredient = value.startsWith('ingredient:') ? ingredientsById.get(value.slice(11)) : undefined
+  const familyId = value.startsWith('family:') ? value.slice(7) : ingredient?.spiritFamilyIds?.[0]
+  if (familyId) return familiesById.get(familyAncestry.get(familyId).at(-1)).label
   return ingredient
     ? library.taxonomy.ingredientCategories.find((category) => category.id === ingredient.category).label
     : 'Other spirit families'
@@ -115,8 +129,10 @@ export const filterOptions = Object.fromEntries(filterDefinitions.map(({ key, fi
       ...(key === 'ingredient' ? { group: library.taxonomy.ingredientCategories.find((category) => category.id === ingredientsById.get(value).category).label } : {}),
     }))
     .sort((first, second) => (key === 'spirit'
-      ? Number(baseSpiritValues.has(second.value)) - Number(baseSpiritValues.has(first.value))
-        || first.group.localeCompare(second.group)
+      ? first.group.localeCompare(second.group)
+        || Number(second.value.startsWith('family:')) - Number(first.value.startsWith('family:'))
+        || (first.value.startsWith('family:') && second.value.startsWith('family:')
+          ? familyAncestry.get(first.value.slice(7)).length - familyAncestry.get(second.value.slice(7)).length : 0)
       : key === 'ingredient' ? first.group.localeCompare(second.group)
       : 0) || first.label.localeCompare(second.label)),
 ]))

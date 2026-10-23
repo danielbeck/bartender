@@ -46,6 +46,7 @@ export default function CocktailLibrary({ user }) {
   const scrollToSearchRef = useRef(false)
   const [measurementUnit, setMeasurementUnit] = useState('ml')
   const [sortByCategory, setSortByCategory] = useState(true)
+  const [barExpanded, setBarExpanded] = useState(false)
   const [recipeHovered, setRecipeHovered] = useState(false)
   const [recipeFocused, setRecipeFocused] = useState(false)
   const [hoveredIngredient, setHoveredIngredient] = useState(null)
@@ -54,13 +55,19 @@ export default function CocktailLibrary({ user }) {
   const highlightedIngredient = hoveredIngredient ?? focusedIngredient
   const filters = readFilters(new URLSearchParams(location.search))
   const bar = useBarStock(user)
-  const stockOnly = Boolean(user && bar.stockOnly)
+  const prioritizeStock = Boolean(user && bar.ingredientIds)
   const stockedIds = new Set(bar.ingredientIds || [])
-  const filteredCocktails = filterCocktails(filters)
-    .filter((cocktail) => !stockOnly || canMakeCocktail(cocktail, stockedIds))
+  const matchingCocktails = filterCocktails(filters)
+  const unavailableIds = new Set(prioritizeStock
+    ? matchingCocktails.filter((cocktail) => !canMakeCocktail(cocktail, stockedIds)).map(({ libraryId }) => libraryId)
+    : [])
+  const filteredCocktails = prioritizeStock
+    ? [...matchingCocktails].sort((first, second) =>
+      Number(unavailableIds.has(first.libraryId)) - Number(unavailableIds.has(second.libraryId)))
+    : matchingCocktails
   const selectedCocktailId = cocktailIdAliases[cocktailId] || cocktailId
   const selectedCocktail = cocktails.find((cocktail) => cocktail.libraryId === selectedCocktailId)
-  const missingIngredientIds = new Set(user && bar.ingredientIds && !stockOnly && selectedCocktail
+  const missingIngredientIds = new Set(user && bar.ingredientIds && selectedCocktail
     ? selectedCocktail.ingredients.filter((ingredient) => !isIngredientAvailable(ingredient, stockedIds))
       .map(({ ingredientId }) => ingredientId)
     : [])
@@ -113,7 +120,7 @@ export default function CocktailLibrary({ user }) {
   // extra travel so the page still ends exactly where the results end.
   useEffect(() => {
     const results = resultsRef.current
-    if (!results || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    if (!results || barExpanded || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const extraSpeed = 0.8
     let frame = 0
     let zero = 0
@@ -154,7 +161,7 @@ export default function CocktailLibrary({ user }) {
       results.style.transform = ''
       results.style.marginBottom = ''
     }
-  }, [selectedCocktail])
+  }, [selectedCocktail, barExpanded])
 
   const updateSearchFilters = (values) => {
     const search = librarySearch(values, location.search)
@@ -183,7 +190,7 @@ export default function CocktailLibrary({ user }) {
   }
 
   return <section className="cocktail-library" aria-labelledby="cocktail-library-title">
-    {!cocktailId && <YourBar bar={bar} user={user} />}
+    {!cocktailId && <YourBar bar={bar} user={user} expanded={barExpanded} onExpandedChange={setBarExpanded} />}
     {selectedCocktail && <Link className="library-back" to={listUrl}>Back to the cocktails</Link>}
     <div className={selectedCocktail ? 'cocktail-detail-heading' : undefined}>
       <h1 id="cocktail-library-title" className={selectedCocktail ? 'cocktail-detail-title' : undefined} ref={headingRef} tabIndex={-1}>The {selectedCocktail
@@ -308,7 +315,7 @@ export default function CocktailLibrary({ user }) {
           <p>{category.description}</p>
         </header>}
         <div className="cocktail-results">{category.cocktails.map((cocktail) => <Link
-          className="cocktail-result"
+          className={`cocktail-result${unavailableIds.has(cocktail.libraryId) ? ' is-unavailable' : ''}`}
           key={cocktail.libraryId}
           to={`/cocktails/${encodeURIComponent(cocktail.libraryId)}${location.search}`}
         >
@@ -319,6 +326,7 @@ export default function CocktailLibrary({ user }) {
           <p className="cocktail-result-meta">{cocktail.baseSpirits.map(metadataLabel).join(' / ')} · {metadataLabel(cocktail.strength)}</p>
           <p>{cocktail.categories.map(categoryLabel).join(' / ')}</p>
           <p>{metadataLabel(cocktail.glass)} · {metadataLabel(cocktail.difficulty)}</p>
+          {unavailableIds.has(cocktail.libraryId) && <p>Missing ingredients</p>}
         </Link>)}
           <LaboratoryCard to={sortByCategory
             ? `/lab${librarySearch({ ...filters, category: category.id }, location.search)}`
@@ -326,9 +334,7 @@ export default function CocktailLibrary({ user }) {
         </div>
       </section>) : <div className="cocktail-empty">
         <h2>No cocktails match your filters</h2>
-        <p>{stockOnly
-          ? 'Check more ingredients in Your Bar or choose "Show all the drinks". You can also adjust your search filters.'
-          : 'Try a different search or reset the filters to see the full library.'}</p>
+        <p>Try a different search or reset the filters to see the full library.</p>
         {activeFilterDescriptions.length > 0 && <button type="button" className="library-button" onClick={resetFilters}>Reset filters</button>}
         <LaboratoryCard to={laboratoryUrl} />
       </div>}
