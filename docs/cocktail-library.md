@@ -88,14 +88,16 @@ Each category of nonempty results ends with an "Invent a drink" card. Its link
 sets that category as the Laboratory's category preference while preserving the
 other search filters. With grouping off, one card ends the flat list and
 preserves the current category filter. Empty results offer
-an "Invent a drink" button alongside Reset filters. Both link to `/laboratory`
+an "Invent a drink" button alongside Reset filters. Both link to `/lab`
 with the current query string, preserving search text and all filters, including
 repeated multi-select values. "The Laboratory." displays those inputs and links
-back to the same search. On opening the page, it sends the search text and
+back to the same search. Old `/laboratory` links redirect to `/lab`, preserving
+query strings and fragments. Opening the page with query parameters sends the search text and
 human-readable filter labels and values to the configured LLM, requesting a
 structured drink with a title, description, mixing instructions, and ingredient
 list for one serving. Each ingredient includes a name and a quantity string
-with units.
+with units. Without query parameters, generation waits until "Generate drink"
+is clicked.
 The system prompt, user-input template, and JSON response schema live in
 `shared/llm/invent_drink.md`, `invent_drink.input.md`, and `invent_drink.json`.
 The frontend sends search preferences to `POST /llm/calls/invent_drink`; the

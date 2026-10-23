@@ -742,6 +742,29 @@
   }
 }
 
+.ingredient-name {
+  position: relative;
+  justify-self: start;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.ingredient-tooltip {
+  position: absolute;
+  top: 100%;
+  left: 12px;
+  z-index: 20;
+  width: min(280px, 50vw);
+  padding: 10px 12px;
+  border-radius: 6px;
+  background: #263b36;
+  color: #fff;
+  box-shadow: 0 4px 12px #0003;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
 .cocktail-serving {
   margin: 24px 0;
 

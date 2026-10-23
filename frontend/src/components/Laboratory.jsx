@@ -14,6 +14,7 @@ export default function Laboratory() {
   const navigate = useNavigate()
   const pendingRequest = useRef(null)
   const [result, setResult] = useState(null)
+  const [delayedRequest, setDelayedRequest] = useState(null)
   const filters = readFilters(new URLSearchParams(location.search))
   const criteria = filterDefinitions.flatMap(({ key, label, controlLabel }) => {
     const values = Array.isArray(filters[key]) ? filters[key] : filters[key] ? [filters[key]] : []
@@ -29,23 +30,46 @@ export default function Laboratory() {
     search: filters.q,
     filters: criteria.map(({ label, value }) => ({ label, value })),
   })
-  const [request, setRequest] = useState(() => ({ input: draftInput, attempt: 0 }))
+  const [request, setRequest] = useState(() => ({
+    input: new URLSearchParams(location.search).size > 0 ? draftInput : null,
+    attempt: 0,
+  }))
   const { input, attempt } = request
   const updateFilters = (values) => {
-    navigate({ pathname: '/laboratory', search: librarySearch(values, location.search) }, { replace: true })
+    navigate({ pathname: '/lab', search: librarySearch(values, location.search) }, { replace: true })
   }
   const generateDrink = () => {
     setRequest((previous) => ({ input: draftInput, attempt: previous.attempt + 1 }))
   }
 
   useEffect(() => {
+    if (input === null) return
     let active = true
     // Reuse the in-flight request when StrictMode replays this effect.
     if (pendingRequest.current?.input !== input || pendingRequest.current?.attempt !== attempt) {
       pendingRequest.current = { input, attempt, promise: runLLMCall('invent_drink', input) }
     }
+    const waitMessageTimer = window.setTimeout(() => {
+      setDelayedRequest({ input, attempt, stage: 1 })
+    }, 10_000)
+    const almostThereTimer = window.setTimeout(() => {
+      setDelayedRequest({ input, attempt, stage: 2 })
+    }, 20_000)
+    const longWaitTimer = window.setTimeout(() => {
+      setDelayedRequest({ input, attempt, stage: 3 })
+    }, 30_000)
+    const veryLongWaitTimer = window.setTimeout(() => {
+      setDelayedRequest({ input, attempt, stage: 3 })
+    }, 30_000)
+    const clearMessageTimers = () => {
+      window.clearTimeout(waitMessageTimer)
+      window.clearTimeout(almostThereTimer)
+      window.clearTimeout(longWaitTimer)
+      window.clearTimeout(veryLongWaitTimer)
+    }
     pendingRequest.current.promise.then(
       (data) => {
+        clearMessageTimers()
         if (!active) return
         const recipe = data.data
         if (!recipe || typeof recipe.title !== 'string' || !recipe.title.trim()
@@ -65,13 +89,19 @@ export default function Laboratory() {
         setResult({ input, attempt, recipe })
       },
       (error) => {
+        clearMessageTimers()
         if (active) setResult({ input, attempt, error: error.message })
       },
     )
-    return () => { active = false }
+    return () => {
+      active = false
+      clearMessageTimers()
+    }
   }, [input, attempt])
 
   const currentResult = result?.input === input && result?.attempt === attempt ? result : null
+  const showWaitMessage = delayedRequest?.input === input && delayedRequest?.attempt === attempt
+  const isGenerating = input !== null && !currentResult
 
   return <section className="cocktail-library" aria-labelledby="laboratory-title">
     <Link className="library-back" to={`/cocktails${location.search}`}>Back to the cocktails</Link>
@@ -86,22 +116,29 @@ export default function Laboratory() {
         <button
           type="submit"
           className={`library-button laboratory-generate-button${draftInput !== input ? ' needs-regeneration' : ''}`}
-          disabled={!currentResult}
+          disabled={isGenerating}
         >Generate drink</button>
       </div>
     </form>
-    <section aria-labelledby="laboratory-result-title" aria-busy={!currentResult}>
+    <section aria-labelledby="laboratory-result-title" aria-busy={isGenerating}>
       <h2 id="laboratory-result-title">Your invention</h2>
-      {!currentResult ? <p role="status">Concocting a drink...</p>
-        : currentResult.error ? <>
-          <p role="alert">{currentResult.error}</p>
-          <button type="button" className="library-button" onClick={generateDrink}>
-            Try again
-          </button>
-        </> : <InventedRecipe
-          key={`${input}-${attempt}`}
-          recipe={currentResult.recipe}
-        />}
+      {input === null ? <p>Make some selections above; our bartender will be with you shortly.</p>
+        : !currentResult ? <div role="status">
+          <p>Concocting a drink....</p>
+          {showWaitMessage && <p>This can take a while, savor the aromatics while you wait....</p>}
+          {showWaitMessage && delayedRequest.stage >= 2 && <p>Swizzling....</p>}
+          {showWaitMessage && delayedRequest.stage >= 3 && <p>...ok, it doesn't usually take this long, but with luck it'll be worth the wait....</p>}
+          {showWaitMessage && delayedRequest.stage >= 4 && <p>Your patience is commendable. Any minute now.</p>}
+        </div>
+          : currentResult.error ? <>
+            <p role="alert">{currentResult.error}</p>
+            <button type="button" className="library-button" onClick={generateDrink}>
+              Try again
+            </button>
+          </> : <InventedRecipe
+            key={`${input}-${attempt}`}
+            recipe={currentResult.recipe}
+          />}
     </section>
   </section>
 }

@@ -4,6 +4,9 @@
 
 set -e
 
+cd "$(dirname "$0")"
+bash ./stop-dev-servers.sh
+
 echo "🚀 Starting development servers..."
 echo ""
 

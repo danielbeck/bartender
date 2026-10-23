@@ -38,21 +38,21 @@ class InventDrinkCall:
                 or not nonempty(data['mixingInstructions'])
                 or not isinstance(data['glass'], str) or data['glass'] not in GLASSES
                 or not isinstance(data['ingredients'], list) or not data['ingredients']):
-            raise LLMError('The LLM returned an invalid drink. A title, description, mixing instructions, and ingredients are required.')
+            raise LLMError('The bartender returned an invalid drink. A title, description, mixing instructions, and ingredients are required.')
         has_volume = False
         for ingredient in data['ingredients']:
             if (not isinstance(ingredient, dict) or set(ingredient) != {'name', 'quantity', 'color'}
                     or not nonempty(ingredient['name']) or not nonempty(ingredient['quantity'])
                     or not isinstance(ingredient['color'], str)
                     or not re.fullmatch(r'#[0-9a-fA-F]{6}', ingredient['color'])):
-                raise LLMError('The LLM returned an invalid ingredient. Each needs a name, quantity, and hex color.')
+                raise LLMError('The bartender returned an invalid ingredient. Each needs a name, quantity, and hex color.')
             volume = re.fullmatch(r'(\d+(?:\.\d+)?) ml', ingredient['quantity'])
             if volume:
                 if not 0 < float(volume[1]) <= 1000:
-                    raise LLMError('The LLM returned an invalid liquid quantity.')
+                    raise LLMError('The bartender returned an invalid liquid quantity.')
                 has_volume = True
         if not has_volume:
-            raise LLMError('The LLM must provide liquid quantities in ml for the illustration.')
+            raise LLMError("The bartender didn't provide liquid quantities in ml.")
         return data
 
     def run(self, user_input):
@@ -79,7 +79,7 @@ class InventDrinkCall:
         try:
             data = json.loads(result['response'])
         except (TypeError, ValueError) as error:
-            raise LLMError('The LLM did not return a valid JSON drink. Please try again.') from error
+            raise LLMError('The bartender did not return a valid JSON drink. Please try again.') from error
         return {
             'data': self.validate_response(data),
             'provider': result['provider'],

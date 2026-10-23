@@ -21,7 +21,16 @@ export function filterScale(definition) {
   }
 }
 const ingredientsById = new Map(library.ingredients.map((ingredient) => [ingredient.id, ingredient]))
+const ingredientsByName = new Map(library.ingredients.map((ingredient) => [ingredient.name.trim().toLowerCase(), ingredient]))
 const familiesById = new Map(library.taxonomy.spiritFamilies.map((family) => [family.id, family]))
+
+export function ingredientDescription({ ingredientId, name }) {
+  if (ingredientId && !ingredientsById.has(ingredientId)) {
+    throw new Error(`Unknown ingredient ID: ${ingredientId}`)
+  }
+  const ingredient = ingredientId ? ingredientsById.get(ingredientId) : ingredientsByName.get(name.trim().toLowerCase())
+  return ingredient?.description
+}
 
 function recipeIngredientDefinitions(ingredients) {
   return ingredients.flatMap((ingredient) =>

@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import CocktailSearchControls from './CocktailSearchControls'
 import FilterToggle from './FilterToggle'
 import GlassProfile from './GlassProfile'
+import IngredientName from './IngredientName'
 import { ingredientVolumes } from '../utils/glassFill'
 import YourBar from './YourBar'
 import useBarStock from '../utils/useBarStock'
@@ -41,6 +42,7 @@ export default function CocktailLibrary({ user }) {
   const navigate = useNavigate()
   const headingRef = useRef(null)
   const searchStartRef = useRef(null)
+  const resultsRef = useRef(null)
   const scrollToSearchRef = useRef(false)
   const [measurementUnit, setMeasurementUnit] = useState('ml')
   const [sortByCategory, setSortByCategory] = useState(true)
@@ -107,6 +109,53 @@ export default function CocktailLibrary({ user }) {
     }
   }, [location.search])
 
+  // Results scroll slightly faster than the page; a negative bottom margin absorbs the
+  // extra travel so the page still ends exactly where the results end.
+  useEffect(() => {
+    const results = resultsRef.current
+    if (!results || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const extraSpeed = 0.8
+    let frame = 0
+    let zero = 0
+    let compensation = 0
+    const applyShift = () => {
+      const shift = Math.min(Math.max(0, extraSpeed * (window.scrollY - zero)), compensation)
+      results.style.transform = shift ? `translateY(${-shift}px)` : ''
+    }
+    const update = () => {
+      frame = 0
+      results.style.marginBottom = ''
+      // The page initially loads scrolled to the heading, so parallax starts there.
+      zero = headingRef.current ? headingRef.current.getBoundingClientRect().top + window.scrollY : 0
+      const root = document.documentElement
+      const travel = Math.max(0, root.scrollHeight - window.innerHeight - zero)
+      compensation = (extraSpeed * travel) / (1 + extraSpeed)
+      results.style.marginBottom = `${-compensation}px`
+      applyShift()
+    }
+    const onScroll = () => {
+      if (frame) return
+      frame = requestAnimationFrame(() => {
+        frame = 0
+        applyShift()
+      })
+    }
+    const onResize = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(update) }
+    const observer = new ResizeObserver(onResize)
+    observer.observe(results)
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onResize)
+    return () => {
+      cancelAnimationFrame(frame)
+      observer.disconnect()
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onResize)
+      results.style.transform = ''
+      results.style.marginBottom = ''
+    }
+  }, [selectedCocktail])
+
   const updateSearchFilters = (values) => {
     const search = librarySearch(values, location.search)
     if (search === location.search) return
@@ -123,7 +172,7 @@ export default function CocktailLibrary({ user }) {
     updateSearchFilters({})
   }
   const listUrl = `/cocktails${location.search}`
-  const laboratoryUrl = `/laboratory${location.search}`
+  const laboratoryUrl = `/lab${location.search}`
 
   if (cocktailId && !selectedCocktail) {
     return <section className="cocktail-library">
@@ -185,13 +234,13 @@ export default function CocktailLibrary({ user }) {
           onBlur={() => setFocusedIngredient(null)}
         >
           <span className="ingredient-amount">{displayedAmounts[index]}</span>
-          <Link
-            className="ingredient-search-link"
+          <IngredientName
+            ingredient={ingredient}
             to={`/cocktails${librarySearch(ingredientFilters(ingredient), location.search)}`}
           >{ingredient.name}{missingIngredientIds.has(ingredient.ingredientId) && <>
             <span aria-hidden="true">*</span>
             <span className="cocktail-visually-hidden"> (not in stock)</span>
-          </>}</Link>
+          </>}</IngredientName>
         </li>)}</ul>
         {missingIngredientIds.size > 0 && <p>* You'll need to stock these to make this drink.</p>}
         <h2>Garnish</h2>
@@ -252,6 +301,7 @@ export default function CocktailLibrary({ user }) {
           />
         </div>
       </div>
+      <div ref={resultsRef} className="cocktail-library-results">
       {filteredCocktails.length ? resultCategories.map((category) => <section key={category.id} aria-labelledby={sortByCategory ? `category-${category.id}` : undefined}>
         {sortByCategory && <header className="cocktail-results-category">
           <h2 id={`category-${category.id}`}>{category.name}</h2>
@@ -271,7 +321,7 @@ export default function CocktailLibrary({ user }) {
           <p>{metadataLabel(cocktail.glass)} · {metadataLabel(cocktail.difficulty)}</p>
         </Link>)}
           <LaboratoryCard to={sortByCategory
-            ? `/laboratory${librarySearch({ ...filters, category: category.id }, location.search)}`
+            ? `/lab${librarySearch({ ...filters, category: category.id }, location.search)}`
             : laboratoryUrl} />
         </div>
       </section>) : <div className="cocktail-empty">
@@ -282,6 +332,7 @@ export default function CocktailLibrary({ user }) {
         {activeFilterDescriptions.length > 0 && <button type="button" className="library-button" onClick={resetFilters}>Reset filters</button>}
         <LaboratoryCard to={laboratoryUrl} />
       </div>}
+      </div>
     </>}
   </section>
 }

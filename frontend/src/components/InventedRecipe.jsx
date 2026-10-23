@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import GlassProfile from './GlassProfile'
+import IngredientName from './IngredientName'
 import { ingredientVolumes } from '../utils/glassFill'
 import { metadataLabel } from '../utils/cocktails'
 import { recipeParts, recipeShots } from '../utils/recipeMeasurements'
@@ -60,9 +61,9 @@ export default function InventedRecipe({ recipe }) {
           onBlur={() => setFocusedIngredient(null)}
         >
           <span className="ingredient-amount">{amounts[index]}</span>
-          <span>
+          <IngredientName ingredient={ingredient}>
             {ingredient.name}
-          </span>
+          </IngredientName>
         </li>)}</ul>
         {unit === 'parts' && parts.rounded && <p>These proportions are approximate.</p>}
         <dl className="cocktail-serving"><div><dt>Glass</dt><dd>{metadataLabel(recipe.glass)}</dd></div></dl>

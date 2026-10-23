@@ -9,7 +9,7 @@
     "backend": "cd ../backend && python3 app.py",
     "build": "vite build",
     "prebuild": "node generate-config.js",
-    "predev": "node generate-config.js",
+    "predev": "bash ../stop-dev-servers.sh && node generate-config.js",
     "preview": "vite preview",
     "generate-config": "node generate-config.js"
   },

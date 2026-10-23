@@ -68,7 +68,8 @@ function App() {
           <Route path="/" element={<Navigate to={`/cocktails${location.search}`} replace />} />
           <Route path="/cocktails" element={<CocktailLibrary user={user} />} />
           <Route path="/cocktails/:cocktailId" element={<CocktailLibrary user={user} />} />
-          <Route path="/laboratory" element={<Laboratory />} />
+          <Route path="/lab" element={<Laboratory />} />
+          <Route path="/laboratory" element={<Navigate to={`/lab${location.search}${location.hash}`} replace />} />
           <Route path="*" element={<div className="cocktail-library"><h1>Page not found</h1><Link to="/cocktails">Back to the cocktails</Link></div>} />
         </Routes>
       </main>

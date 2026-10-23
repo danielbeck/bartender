@@ -70,6 +70,11 @@ npm run dev
 
 Dev frontend runs on http://localhost:3000 and proxies API requests to the backend.  `npm run dev` will also start the backend server.
 
+Both `npm run dev` (from `frontend`) and `./dev.sh` first stop existing listeners
+on ports 3000 and 8000 owned by the current user and running from this project's
+root, frontend, or backend directory. Unrelated listeners are not stopped;
+startup fails with their PID instead. This cleanup requires `lsof`.
+
 ## API (current)
 
 - GET / — root info
