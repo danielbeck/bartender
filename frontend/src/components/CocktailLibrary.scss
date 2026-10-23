@@ -346,9 +346,8 @@
 
 .filter-three-toggle {
   align-items: center;
-  background: #fff;
-  border: 1px solid #b7c9c2;
-  border-radius: 6px;
+  border: none;
+  background-color: transparent;
   color: #263b36;
   display: flex;
   flex: 0 0 auto;
@@ -358,7 +357,7 @@
   min-height: 38px;
   min-width: max-content;
   padding: 7px 9px;
-  text-align: left;
+  text-align: right;
 
   &:hover:not(:disabled) {
     background: #eaf2ee;

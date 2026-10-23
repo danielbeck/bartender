@@ -39,13 +39,13 @@ def _post_json(url, payload, headers=None):
         with urllib.request.urlopen(req, timeout=60) as response:
             data = json.loads(response.read().decode('utf-8'))
     except urllib.error.HTTPError as error:
-        raise LLMError(f'LLM provider returned HTTP {error.code}.') from error
+        raise LLMError(f'Bartender returned HTTP {error.code}.') from error
     except (urllib.error.URLError, OSError, HTTPException) as error:
-        raise LLMError('Unable to reach the LLM provider or the request timed out.') from error
+        raise LLMError('Unable to reach the Bartender or the request timed out.') from error
     except (ValueError, UnicodeError) as error:
-        raise LLMError('LLM provider returned invalid JSON.') from error
+        raise LLMError('Bartender returned invalid JSON.') from error
     if not isinstance(data, dict):
-        raise LLMError('LLM provider returned an invalid response object.')
+        raise LLMError('Bartender returned an invalid response object.')
     return data
 
 

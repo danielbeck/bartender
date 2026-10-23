@@ -1,5 +1,6 @@
 import { useId } from 'react'
 import { Link } from 'react-router-dom'
+import IngredientName from './IngredientName'
 import { barIngredientGroups } from '../utils/barStock'
 
 export default function YourBar({ bar, user, expanded, onExpandedChange }) {
@@ -21,11 +22,11 @@ export default function YourBar({ bar, user, expanded, onExpandedChange }) {
     >
       <summary>What do you have in stock?</summary>
       {!user && <p className="your-bar-auth-prompt">
-        <Link to="/auth?mode=login">Log in</Link> or <Link to="/auth?mode=register">create an account</Link> so we can keep track and tell you which drinks you can make without running to the store.
+        <Link to="/auth?mode=login">Log in</Link> or <Link to="/auth?mode=register">create an account</Link> to stock your bar, so we can tell you which drinks you can make without running to the store.
       </p>}
       {ready && !bar.error && <p className="your-bar-save-status" role="status">{bar.saving ? 'Saving Your Bar...' : ''}</p>}
       {ready && <>
-        <p>Water, ice, plain sugars, and salt/pepper are assumed available; garnishes and optional ingredients are not required.</p>
+        <p>Check off each ingredient you have on hand.  (Water, ice, plain sugars, and salt/pepper are assumed available; garnishes and optional ingredients are not required.) Drinks you can make right away will be sorted to the top of the list.</p>
 
         {barIngredientGroups.map((section) => <section key={section.id} aria-labelledby={`${headingId}-${section.id}`}>
           <h3 id={`${headingId}-${section.id}`}>{section.label}</h3>
@@ -50,7 +51,7 @@ export default function YourBar({ bar, user, expanded, onExpandedChange }) {
                 ingredientIds: event.target.checked
                   ? [...stockedIds, id] : [...stockedIds].filter((value) => value !== id),
               })} />
-              {name}
+              <IngredientName ingredient={{ ingredientId: id, name }}>{name}</IngredientName>
             </label>)}
           </fieldset>)}</div>
         </section>)}

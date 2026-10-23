@@ -49,7 +49,11 @@ test('visible filters retain their order and hidden filters remain available', (
   assert.ok(results.every(({ method, flavorProfile }) => method === 'shake' && flavorProfile.includes('citrusy')))
 })
 
-test('results appear in every matching category, in source order, with no empty groups', () => {
+test('results appear in exactly one valid category, in source order, with no empty groups', () => {
+  for (const cocktail of cocktails) {
+    assert.equal(cocktail.categories.length, 1, cocktail.id)
+    assert.ok(library.cocktailCategories.some(({ id }) => id === cocktail.categories[0]), cocktail.id)
+  }
   for (const filters of [{}, { q: 'gin' }, { category: 'classic' }, { q: 'no-such-cocktail' }]) {
     const results = filterCocktails(filters)
     const groups = groupCocktailsByCategory(results)
@@ -61,7 +65,7 @@ test('results appear in every matching category, in source order, with no empty 
       assert.deepEqual(group.cocktails, results.filter(({ categories }) => categories.includes(group.id)))
     }
     for (const cocktail of results) {
-      assert.equal(groups.filter((group) => group.cocktails.includes(cocktail)).length, cocktail.categories.length)
+      assert.equal(groups.filter((group) => group.cocktails.includes(cocktail)).length, 1)
     }
   }
 })
@@ -124,23 +128,30 @@ test('Spirits groups family choices with their ingredients without changing avai
   }
   assert.equal(new Set(options.map(({ value }) => value)).size, options.length)
   const groups = [...new Set(options.map(({ group }) => group))]
-  assert.deepEqual(groups, [...groups].sort((a, b) => a.localeCompare(b)))
+  assert.deepEqual(groups, [...groups].sort((a, b) =>
+    Number(a === 'Other') - Number(b === 'Other') || a.localeCompare(b)))
   assert.ok(!groups.includes('Base spirits'))
   assert.ok(!groups.includes('Liqueur'))
   assert.ok(!options.some(({ value }) => value === 'family:liqueur'))
   for (const id of ['pimms-no-1', 'elderflower-liqueur', 'licor-43']) {
     assert.equal(options.find(({ value }) => value === `ingredient:${id}`).group, 'Liqueurs')
   }
-  for (const option of options) {
+  const originalGroup = (option) => {
     const familyId = option.value.startsWith('family:')
       ? option.value.slice(7) : ingredients.get(option.value.slice(11)).spiritFamilyIds?.[0]
-    if (familyId) assert.equal(option.group, families.get(ancestors(familyId).at(-1)).label)
+    return familyId ? families.get(ancestors(familyId).at(-1)).label
+      : library.taxonomy.ingredientCategories.find(({ id }) => id === ingredients.get(option.value.slice(11)).category).label
+  }
+  for (const option of options) {
+    const original = originalGroup(option)
+    const count = options.filter((entry) => originalGroup(entry) === original).length
+    assert.equal(option.group, count === 1 ? 'Other' : original)
   }
   for (const group of groups) {
     const entries = options.filter((option) => option.group === group)
     assert.deepEqual(entries, [...entries].sort((a, b) =>
-      Number(b.value.startsWith('family:')) - Number(a.value.startsWith('family:'))
-      || (a.value.startsWith('family:') && b.value.startsWith('family:')
+      (group !== 'Other' ? Number(b.value.startsWith('family:')) - Number(a.value.startsWith('family:')) : 0)
+      || (group !== 'Other' && a.value.startsWith('family:') && b.value.startsWith('family:')
         ? ancestors(a.value.slice(7)).length - ancestors(b.value.slice(7)).length : 0)
       || a.label.localeCompare(b.label)))
     const start = options.indexOf(entries[0])
@@ -169,6 +180,31 @@ test('Whiskey groups and matches its subfamilies without broadening specific fil
   assert.ok(grouped.some(({ value }) => value === 'ingredient:islay-scotch'))
   assert.ok(grouped.some(({ value }) => value === 'ingredient:bacon-fat-washed-bourbon'))
   assert.ok(broad.some((cocktail) => !cocktail.spirits.includes('family:scotch')))
+})
+
+test('Agave groups tequila and mezcal while preserving specific search options', () => {
+  const options = filterOptions.spirit.filter(({ group }) => group === 'Agave')
+  assert.equal(options[0].value, 'family:agave')
+  for (const value of ['family:tequila', 'family:mezcal', 'ingredient:reposado-tequila']) {
+    assert.ok(options.some((option) => option.value === value), value)
+  }
+  const agave = filterCocktails({ spirit: ['family:agave'] })
+  const tequila = filterCocktails({ spirit: ['family:tequila'] })
+  const mezcal = filterCocktails({ spirit: ['family:mezcal'] })
+  assert.ok(tequila.length > 0 && mezcal.length > 0)
+  assert.deepEqual(new Set(agave), new Set([...tequila, ...mezcal]))
+  assert.ok(tequila.some((cocktail) => !mezcal.includes(cocktail)))
+  assert.ok(mezcal.some((cocktail) => !tequila.includes(cocktail)))
+})
+
+test('Dark Rum belongs to the Rum group and retains its specific filter', () => {
+  assert.equal(filterOptions.spirit.find(({ value }) => value === 'family:dark-rum').group, 'Rum')
+  assert.ok(!filterOptions.spirit.some(({ group }) => group === 'Dark Rum'))
+  const rum = filterCocktails({ spirit: ['family:rum'] })
+  const darkRum = filterCocktails({ spirit: ['family:dark-rum'] })
+  assert.ok(darkRum.length > 0)
+  assert.ok(darkRum.every((cocktail) => rum.includes(cocktail)))
+  assert.ok(rum.some((cocktail) => !darkRum.includes(cocktail)))
 })
 
 test('Wine unifies still and sparkling wines while retaining a specific sparkling filter', () => {

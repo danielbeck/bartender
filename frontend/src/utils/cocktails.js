@@ -118,9 +118,8 @@ export function categoryLabel(id) {
   return cocktailCategories.find((category) => category.id === id)?.name || metadataLabel(id)
 }
 
-export const filterOptions = Object.fromEntries(filterDefinitions.map(({ key, field }) => [
-  key,
-  [...new Set(cocktails.flatMap((cocktail) => cocktail[field]))]
+export const filterOptions = Object.fromEntries(filterDefinitions.map(({ key, field }) => {
+  let options = [...new Set(cocktails.flatMap((cocktail) => cocktail[field]))]
     .filter((value) => key !== 'spirit' || !duplicatesBaseSpirit(value))
     .map((value) => ({ value, label: key === 'category' ? categoryLabel(value)
       : key === 'ingredient' ? metadataLabel(ingredientsById.get(value).name)
@@ -128,14 +127,21 @@ export const filterOptions = Object.fromEntries(filterDefinitions.map(({ key, fi
       ...(key === 'spirit' ? { group: spiritGroup(value) } : {}),
       ...(key === 'ingredient' ? { group: library.taxonomy.ingredientCategories.find((category) => category.id === ingredientsById.get(value).category).label } : {}),
     }))
-    .sort((first, second) => (key === 'spirit'
-      ? first.group.localeCompare(second.group)
-        || Number(second.value.startsWith('family:')) - Number(first.value.startsWith('family:'))
-        || (first.value.startsWith('family:') && second.value.startsWith('family:')
+  if (key === 'spirit') {
+    const counts = new Map()
+    for (const { group } of options) counts.set(group, (counts.get(group) || 0) + 1)
+    options = options.map((option) => counts.get(option.group) === 1 ? { ...option, group: 'Other' } : option)
+  }
+  return [key, options.sort((first, second) => (key === 'spirit'
+      ? Number(first.group === 'Other') - Number(second.group === 'Other')
+        || first.group.localeCompare(second.group)
+        || (first.group !== 'Other'
+          ? Number(second.value.startsWith('family:')) - Number(first.value.startsWith('family:')) : 0)
+        || (first.group !== 'Other' && first.value.startsWith('family:') && second.value.startsWith('family:')
           ? familyAncestry.get(first.value.slice(7)).length - familyAncestry.get(second.value.slice(7)).length : 0)
       : key === 'ingredient' ? first.group.localeCompare(second.group)
-      : 0) || first.label.localeCompare(second.label)),
-]))
+      : 0) || first.label.localeCompare(second.label))]
+}))
 
 export function ingredientFilters({ ingredientId, name }) {
   const ingredient = ingredientsById.get(ingredientId)

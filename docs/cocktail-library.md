@@ -81,7 +81,8 @@ ID remains an alias to its canonical recipe. Taxonomy labels supply filter
 labels and category headings.
 Search results are grouped in source category order, with a heading and
 description only for categories containing matching cocktails. A cocktail
-appears in every category it belongs to, alphabetized within each group.
+has exactly one category and appears once, alphabetized within its group
+(with makeable drinks first when inventory is loaded).
 The result count counts unique cocktails, not repeated cards. The "Sort by
 category" toggle beside the count defaults to on. Turning it off shows one
 alphabetical list, with each cocktail appearing once and no category headings
@@ -226,6 +227,9 @@ and rye whiskey matches Rye. Spirit families can declare a `parentId`; recipes
 also match every ancestor family. Bourbon, Rye, Scotch, and Irish Whiskey are
 children of Whiskey, so Whiskey matches all four while each specific filter
 retains its narrower meaning.
+Tequila and Mezcal are children of Agave, grouping both together in search and
+The Bar. The Agave search option matches either, while Tequila and Mezcal
+retain their specific matching.
 Sparkling Wine is a child of Wine: the Wine search option includes still and
 sparkling wines, while Sparkling Wine remains a narrower option. Both appear
 in the Wine group in both search and The Bar.
@@ -240,6 +244,9 @@ Ingredients without a family retain their ingredient-category group. Groups are
 alphabetical, with family-wide options first (ancestors before children), then
 individual ingredients alphabetically. The Bar uses the same family groups,
 listing only specific ingredients alphabetically within each group.
+In the Spirits search dropdown, groups containing only one selectable option
+are combined into an alphabetical Other group at the end. This is display-only;
+family definitions, option values, and search matching are unchanged.
 An ingredient with the same ID or label as a listed base-spirit family is
 omitted to avoid duplicates; distinct variants remain.
 
