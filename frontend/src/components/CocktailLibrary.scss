@@ -5,7 +5,8 @@
   padding: 32px 24px 60px;
   line-height: 1.6;
 
-  h1 {
+  h1,
+  h2.cocktail-detail-title {
     font-size: clamp(44px, 7vw, 76px);
     line-height: 1.1;
     margin: 0 0 12px;
@@ -59,6 +60,30 @@
   &:disabled {
     cursor: default;
     opacity: .5;
+  }
+}
+
+.laboratory-generate-button {
+  background: #286650;
+  border-color: #286650;
+  color: #fff;
+  font-weight: 600;
+  margin-left: auto;
+  padding: 10px 20px;
+
+  &:hover:not(:disabled) {
+    background: #1f5140;
+    border-color: #1f5140;
+  }
+
+  &.needs-regeneration:not(:disabled) {
+    animation: laboratory-generate-pulse 1.6s ease-in-out infinite;
+  }
+}
+
+@keyframes laboratory-generate-pulse {
+  50% {
+    box-shadow: 0 0 0 5px rgb(56 127 105 / 28%);
   }
 }
 
@@ -384,6 +409,10 @@
   gap: 8px 16px;
   margin-top: 12px;
 
+  .filter-three-toggle {
+    margin-left: auto;
+  }
+
   p {
     margin: 0;
   }
@@ -443,6 +472,55 @@
   }
 }
 
+.laboratory-result {
+  background: linear-gradient(145deg, #f1f7f3, #e5f0eb);
+  border-color: #a9c5b8;
+  color: #214f40;
+  position: relative;
+  transition: background-color 150ms ease, border-color 150ms ease, transform 150ms ease;
+
+  &:hover {
+    background: linear-gradient(145deg, #e8f2ec, #dcebe3);
+    border-color: #6e9d88;
+    transform: translateY(-2px);
+  }
+
+  h3 {
+    padding-right: 54px;
+  }
+
+  p {
+    color: #53665f;
+  }
+
+  .laboratory-result-illustration {
+    color: #387f69;
+    fill: #f8fcf9;
+    height: 56px;
+    position: absolute;
+    right: 18px;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+    top: 14px;
+    width: 56px;
+
+    circle {
+      fill: #d7e9df;
+    }
+
+    path:last-child {
+      fill: none;
+    }
+  }
+}
+
+.laboratory-response {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
 .cocktail-result-meta {
   color: #286650;
   font-weight: 600;
@@ -486,7 +564,7 @@
   display: flex;
   gap: 16px;
 
-  h1 {
+  .cocktail-detail-title {
     flex: 1;
     min-width: 0;
   }
@@ -507,6 +585,13 @@
 
   p {
     margin: 8px 0 16px;
+  }
+
+  .laboratory-result {
+    display: block;
+    margin: 20px auto;
+    max-width: 360px;
+    text-align: left;
   }
 }
 

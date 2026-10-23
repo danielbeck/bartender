@@ -96,7 +96,7 @@ explicit override is also deployed.
 
 Local startup reads these settings from `.env`, with process environment values
 taking precedence. Deployment copies only the session key, SMTP settings, reset
-URL, and production cookie setting to the private server configuration outside
+URL, LLM settings, and production cookie setting to the private server configuration outside
 the web root; SMTP credentials are never added to the frontend build. Redeploy
 after changing SMTP settings. Links expire after 15 minutes and may be used once.
 The backend enforces matching passwords with 8-128 characters, uppercase,
@@ -104,6 +104,16 @@ lowercase, and a number, then invalidates existing sessions after a reset.
 
 Email recovery requires a registered email account. Existing username-only rows
 are preserved but are no longer login identities; register new email accounts.
+
+## LLM Connectivity
+
+Configure local Ollama or OpenRouter using `LLM_PROVIDER`, `OLLAMA_URL`,
+`OLLAMA_MODEL`, `OPENROUTER_URL`, `OPENROUTER_MODEL`, and `OPENROUTER_API_KEY`.
+Deployment uses `PRODUCTION_LLM_PROVIDER` (default `openrouter`) independently
+of the local provider and requires a key when deploying OpenRouter.
+LLM credentials remain in the private server configuration, not the frontend.
+See [LLM connectivity](docs/llm-connectivity.md) for defaults, API usage, and
+restart/deployment requirements.
 
 ## Deployment Scenarios
 

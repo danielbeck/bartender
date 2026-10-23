@@ -30,3 +30,21 @@ export async function fetchAPI(endpoint, options = {}) {
     throw error
   }
 }
+
+export function callLLM(prompt, responseFormat, schemaName) {
+  return fetchAPI('/llm/chat', {
+    method: 'POST',
+    body: JSON.stringify({ prompt, response_format: responseFormat, schema_name: schemaName }),
+  })
+}
+
+export function getLLMHealth() {
+  return fetchAPI('/llm/health')
+}
+
+export function runLLMCall(name, input) {
+  return fetchAPI(`/llm/calls/${encodeURIComponent(name)}`, {
+    method: 'POST',
+    body: JSON.stringify({ input }),
+  })
+}

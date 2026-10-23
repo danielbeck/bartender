@@ -88,10 +88,13 @@ cleanup() {
 
 trap cleanup EXIT
 
-echo "🔐 Installing private account configuration (secrets are not printed)..."
+echo "🔐 Installing private server configuration (secrets are not printed)..."
 if ! ACCOUNT_CONFIG=$(node -e '
-    const keys = ["SECRET_KEY", "SMTP_HOST", "SMTP_PORT", "SMTP_SECURE", "SMTP_FROM_EMAIL", "SMTP_FROM_NAME", "SMTP_USERNAME", "SMTP_PASSWORD"];
+    const keys = ["SECRET_KEY", "SMTP_HOST", "SMTP_PORT", "SMTP_SECURE", "SMTP_FROM_EMAIL", "SMTP_FROM_NAME", "SMTP_USERNAME", "SMTP_PASSWORD", "OLLAMA_URL", "OLLAMA_MODEL", "OPENROUTER_URL", "OPENROUTER_MODEL", "OPENROUTER_API_KEY"];
     const settings = Object.fromEntries(keys.map(key => [key, process.env[key]]));
+    settings.LLM_PROVIDER = process.env.PRODUCTION_LLM_PROVIDER || "openrouter";
+    if (!["ollama", "openrouter"].includes(settings.LLM_PROVIDER)) throw new Error("PRODUCTION_LLM_PROVIDER must be ollama or openrouter.");
+    if (settings.LLM_PROVIDER === "openrouter" && !settings.OPENROUTER_API_KEY?.trim()) throw new Error("OPENROUTER_API_KEY is required for the production OpenRouter provider.");
     const domain = process.env.PRODUCTION_DOMAIN;
     if (!domain) throw new Error("PRODUCTION_DOMAIN is required.");
     const sub = (process.env.DEPLOY_SUB_DIR || "").replace(/^\/+|\/+$/g, "");
@@ -148,6 +151,15 @@ rsync -avz --delete --progress \
 
 # The CGI launcher resolves its adjacent virtualenv and Python entry point.
 scp -o ControlPath="$CONTROL_PATH" backend/api.cgi $USER@$HOST:${REMOTE_DIR}backend/api.cgi
+
+echo "Deploying shared LLM definitions..."
+if ! rsync -avz --progress \
+    -e "ssh -o ControlPath=$CONTROL_PATH" \
+    --exclude='.DS_Store' \
+    shared/ $USER@$HOST:${REMOTE_DIR}shared/; then
+    echo "Failed to deploy shared LLM definitions; deployment stopped."
+    exit 1
+fi
 
 # Harden permissions: remove group/world write bits on backend files and
 # ensure CGI scripts are executable. Keep logs directory writable so the

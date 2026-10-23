@@ -2,7 +2,7 @@
 
 ## Overview
 
-This backend provides account authentication and per-user bar settings using Python Flask and SQLite. It runs both as a Flask server (for local development) and as a CGI application (for shared hosting environments). The public cocktail library uses frontend-bundled JSON and does not need an API endpoint.
+This backend provides account authentication, per-user bar settings, and LLM connectivity using Python Flask and SQLite. It runs both as a Flask server (for local development) and as a CGI application (for shared hosting environments). The public cocktail library uses frontend-bundled JSON and does not need an API endpoint.
 
 ## Directory Structure and File Explanations
 
@@ -25,6 +25,10 @@ This backend provides account authentication and per-user bar settings using Pyt
 - **endpoints/**: Directory containing modularized Flask Blueprints for each API endpoint.
     - **auth.py**: Email registration/login, logout, current-user, and password recovery endpoints.
     - **bar.py**: Authenticated, per-user ingredient inventory and availability-mode settings.
+    - **llm.py**: Generic chat and provider-configuration endpoints.
+- **llm_provider.py**: Ollama/OpenRouter transport with optional JSON-schema output.
+- **llm_calls/**: Registered structured calls; `invent_drink` loads prompt/schema
+  definitions from `../shared/llm/` and validates the generated recipe.
 - **bar_storage.py**: Non-destructive creation of the `user_bar` settings table.
 - **database/**: Contains the SQLite database file (app.db).
 - **logs/**: Stores log files for Flask and CGI error logging.
@@ -39,7 +43,7 @@ Set `SECRET_KEY` in the project-root `.env` before starting the backend.
 Direct Flask startup reads that key (an explicit process `SECRET_KEY` takes
 precedence). There is no hardcoded fallback; missing or empty keys stop startup.
 
-Deployment copies `SECRET_KEY`, SMTP settings, the reset URL, and the
+Deployment copies `SECRET_KEY`, SMTP settings, LLM settings, the reset URL, and the
 production cookie setting to `~/.config/bartender/session.json`, outside the
 web root, using an encrypted SSH connection without printing secrets. The
 directory is mode 700 and the file is mode 600. CGI loads this private file
@@ -92,6 +96,16 @@ are displayed on the authentication form.
 - `GET /bar` - Return `ingredientIds`, `stockOnly`, and `csrfToken` for the logged-in user
 - `PUT /bar` - Save `{ "ingredientIds": ["gin", "tonic-water"], "stockOnly": true }`;
   requires login and the `X-CSRFToken` header from `GET /bar`
+- `GET /llm/health` - Provider configuration (not a live connectivity probe)
+- `POST /llm/chat` - Send `{ "prompt": "...", "response_format": { ... }, "schema_name": "response" }`;
+  schema and name are optional; returns `{provider, model, response}` with raw text.
+  See [LLM connectivity](../docs/llm-connectivity.md) for setup and limitations.
+- `POST /llm/calls/invent_drink` - Send `{ "input": "<JSON search preferences>" }`;
+  returns `{data, provider, model}`. `data` contains `title`, `description`, and
+  a supported `glass` ID and a nonempty `ingredients` array of
+  `{name, quantity, color}` for the recipe illustration. Invalid model output
+  returns 502 rather than a partial recipe. Definitions are read per request
+  from `../shared/llm/`, or `LLM_DEFINITIONS_DIR` when configured.
 
 Password reset links expire exactly 900 seconds after issuance, are single-use,
 and are stored only as SHA-256 hashes. A replacement link invalidates the previous

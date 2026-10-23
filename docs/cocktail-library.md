@@ -76,8 +76,54 @@ labels and category headings.
 Search results are grouped in source category order, with a heading and
 description only for categories containing matching cocktails. A cocktail
 appears in every category it belongs to, alphabetized within each group.
-The result count counts unique cocktails, not repeated cards. There is no
+The result count counts unique cocktails, not repeated cards. The "Sort by
+category" toggle beside the count defaults to on. Turning it off shows one
+alphabetical list, with each cocktail appearing once and no category headings
+or descriptions. This display preference stays in component state while
+browsing recipes and changing filters; Reset filters does not change it.
+There is no
 category dropdown; existing category tags and URL filters remain supported.
+
+Each category of nonempty results ends with an "Invent a drink" card. Its link
+sets that category as the Laboratory's category preference while preserving the
+other search filters. With grouping off, one card ends the flat list and
+preserves the current category filter. Empty results offer
+an "Invent a drink" button alongside Reset filters. Both link to `/laboratory`
+with the current query string, preserving search text and all filters, including
+repeated multi-select values. "The Laboratory." displays those inputs and links
+back to the same search. On opening the page, it sends the search text and
+human-readable filter labels and values to the configured LLM, requesting a
+structured drink with a title, description, mixing instructions, and ingredient
+list for one serving. Each ingredient includes a name and a quantity string
+with units.
+The system prompt, user-input template, and JSON response schema live in
+`shared/llm/invent_drink.md`, `invent_drink.input.md`, and `invent_drink.json`.
+The frontend sends search preferences to `POST /llm/calls/invent_drink`; the
+backend loads the definitions, requests schema-constrained output, and validates
+the parsed recipe before returning it. Missing fields, extra fields, incorrect
+types, empty strings, and empty ingredient lists produce an error rather than
+a partial recipe.
+The page displays a loading state, the title, description, mixing instructions,
+and ingredient quantities, or an error with a Try again button.
+React development effect replays reuse the same request rather than
+issuing a duplicate. Submitting changed preferences requests a new invention;
+responses for previous requests cannot overwrite the current result.
+The Laboratory shares the library's editable search and collapsible filter
+controls. Edits update the URL but keep the current invention until Generate
+drink is pressed; typing or selecting a filter does not make LLM requests.
+Generate drink can also request a new invention with unchanged preferences.
+The initial page visit still generates automatically. Reset filters clears the
+editable preferences without generating; the back link returns to that search.
+Invented drinks are not saved or added to the library. Ingredient names remain
+model-generated text, not canonical catalog ingredient IDs.
+The generated recipe uses the library's ingredient-card layout, ml/parts/shots
+helpers, and glass illustration. Hovering or focusing the card reveals the large
+glass; individual ingredient links highlight the corresponding liquid band.
+These links search by ingredient name rather than assuming a catalog identity.
+The structured response also supplies a supported `glass` ID and a hex `color`
+for each ingredient. Liquids use positive quantities in ml (at most 1000 ml per
+ingredient); non-volume measures remain text and do not form illustration bands.
+Generated colors are approximate. Catalog recipes retain their catalog colors.
 
 The source's `filters` array defines filter keys, recipe fields, labels,
 taxonomy references, and `multiple` selection modes. Each filter's `control`

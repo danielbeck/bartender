@@ -2,6 +2,7 @@ import { glassInteriors } from './glassProfiles.js'
 import library from '../../../data/cocktails.json' with { type: 'json' }
 
 const ingredientColors = new Map(library.ingredients.map(({ id, color }) => [id, color]))
+const ingredientColorsByName = new Map(library.ingredients.map(({ name, color }) => [name.toLowerCase(), color]))
 
 export function ingredientColor(id) {
   if (!ingredientColors.has(id)) throw new Error(`Unknown ingredient color: ${id}`)
@@ -16,7 +17,13 @@ export function ingredientVolumes(ingredients) {
   return ingredients.flatMap((ingredient, index) => {
     const match = ingredient.amount.match(/^(\d+(?:\.\d+)?) ml$/)
     const volume = match ? Number(match[1]) : 0
-    return volume > 0 ? [{ ...ingredient, index, volume, color: ingredientColor(ingredient.ingredientId) }] : []
+    if (volume <= 0) return []
+    const libraryColor = ingredientColorsByName.get(ingredient.name.trim().toLowerCase())
+    const color = ingredient.ingredientId ? ingredientColor(ingredient.ingredientId) : libraryColor || ingredient.color
+    if (typeof color !== 'string' || !/^#[0-9a-f]{6}$/i.test(color)) {
+      throw new Error(`Ingredient ${ingredient.name} must define a six-digit hex color`)
+    }
+    return [{ ...ingredient, index, volume, color }]
   })
 }
 

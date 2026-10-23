@@ -6,6 +6,7 @@ import AuthPage from './components/AuthPage'
 import ProfilePage from './components/ProfilePage'
 import PasswordRecoveryPage from './components/PasswordRecoveryPage'
 import CocktailLibrary from './components/CocktailLibrary'
+import Laboratory from './components/Laboratory'
 import './global.scss'
 
 
@@ -67,6 +68,7 @@ function App() {
           <Route path="/" element={<Navigate to={`/cocktails${location.search}`} replace />} />
           <Route path="/cocktails" element={<CocktailLibrary user={user} />} />
           <Route path="/cocktails/:cocktailId" element={<CocktailLibrary user={user} />} />
+          <Route path="/laboratory" element={<Laboratory />} />
           <Route path="*" element={<div className="cocktail-library"><h1>Page not found</h1><Link to="/cocktails">Back to the cocktails</Link></div>} />
         </Routes>
       </main>

@@ -1,18 +1,16 @@
-import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
-import FilterSelect from './FilterSelect'
+import CocktailSearchControls from './CocktailSearchControls'
 import FilterToggle from './FilterToggle'
 import GlassProfile from './GlassProfile'
-import { glassProfiles } from '../utils/glassProfiles'
 import { ingredientVolumes } from '../utils/glassFill'
-import FlavorFilters from './FlavorFilters'
 import YourBar from './YourBar'
 import useBarStock from '../utils/useBarStock'
 import { canMakeCocktail, isIngredientAvailable } from '../utils/barStock'
 import { millilitersPerShot, recipeParts, recipeShots } from '../utils/recipeMeasurements'
 import {
   cocktails, cocktailIdAliases, categoryLabel, filterCocktails, groupCocktailsByCategory,
-  filterDefinitions, filterGroups, filterOptions, filterScale, ingredientFilters, librarySearch, metadataLabel, readFilters, visibleSpirits,
+  filterDefinitions, filterOptions, ingredientFilters, librarySearch, metadataLabel, readFilters, visibleSpirits,
 } from '../utils/cocktails'
 import './CocktailLibrary.scss'
 
@@ -25,6 +23,18 @@ function MetadataTags({ title, values, filter, onShowResults }) {
   </section>
 }
 
+function LaboratoryCard({ to }) {
+  return <Link className="cocktail-result laboratory-result" to={to}>
+    <svg className="laboratory-result-illustration" viewBox="0 0 64 64" aria-hidden="true">
+      <path d="M10 9h34l-4 15c-1.5 5.5-6.5 9-13 9s-11.5-3.5-13-9L10 9Zm17 24v13m-9 4h18" />
+      <circle cx="48" cy="18" r="12" />
+      <path d="M46 15a2.5 2.5 0 1 1 4.3 1.8c-1.1 1-2.3 1.3-2.3 3.2m.1 3.8v.1" />
+    </svg>
+    <h3>Invent a drink</h3>
+    <p>Take your search to The Laboratory.</p>
+  </Link>
+}
+
 export default function CocktailLibrary({ user }) {
   const { cocktailId } = useParams()
   const location = useLocation()
@@ -32,9 +42,8 @@ export default function CocktailLibrary({ user }) {
   const headingRef = useRef(null)
   const searchStartRef = useRef(null)
   const scrollToSearchRef = useRef(false)
-  const filterPanelId = useId()
-  const [filtersOpen, setFiltersOpen] = useState(() => !window.matchMedia('(max-width: 720px)').matches)
   const [measurementUnit, setMeasurementUnit] = useState('ml')
+  const [sortByCategory, setSortByCategory] = useState(true)
   const [recipeHovered, setRecipeHovered] = useState(false)
   const [recipeFocused, setRecipeFocused] = useState(false)
   const [hoveredIngredient, setHoveredIngredient] = useState(null)
@@ -59,7 +68,9 @@ export default function CocktailLibrary({ user }) {
       : measurementUnit === 'shots' ? recipeShots(selectedCocktail.ingredients)
         : selectedCocktail.ingredients.map(({ amount }) => amount)
     : []
-  const resultCategories = groupCocktailsByCategory(filteredCocktails)
+  const resultCategories = sortByCategory
+    ? groupCocktailsByCategory(filteredCocktails)
+    : [{ id: 'all', cocktails: filteredCocktails }]
   const activeFilters = filterDefinitions.filter(({ key }) => Array.isArray(filters[key]) ? filters[key].length > 0 : filters[key]).length
   const activeFilterDescriptions = [
     ...(filters.q.trim() ? [`Search: ${filters.q.trim()}`] : []),
@@ -112,6 +123,7 @@ export default function CocktailLibrary({ user }) {
     updateSearchFilters({})
   }
   const listUrl = `/cocktails${location.search}`
+  const laboratoryUrl = `/laboratory${location.search}`
 
   if (cocktailId && !selectedCocktail) {
     return <section className="cocktail-library">
@@ -225,80 +237,26 @@ export default function CocktailLibrary({ user }) {
       <p className="cocktail-library-intro">What would you like to drink?</p>
       <div ref={searchStartRef} aria-hidden="true" />
       <div className="cocktail-library-search">
-        <div className="cocktail-search-row">
-          <input type="search" value={filters.q} onChange={(event) => changeFilter('q', event.target.value)} placeholder="Search cocktails, ingredients, or flavors" aria-label="Search cocktail library" />
-          <button
-            type="button"
-            className="cocktail-icon-button filter-toggle-button"
-            aria-label={filtersOpen ? 'Hide filters' : 'Show filters'}
-            title={filtersOpen ? 'Hide filters' : 'Show filters'}
-            aria-expanded={filtersOpen}
-            aria-controls={filterPanelId}
-            onClick={() => setFiltersOpen((current) => !current)}
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" aria-hidden="true">
-              <path d="M4 7h6m4 0h6M4 17h10m4 0h2" />
-              <circle cx="12" cy="7" r="2" />
-              <circle cx="16" cy="17" r="2" />
-            </svg>
-          </button>
-        </div>
-        <div
-          className={`cocktail-filter-panel${filtersOpen ? ' is-open' : ''}`}
-          id={filterPanelId}
-          inert={filtersOpen ? undefined : ''}
-          aria-hidden={!filtersOpen}
-        >
-          <div className="cocktail-filter-panel-content">
-            {filterGroups.map(({ id, label: groupLabel, definitions }) => <div className="cocktail-filters" role="group" aria-label={groupLabel} key={id}>
-              {definitions.map((definition) => {
-                const { key, label, controlLabel, control, multiple, states, emptyLabel, illustration } = definition
-                return control === 'slider'
-                  ? <FlavorFilters key={key} label={controlLabel || label} scales={definition.scales || [filterScale(definition)]} filters={filters} onChange={changeFilter} />
-                  : control === 'toggle'
-                    ? <FilterToggle
-                      key={key}
-                      label={controlLabel || label}
-                      value={filters[key]}
-                      states={states}
-                      valueWidth={`${Math.max(3, ...states.map(({ label }) => label.length))}ch`}
-                      onChange={(value) => changeFilter(key, value)}
-                    />
-                    : <FilterSelect
-                      key={key}
-                      label={label}
-                      value={filters[key]}
-                      multiple={multiple}
-                      renderPreview={illustration === 'glass' ? (glass) => <div className="glass-selector-illustration">
-                        {glassProfiles[glass] && <GlassProfile glass={glass} />}
-                        <span>{!glass ? emptyLabel : glassProfiles[glass] ? metadataLabel(glass) : `Unknown: ${glass}`}</span>
-                      </div> : undefined}
-                      options={[
-                        { value: '', label: emptyLabel },
-                        ...(Array.isArray(filters[key]) ? filters[key] : [filters[key]])
-                          .filter((value) => value && !filterOptions[key].some((option) => option.value === value))
-                          .map((value) => ({ value, label: `Unknown: ${value}` })),
-                        ...filterOptions[key],
-                      ]}
-                      onChange={(value) => changeFilter(key, value)}
-                    />
-              })}
-            </div>)}
-          </div>
-        </div>
+        <CocktailSearchControls filters={filters} onChange={changeFilter} />
         <div className="cocktail-results-toolbar">
           <p role="status">{filteredCocktails.length} {filteredCocktails.length === 1 ? 'cocktail' : 'cocktails'}</p>
           {activeFilterDescriptions.length > 0 && <p className="cocktail-active-filters">{activeFilterDescriptions.join('; ')}</p>}
           {activeFilterDescriptions.length > 0 && <button type="button" className="library-button" aria-label={resetFiltersLabel} title={resetFiltersLabel} onClick={resetFilters}>
             Reset filters
           </button>}
+          <FilterToggle
+            label="Sort by category"
+            value={sortByCategory}
+            states={[{ value: false, label: 'off' }, { value: true, label: 'on' }]}
+            onChange={setSortByCategory}
+          />
         </div>
       </div>
-      {filteredCocktails.length ? resultCategories.map((category) => <section key={category.id} aria-labelledby={`category-${category.id}`}>
-        <header className="cocktail-results-category">
+      {filteredCocktails.length ? resultCategories.map((category) => <section key={category.id} aria-labelledby={sortByCategory ? `category-${category.id}` : undefined}>
+        {sortByCategory && <header className="cocktail-results-category">
           <h2 id={`category-${category.id}`}>{category.name}</h2>
           <p>{category.description}</p>
-        </header>
+        </header>}
         <div className="cocktail-results">{category.cocktails.map((cocktail) => <Link
           className="cocktail-result"
           key={cocktail.libraryId}
@@ -311,13 +269,18 @@ export default function CocktailLibrary({ user }) {
           <p className="cocktail-result-meta">{cocktail.baseSpirits.map(metadataLabel).join(' / ')} · {metadataLabel(cocktail.strength)}</p>
           <p>{cocktail.categories.map(categoryLabel).join(' / ')}</p>
           <p>{metadataLabel(cocktail.glass)} · {metadataLabel(cocktail.difficulty)}</p>
-        </Link>)}</div>
+        </Link>)}
+          <LaboratoryCard to={sortByCategory
+            ? `/laboratory${librarySearch({ ...filters, category: category.id }, location.search)}`
+            : laboratoryUrl} />
+        </div>
       </section>) : <div className="cocktail-empty">
         <h2>No cocktails match your filters</h2>
         <p>{stockOnly
           ? 'Check more ingredients in Your Bar or choose "Show all the drinks". You can also adjust your search filters.'
           : 'Try a different search or reset the filters to see the full library.'}</p>
         {activeFilterDescriptions.length > 0 && <button type="button" className="library-button" onClick={resetFilters}>Reset filters</button>}
+        <LaboratoryCard to={laboratoryUrl} />
       </div>}
     </>}
   </section>

@@ -70,3 +70,12 @@ test('only ml measurements are represented and ingredient order is preserved', (
   assert.equal(ingredientColor('amaro'), ingredientColor('amaro'))
   assert.throws(() => glassFill('unknown', ingredients), /Unknown glass interior/)
 })
+
+test('invented ingredients use library colors when names match regardless of case', () => {
+  const volumes = ingredientVolumes([
+    { name: 'Grapefruit juice', amount: '45 ml', color: '#00ff00' },
+    { name: 'Unlisted ingredient', amount: '15 ml', color: '#00ff00' },
+  ])
+  assert.equal(volumes[0].color, ingredientColor('grapefruit-juice'))
+  assert.equal(volumes[1].color, '#00ff00')
+})
