@@ -8,7 +8,7 @@ import { filterGroups, filterOptions, filterScale, metadataLabel } from '../util
 
 export default function CocktailSearchControls({ filters, onChange }) {
   const panelId = useId()
-  const [open, setOpen] = useState(() => !window.matchMedia('(max-width: 720px)').matches)
+  const [open, setOpen] = useState(false)
 
   return <>
     <div className="cocktail-search-row">

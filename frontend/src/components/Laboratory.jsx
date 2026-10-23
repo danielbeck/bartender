@@ -26,14 +26,15 @@ export default function Laboratory() {
         || (key === 'category' ? categoryLabel(value) : metadataLabel(value))).join(', '),
     }] : []
   })
+  const activeFilterDescriptions = [
+    ...(filters.q.trim() ? [`Search: ${filters.q.trim()}`] : []),
+    ...criteria.map(({ label, value }) => `${label}: ${value}`),
+  ]
   const draftInput = JSON.stringify({
     search: filters.q,
     filters: criteria.map(({ label, value }) => ({ label, value })),
   })
-  const [request, setRequest] = useState(() => ({
-    input: new URLSearchParams(location.search).size > 0 ? draftInput : null,
-    attempt: 0,
-  }))
+  const [request, setRequest] = useState({ input: null, attempt: 0 })
   const { input, attempt } = request
   const updateFilters = (values) => {
     navigate({ pathname: '/lab', search: librarySearch(values, location.search) }, { replace: true })
@@ -59,8 +60,8 @@ export default function Laboratory() {
       setDelayedRequest({ input, attempt, stage: 3 })
     }, 30_000)
     const veryLongWaitTimer = window.setTimeout(() => {
-      setDelayedRequest({ input, attempt, stage: 3 })
-    }, 30_000)
+      setDelayedRequest({ input, attempt, stage: 4 })
+    }, 40_000)
     const clearMessageTimers = () => {
       window.clearTimeout(waitMessageTimer)
       window.clearTimeout(almostThereTimer)
@@ -110,6 +111,7 @@ export default function Laboratory() {
     <form className="cocktail-library-search" onSubmit={(event) => { event.preventDefault(); generateDrink() }}>
       <CocktailSearchControls filters={filters} onChange={(key, value) => updateFilters({ ...filters, [key]: value })} />
       <div className="cocktail-results-toolbar">
+        {activeFilterDescriptions.length > 0 && <p className="cocktail-active-filters">{activeFilterDescriptions.join('; ')}</p>}
         {(filters.q.trim() || criteria.length > 0) && <button type="button" className="library-button" onClick={() => updateFilters({})}>
           Reset filters
         </button>}
@@ -122,7 +124,7 @@ export default function Laboratory() {
     </form>
     <section aria-labelledby="laboratory-result-title" aria-busy={isGenerating}>
       <h2 id="laboratory-result-title">Your invention</h2>
-      {input === null ? <p>Make some selections above; our bartender will be with you shortly.</p>
+      {input === null ? <p>Make some selections above. Our bartender will be with you when you're ready.</p>
         : !currentResult ? <div role="status">
           <p>Concocting a drink....</p>
           {showWaitMessage && <p>This can take a while, savor the aromatics while you wait....</p>}
