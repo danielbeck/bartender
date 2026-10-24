@@ -27,6 +27,12 @@ The browser never connects to Ollama directly. For OpenRouter, set
 Structured output requires a model/provider that supports JSON schema;
 the free router is not guaranteed to supply one.
 
+OpenRouter requests include `X-Title: Bartender` and, when `PRODUCTION_DOMAIN`
+is configured, an `HTTP-Referer` built as `<PRODUCTION_DOMAIN>/<DEPLOY_SUB_DIR>/`
+(or `<PRODUCTION_DOMAIN>/` with no subdirectory). This identifies Bartender in
+OpenRouter's app attribution. Deployment includes both URL settings in the
+private backend configuration.
+
 Deployment copies LLM settings into the existing private
 `~/.config/bartender/session.json` over SSH, never into frontend configuration.
 It uses `PRODUCTION_LLM_PROVIDER` rather than the local `LLM_PROVIDER`, even

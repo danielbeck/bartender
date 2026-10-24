@@ -20,6 +20,8 @@ def get_llm_config(settings):
         provider = 'openrouter' if settings.get('FLASK_ENV') == 'production' else 'ollama'
     if provider not in ('ollama', 'openrouter'):
         raise LLMError('LLM_PROVIDER must be ollama or openrouter.', code='CONFIGURATION')
+    domain = (settings.get('PRODUCTION_DOMAIN') or '').strip().rstrip('/')
+    sub_dir = (settings.get('DEPLOY_SUB_DIR') or '').strip('/')
     return {
         'provider': provider,
         'ollama_url': (settings.get('OLLAMA_URL') or 'http://localhost:11434').rstrip('/'),
@@ -27,6 +29,7 @@ def get_llm_config(settings):
         'openrouter_url': (settings.get('OPENROUTER_URL') or 'https://openrouter.ai/api/v1').rstrip('/'),
         'openrouter_model': settings.get('OPENROUTER_MODEL') or 'openrouter/free',
         'openrouter_api_key': settings.get('OPENROUTER_API_KEY'),
+        'openrouter_app_url': f"{domain}/{sub_dir + '/' if sub_dir else ''}" if domain else None,
     }
 
 
@@ -39,6 +42,10 @@ def _post_json(url, payload, headers=None):
         with urllib.request.urlopen(req, timeout=60) as response:
             data = json.loads(response.read().decode('utf-8'))
     except urllib.error.HTTPError as error:
+        if error.code == 429:
+            raise LLMError(
+                'Bartender is too busy to respond (HTTP 429). Wait a bit and see if the line clears up.'
+            ) from error
         raise LLMError(f'Bartender returned HTTP {error.code}.') from error
     except (urllib.error.URLError, OSError, HTTPException) as error:
         raise LLMError('Unable to reach the Bartender or the request timed out.') from error
@@ -79,9 +86,12 @@ def chat(messages, schema=None, schema_name=None, settings=None, config=None, te
                 },
             }
             payload['provider'] = {'require_parameters': True}
+        headers = {'Authorization': f'Bearer {api_key}', 'X-Title': 'Bartender'}
+        if config.get('openrouter_app_url'):
+            headers['HTTP-Referer'] = config['openrouter_app_url']
         data = _post_json(
             f"{config['openrouter_url'].rstrip('/')}/chat/completions", payload,
-            headers={'Authorization': f'Bearer {api_key}', 'X-Title': 'Bartender'},
+            headers=headers,
         )
         choices = data.get('choices')
         first = choices[0] if isinstance(choices, list) and choices else None

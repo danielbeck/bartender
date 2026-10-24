@@ -61,7 +61,7 @@ export default function Laboratory() {
     }, 30_000)
     const veryLongWaitTimer = window.setTimeout(() => {
       setDelayedRequest({ input, attempt, stage: 4 })
-    }, 40_000)
+    }, 45_000)
     const clearMessageTimers = () => {
       window.clearTimeout(waitMessageTimer)
       window.clearTimeout(almostThereTimer)
